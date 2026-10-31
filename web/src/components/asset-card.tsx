@@ -1,11 +1,12 @@
 /**
- * [INPUT]: 依赖目录快照、URL locale、本地化资源与静态详情路径。
+ * [INPUT]: 依赖目录快照、URL locale、本地化资源与静态 href helper。
  * [OUTPUT]: 导出单张本地化资产卡片，显示真实预览、编号、格式和面数。
- * [POS]: 画廊列表的唯一卡片视图；图片失败时不替换为其他资产。
+ * [POS]: 画廊唯一卡片视图；详情链接保留查询参数并指向静态文件。
  * [PROTOCOL]: 变更时更新此头部，然后检查 CLAUDE.md
  */
 import type { CatalogAsset } from '@/lib/catalog';
 import { getAssetDisplayName, localizedPath, type Locale } from '@/lib/locale';
+import { toStaticHref } from '@/lib/static-href';
 import { useTranslation } from 'react-i18next';
 import { useState } from 'react';
 
@@ -19,7 +20,7 @@ export function AssetCard({ asset, locale }: { asset: CatalogAsset; locale: Loca
 
   return (
     <article className="asset-card" role="listitem">
-      <a className="asset-card-link" href={detailUrl}>
+      <a className="asset-card-link" href={toStaticHref(detailUrl, import.meta.env.PROD)}>
         <div className="asset-preview">
           {asset.preview_url && !previewFailed ? (
             <img

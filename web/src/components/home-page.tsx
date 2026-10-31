@@ -1,7 +1,7 @@
 /**
- * [INPUT]: 依赖 i18next 业务资源、公开目录状态与 URL locale。
+ * [INPUT]: 依赖 i18next 资源、公开目录状态、URL locale 与静态 href helper。
  * [OUTPUT]: 导出紧凑资产库首页，提供目录状态、筛选工作台和公开入口。
- * [POS]: 首页唯一业务入口；已发布记录由 CatalogBrowser 本地浏览。
+ * [POS]: 首页唯一业务入口；文档锚点指向静态文件，目录由 CatalogBrowser 本地浏览。
  * [PROTOCOL]: 变更时更新此头部，然后检查 CLAUDE.md
  */
 import { ExternalLink } from 'lucide-react';
@@ -10,6 +10,7 @@ import { CatalogBrowser } from '@/components/catalog-browser';
 import { CatalogStateView } from '@/components/catalog-state';
 import { baseOptions } from '@/lib/layout.shared';
 import { localizedPath, type Locale } from '@/lib/locale';
+import { toStaticHref } from '@/lib/static-href';
 import { DATASET_REPO_ID } from '@/lib/catalog';
 import { useCatalog } from '@/lib/use-catalog';
 import { HomeLayout } from 'fumadocs-ui/layouts/home';
@@ -31,7 +32,7 @@ export function HomePage({ locale }: { locale: Locale }) {
             <a href={`https://huggingface.co/datasets/${DATASET_REPO_ID}`} target="_blank" rel="noreferrer">
               {t('home.datasetSource')} <ExternalLink aria-hidden="true" />
             </a>
-            <a href={localizedPath('/docs', locale)}>{t('home.readDocs')}</a>
+            <a href={toStaticHref(localizedPath('/docs', locale), import.meta.env.PROD)}>{t('home.readDocs')}</a>
             <a href="https://github.com/daftAI2026/lowpoly-world" target="_blank" rel="noreferrer">
               GitHub <ExternalLink aria-hidden="true" />
             </a>

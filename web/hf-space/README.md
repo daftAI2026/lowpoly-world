@@ -4,20 +4,20 @@ emoji: 🌱
 colorFrom: green
 colorTo: yellow
 sdk: static
-app_build_command: npm ci --include=dev && npm run build && npm run build:smoke
-app_file: dist/client/index.html
+app_file: index.html
 ---
 <!--
-[INPUT]: 依赖仓库内 web/ 的锁文件、静态构建脚本和 Vite 客户端输出。
-[OUTPUT]: 提供 Hugging Face Static HTML Space 的配置草案。
-[POS]: 部署元数据模板；不代表已创建或已部署 Space。
+[INPUT]: 依赖本机或 CI 已验收的 dist/client 静态产物。
+[OUTPUT]: 提供不调用远端构建的 HF Static Space 配置。
+[POS]: 复制到静态产物根目录；不请求计算硬件或构建额度。
 [PROTOCOL]: 变更时更新此头部，然后检查 CLAUDE.md
 -->
 
 # Lowpoly World
 
-Mirror the contents of `web/` to this Space repository root. Do not copy the Python publisher or
-Dataset assets. The gallery reads the public Dataset `daftAI2026/3d-assets`.
+Build and verify the website locally or in GitHub Actions. Copy the contents of `dist/client/`
+to this Space repository root, then add this README. Do not upload website source dependencies,
+Python tools or Dataset assets. The gallery reads the public Dataset `daftAI2026/3d-assets`.
 
-Before deployment, verify that the build writes `dist/client/index.html`, all linked route
-files, and static search data. This Space must not run a Node.js server or write to the Dataset.
+Do not add `app_build_command`: remote Static Space builds require account credits. This project
+serves prebuilt HTML, JavaScript, CSS and static search data without a server or remote build.

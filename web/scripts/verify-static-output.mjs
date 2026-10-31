@@ -1,5 +1,5 @@
 /**
- * [INPUT]: 依赖静态路由清单与 dist/client 构建输出。
+ * [INPUT]: 依赖静态路由清单与 dist/client 构建输出、真实文件导航契约。
  * [OUTPUT]: 在路径、文档页或搜索索引缺失时以非零状态退出。
  * [POS]: HF Static Space 上传前的本地产物断言，不启动服务器。
  * [PROTOCOL]: 变更时更新此头部，然后检查 CLAUDE.md
@@ -35,7 +35,16 @@ if (!assetEntries.some((entry) => entry.endsWith('.js')) ||
 
 for (const route of staticPrerenderPages) {
   if (route.path === '/api/search') continue;
-  await requireFile(outputPath(route.path), `prerendered route ${route.path}`);
+  const html = await readFile(await requireFile(outputPath(route.path), `prerendered route ${route.path}`), 'utf8');
+  for (const [, href] of html.matchAll(/<a\b[^>]*\bhref="([^" ]+)"/g)) {
+    if (!href.startsWith('/') || href.startsWith('//')) continue;
+    const pathname = href.split(/[?#]/)[0];
+    if (!/^\/(?:en|zh)(?:\/|$)/.test(pathname) && pathname !== '/index.html') continue;
+    if (!pathname.endsWith('/index.html')) {
+      throw new Error(`Static page ${route.path} has a non-file navigation URL: ${href}`);
+    }
+    await requireFile(pathname.replace(/^\//, ''), `navigation target ${href}`);
+  }
 }
 
 for (const locale of ['en', 'zh']) {

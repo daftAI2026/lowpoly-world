@@ -3,7 +3,7 @@
 
 ## 成员清单
 
-__root.tsx: 从 URL 语言参数配置 HTML、i18next、静态搜索与单一浅色 Provider。
+__root.tsx: 配置 HTML、i18next 与 Fumadocs；语言切换使用静态文件 URL 并保留原始 query/hash。
 index.tsx: 将根路径映射到默认英文首页。
 $lang/: 校验语言段并承载 `/en/` 与 `/zh/` 页面。
 api/: 从 server-only Fumadocs source 将多语言搜索索引导出为静态 GET 响应。

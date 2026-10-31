@@ -70,6 +70,13 @@ describe('public documentation boundary', () => {
     expect(chinese.title).toBe('文档');
   });
 
+  it('serves prebuilt Space files without invoking credit-based remote builds', async () => {
+    const card = await readFile(new URL('../hf-space/README.md', import.meta.url), 'utf8');
+    expect(card).toMatch(/^sdk: static$/m);
+    expect(card).toMatch(/^app_file: index\.html$/m);
+    expect(card).not.toMatch(/^app_build_command:/m);
+  });
+
   it('pre-renders every MDX page for both URL locales', async () => {
     const mdxPages = (await listFiles(docsRoot))
       .filter((path) => path.endsWith('.mdx') && !path.endsWith('.zh.mdx'))

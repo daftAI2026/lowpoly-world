@@ -28,11 +28,12 @@ export default defineConfig({
           enabled: true,
           outputPath: '/index.html',
           autoSubfolderIndex: true,
-          crawlLinks: true,
+          crawlLinks: false,
         },
       },
       prerender: {
         failOnError: true,
+        crawlLinks: false,
       },
       pages: staticPrerenderPages.map((page) => page.path === '/api/search'
         ? page

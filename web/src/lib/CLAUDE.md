@@ -9,6 +9,8 @@ catalog-view.ts: 纯函数构造分类/facet，执行搜索、筛选、排序和
 layout.shared.tsx: 统一 Fumadocs 导航、保留 URL 语言段并关闭未实现的深色主题。
 messages.ts: 保存业务英文与简体中文文案，资源键必须成对。
 locale.ts: 定义 URL 语言段、回退规则、静态路径、正文源文件语言和目录首页路径。
+static-pages.ts: 页面唯一注册表；共用文档 slug、双语标题、预渲染路径与 URL 白名单。
+static-href.ts: 将已预渲染路由映射为真实 index.html；query、hash、API 和未知路径保持原样。
 i18n.ts: 将 URL 语言与隔离的 i18next、Fumadocs UI 配置衔接；相对 TS 导入显式带 `.ts`。
 shared.ts: 保存公开站点名、文档路径和 GitHub 身份。
 source.server.ts: 从 `.source/server` 构造 en/zh 页面树；仅 SSR 搜索与静态函数读取。

@@ -222,7 +222,7 @@ export const messages = {
       metadataTitle: '资产元数据',
       metadataAsPublished: '元数据按发布内容展示，不构成独立质量或权利认证。',
       metadataUnavailable: '无法读取此公开元数据文件。',
-      prompt: 'Prompt',
+      prompt: '提示词',
       recipe: '配方参数',
       quality: '质量信息',
       previews: '预览图',

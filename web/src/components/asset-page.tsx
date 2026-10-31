@@ -1,7 +1,7 @@
 /**
- * [INPUT]: 依赖已验证目录、查询资产编号、本地化路径和详情子组件。
+ * [INPUT]: 依赖已验证目录、查询资产编号、本地化路径、静态 href helper 和详情子组件。
  * [OUTPUT]: 导出资产查看器、下载入口、元数据和诚实缺失状态。
- * [POS]: 资产详情唯一组合视图；只挂载当前记录的一个模型查看器。
+ * [POS]: 资产详情唯一组合视图；返回链接指向当前语言文件，且只挂载一个查看器。
  * [PROTOCOL]: 变更时更新此头部，然后检查 CLAUDE.md
  */
 import { useTranslation } from 'react-i18next';
@@ -11,12 +11,13 @@ import { ModelViewerPanel } from '@/components/model-viewer-panel';
 import { useCatalog } from '@/lib/use-catalog';
 import { baseOptions } from '@/lib/layout.shared';
 import { getAssetDisplayName, localizedHomePath, type Locale } from '@/lib/locale';
+import { toStaticHref } from '@/lib/static-href';
 import { HomeLayout } from 'fumadocs-ui/layouts/home';
 
 export function AssetPage({ id, locale }: { id?: string; locale: Locale }) {
   const { t } = useTranslation();
   const { state, retry } = useCatalog();
-  const galleryUrl = localizedHomePath(locale);
+  const galleryUrl = toStaticHref(localizedHomePath(locale), import.meta.env.PROD);
 
   if (state.status !== 'ready') {
     return (

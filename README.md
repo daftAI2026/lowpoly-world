@@ -8,6 +8,8 @@
 
 低多边形资产的静态展厅。网站只读取公开 Hugging Face Dataset，不接触私人 Drive 或审核目录。
 
+[中文页面](https://daftai2026-gallery.static.hf.space/zh/index.html) · [English](https://daftai2026-gallery.static.hf.space/en/index.html) · [Hugging Face Space](https://huggingface.co/spaces/daftAI2026/gallery)
+
 ## 本地开发
 
 ```bash
@@ -17,7 +19,7 @@ npm run dev
 ```
 
 构建、检查和部署边界见[网站说明](web/README.md)。网站提供中英双语资产浏览、模型详情和 10 篇双语文档。
-43 项离线测试、类型检查、静态构建和本地浏览器验收通过。
+51 项离线测试、类型检查、静态构建和本地浏览器验收通过。
 HF 线上部署与真实模型发布仍单独验收。
 
 ## 公开范围

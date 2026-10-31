@@ -14,7 +14,7 @@ README.md: 说明 Vite+ 命令、数据边界和静态输出目标。
 DESIGN.md: 约束资产库布局、颜色、组件、响应式规则和设计引用。
 src/: 双语路由、资产库、模型查看器、数据边界和分层样式。
 content/: Fumadocs 编译期文档源。
-hf-space/: Static Space 构建命令和输出入口模板，不代表已创建或部署。
+hf-space/: 预构建静态产物的 Space 元数据模板，禁用需额度的远端构建。
 tests/: Vite+ Vitest 离线测试；只用测试内合成 fixture。
 scripts/: 路由生成、静态路由清单和静态输出 smoke 断言。
 

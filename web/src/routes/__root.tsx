@@ -1,7 +1,7 @@
 /**
- * [INPUT]: 依赖 TanStack URL 参数、隔离 i18next 工厂、Fumadocs Provider 与样式。
- * [OUTPUT]: 导出按 URL 设置 lang 的 HTML 根路由、静态搜索 Provider 和 Scripts。
- * [POS]: locale 唯一注入点；每个 SSR 树各自建实例，并固定浅色主题。
+ * [INPUT]: 依赖 TanStack URL、静态 href helper、隔离 i18next、Fumadocs Provider 与样式。
+ * [OUTPUT]: 导出按 URL 设置 lang 的 HTML 根路由、语言切换和静态搜索 Provider。
+ * [POS]: locale 唯一注入点；语言切换保留 query/hash 原始字节并导航到真实文件。
  * [PROTOCOL]: 变更时更新此头部，然后检查 CLAUDE.md
  */
 import {
@@ -17,6 +17,7 @@ import { I18nextProvider } from 'react-i18next';
 import appCss from '@/styles/app.css?url';
 import { createBusinessI18n, fumadocsTranslations } from '@/lib/i18n';
 import { localizedPath, resolveLocale } from '@/lib/locale';
+import { hrefSuffix, toStaticHref } from '@/lib/static-href';
 import { RootProvider } from 'fumadocs-ui/provider/tanstack';
 import { i18nProvider } from 'fumadocs-ui/i18n';
 import SearchDialog from '@/components/search';
@@ -42,8 +43,8 @@ function RootComponent() {
     ...fumadocsProvider,
     onLocaleChange: (nextLocale: string) => {
       const nextPath = localizedPath(location.pathname, resolveLocale(nextLocale));
-      const hash = location.hash ? `#${location.hash}` : '';
-      window.location.assign(`${nextPath}${location.searchStr}${hash}`);
+      const nextHref = toStaticHref(`${nextPath}${hrefSuffix(location.publicHref)}`, import.meta.env.PROD);
+      window.location.assign(nextHref);
     },
   };
 
