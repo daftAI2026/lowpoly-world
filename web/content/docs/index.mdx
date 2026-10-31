@@ -1,0 +1,38 @@
+---
+title: Getting Started
+description: How the Lowpoly World gallery reads published assets.
+icon: BookOpen
+---
+
+{/*
+[INPUT]: 依赖公开 Dataset 的已发布目录与当前静态网站边界。
+[OUTPUT]: 说明目录校验、资产下载与部署约束。
+[POS]: Fumadocs 入门页；标题来自 frontmatter，正文从主题段落开始。
+[PROTOCOL]: 变更时更新此头部，然后检查 CLAUDE.md
+*/}
+
+Lowpoly World is a static gallery for assets published in the public Hugging Face Dataset.
+The gallery does not bundle model files in the website source.
+
+## Browse the catalog
+
+The gallery reads `catalog/v1/latest.json` from `daftAI2026/3d-assets`. It then downloads the
+immutable catalog snapshot and checks its SHA256 before it displays asset records.
+
+The website shows an empty state when the Dataset has no catalog pointer. It shows an error when
+the pointer, snapshot, schema, count, or SHA256 check fails.
+
+## Download source files
+
+The asset detail page links to GLB and BLEND files in the Dataset. The site does not upload or
+modify Dataset files. Asset release remains a separate, manually approved workflow.
+
+## Deployment boundary
+
+The gallery targets a Hugging Face Static HTML Space. Its build must emit static HTML, CSS, and
+JavaScript files. The deployed Space must not require a Node.js server, database, model storage, or
+write token.
+
+The first version includes the catalog contract, loading and error states, the gallery shell, a
+static detail route, Fumadocs content, and static search. Filters, virtualization, and a 3D viewer
+remain outside this scaffold.

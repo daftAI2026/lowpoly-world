@@ -1,0 +1,459 @@
+/*
+ * [INPUT]: 依赖 Tailwind CSS 4、Fumadocs UI 变量与本站语义 class。
+ * [OUTPUT]: 提供双语画廊、目录状态、文档回退提示、资产卡片和详情页样式。
+ * [POS]: web 的全局视觉层；不包含模型图或远端资产副本。
+ * [PROTOCOL]: 变更时更新此头部，然后检查 CLAUDE.md
+ */
+@import 'tailwindcss';
+@import 'fumadocs-ui/css/neutral.css';
+@import 'fumadocs-ui/css/preset.css';
+
+/* ---------- 基础色彩与版心 ---------- */
+:root {
+  color-scheme: dark;
+  --lpw-bg: #111310;
+  --lpw-panel: #181b17;
+  --lpw-panel-soft: #20251f;
+  --lpw-line: #30362f;
+  --lpw-text: #f3f2e8;
+  --lpw-muted: #a2a69b;
+  --lpw-accent: #c7ed68;
+  --lpw-alert: #ffbd8b;
+  --color-fd-background: var(--lpw-bg);
+  --color-fd-foreground: var(--lpw-text);
+  --color-fd-primary: var(--lpw-accent);
+  --color-fd-primary-foreground: #12150d;
+  font-family: Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+  background: var(--lpw-bg);
+  color: var(--lpw-text);
+}
+
+html {
+  min-width: 320px;
+  background: var(--lpw-bg);
+  scrollbar-gutter: stable;
+}
+
+body {
+  min-height: 100vh;
+  margin: 0;
+  background:
+    radial-gradient(ellipse at 84% 4%, rgba(199, 237, 104, 0.07), transparent 31rem),
+    var(--lpw-bg);
+  color: var(--lpw-text);
+}
+
+button,
+a {
+  -webkit-tap-highlight-color: transparent;
+}
+
+.site-main,
+.detail-main {
+  width: min(1260px, calc(100% - 48px));
+  margin: 0 auto;
+}
+
+/* ---------- 首页与导航 ---------- */
+.home-hero {
+  display: grid;
+  grid-template-columns: minmax(0, 1.5fr) minmax(230px, 0.7fr);
+  align-items: end;
+  gap: clamp(32px, 8vw, 120px);
+  padding: clamp(72px, 12vw, 150px) 0 92px;
+  border-bottom: 1px solid var(--lpw-line);
+}
+
+.hero-copy {
+  max-width: 770px;
+}
+
+.eyebrow,
+.state-kicker,
+.index-label,
+.asset-id {
+  display: block;
+  color: var(--lpw-accent);
+  font-size: 0.69rem;
+  font-weight: 700;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+}
+
+.home-hero h1 {
+  margin: 24px 0 20px;
+  font-size: clamp(3.4rem, 8.4vw, 7.2rem);
+  font-weight: 550;
+  letter-spacing: -0.075em;
+  line-height: 0.96;
+}
+
+.home-hero h1 em {
+  color: var(--lpw-accent);
+  font-family: Georgia, "Times New Roman", serif;
+  font-weight: 400;
+}
+
+.hero-copy > p,
+.state-panel p,
+.detail-empty p {
+  max-width: 620px;
+  color: var(--lpw-muted);
+  font-size: 1rem;
+  line-height: 1.75;
+}
+
+.hero-actions,
+.detail-actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 12px;
+  margin-top: 28px;
+}
+
+.button {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 46px;
+  padding: 0 18px;
+  border: 1px solid var(--lpw-line);
+  border-radius: 999px;
+  color: var(--lpw-text);
+  font-size: 0.88rem;
+  font-weight: 650;
+  text-decoration: none;
+  transition: border-color 150ms ease, background-color 150ms ease, color 150ms ease;
+}
+
+.button:hover,
+.button:focus-visible {
+  border-color: var(--lpw-accent);
+}
+
+.button-primary {
+  border-color: var(--lpw-accent);
+  background: var(--lpw-accent);
+  color: #14170e;
+}
+
+.button-primary:hover,
+.button-primary:focus-visible {
+  background: #daf796;
+}
+
+.button-secondary {
+  background: transparent;
+}
+
+.hero-index {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  padding: 24px;
+  border: 1px solid var(--lpw-line);
+  border-radius: 18px;
+  background: linear-gradient(145deg, rgba(255, 255, 255, 0.045), transparent 70%), var(--lpw-panel);
+}
+
+.hero-index strong {
+  font-size: 1rem;
+  font-weight: 600;
+}
+
+.index-divider {
+  height: 1px;
+  margin: 10px 0;
+  background: var(--lpw-line);
+}
+
+.hero-index .index-count {
+  font-size: 3.4rem;
+  letter-spacing: -0.06em;
+}
+
+.index-note,
+.detail-note {
+  color: var(--lpw-muted);
+  font-size: 0.78rem;
+  line-height: 1.6;
+}
+
+/* ---------- 目录与真实资产 ---------- */
+.catalog-section {
+  padding: 56px 0 92px;
+}
+
+.section-heading {
+  display: flex;
+  align-items: end;
+  justify-content: space-between;
+  gap: 24px;
+  margin-bottom: 26px;
+}
+
+.section-heading h2,
+.detail-heading {
+  margin: 10px 0 0;
+  font-size: clamp(1.8rem, 4vw, 2.7rem);
+  font-weight: 550;
+  letter-spacing: -0.055em;
+}
+
+.result-count,
+.asset-category {
+  color: var(--lpw-muted);
+  font-size: 0.82rem;
+}
+
+.catalog-state {
+  width: 100%;
+}
+
+.state-panel,
+.detail-empty {
+  min-height: 230px;
+  padding: clamp(24px, 5vw, 52px);
+  border: 1px solid var(--lpw-line);
+  border-radius: 18px;
+  background: var(--lpw-panel);
+}
+
+.state-panel h2,
+.detail-empty h1 {
+  margin: 18px 0 8px;
+  font-size: clamp(1.45rem, 3vw, 2.25rem);
+  font-weight: 550;
+  letter-spacing: -0.05em;
+}
+
+.state-panel-error .state-kicker {
+  color: var(--lpw-alert);
+}
+
+.state-panel-error .button {
+  margin-top: 10px;
+  cursor: pointer;
+}
+
+.text-link,
+.site-footer a,
+.back-link {
+  color: var(--lpw-accent);
+  text-decoration: none;
+}
+
+.text-link:hover,
+.site-footer a:hover,
+.back-link:hover {
+  text-decoration: underline;
+  text-underline-offset: 4px;
+}
+
+.asset-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(min(100%, 240px), 1fr));
+  gap: 18px;
+}
+
+.asset-card {
+  overflow: hidden;
+  border: 1px solid var(--lpw-line);
+  border-radius: 16px;
+  background: var(--lpw-panel);
+}
+
+.asset-card-link {
+  display: block;
+  color: inherit;
+  text-decoration: none;
+}
+
+.asset-preview,
+.detail-preview {
+  position: relative;
+  overflow: hidden;
+  background: var(--lpw-panel-soft);
+  aspect-ratio: 1.2 / 1;
+}
+
+.asset-preview img,
+.detail-preview img {
+  display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.asset-format {
+  position: absolute;
+  right: 12px;
+  bottom: 12px;
+  padding: 6px 9px;
+  border: 1px solid rgba(255, 255, 255, 0.16);
+  border-radius: 999px;
+  background: rgba(17, 19, 16, 0.78);
+  color: var(--lpw-text);
+  font-size: 0.65rem;
+  letter-spacing: 0.07em;
+}
+
+.asset-card-copy {
+  display: flex;
+  align-items: end;
+  justify-content: space-between;
+  gap: 14px;
+  padding: 18px;
+}
+
+.asset-card-copy .asset-id {
+  font-size: 0.58rem;
+}
+
+.asset-card-copy h3 {
+  margin: 7px 0 0;
+  font-size: 1.03rem;
+  font-weight: 600;
+}
+
+.asset-category {
+  text-align: right;
+}
+
+.site-footer {
+  display: flex;
+  justify-content: space-between;
+  gap: 20px;
+  padding: 22px 0 34px;
+  border-top: 1px solid var(--lpw-line);
+  color: var(--lpw-muted);
+  font-size: 0.77rem;
+}
+
+/* ---------- 资产详情 ---------- */
+.detail-main {
+  padding: 42px 0 88px;
+}
+
+.back-link {
+  display: inline-block;
+  margin-bottom: 26px;
+  font-size: 0.85rem;
+}
+
+.detail-heading {
+  margin-bottom: 24px;
+}
+
+.asset-detail {
+  display: grid;
+  grid-template-columns: minmax(0, 1.2fr) minmax(280px, 0.8fr);
+  gap: clamp(30px, 7vw, 88px);
+  align-items: start;
+  margin-top: 24px;
+}
+
+.detail-preview {
+  position: sticky;
+  top: 24px;
+  border: 1px solid var(--lpw-line);
+  border-radius: 18px;
+  aspect-ratio: 1 / 1;
+}
+
+.detail-copy h1 {
+  margin: 10px 0 6px;
+  font-size: clamp(2.2rem, 5vw, 4rem);
+  font-weight: 550;
+  letter-spacing: -0.065em;
+  line-height: 1;
+}
+
+.detail-local-name,
+.detail-category {
+  color: var(--lpw-muted);
+}
+
+.asset-facts {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 0 20px;
+  margin: 30px 0 0;
+  border-top: 1px solid var(--lpw-line);
+}
+
+.asset-facts > div {
+  padding: 14px 0;
+  border-bottom: 1px solid var(--lpw-line);
+}
+
+.asset-facts dt {
+  color: var(--lpw-muted);
+  font-size: 0.73rem;
+}
+
+.asset-facts dd {
+  margin: 6px 0 0;
+  overflow-wrap: anywhere;
+  font-size: 0.88rem;
+}
+
+.hash-value {
+  font-family: ui-monospace, SFMono-Regular, Menlo, monospace;
+  font-size: 0.68rem !important;
+}
+
+.detail-note {
+  margin-top: 12px;
+}
+
+.docs-locale-notice {
+  margin: 20px 0;
+  padding: 12px 16px;
+  border: 1px solid var(--lpw-line);
+  border-radius: 12px;
+  background: var(--lpw-panel-soft);
+  color: var(--lpw-muted);
+  font-size: 0.88rem;
+}
+
+/* ---------- 窄屏适配 ---------- */
+@media (max-width: 760px) {
+  .site-main,
+  .detail-main {
+    width: min(100% - 32px, 1260px);
+  }
+
+  .home-hero,
+  .asset-detail {
+    grid-template-columns: 1fr;
+  }
+
+  .home-hero {
+    align-items: start;
+    padding: 70px 0 56px;
+  }
+
+  .hero-index {
+    max-width: 420px;
+  }
+
+  .detail-preview {
+    position: static;
+  }
+
+  .section-heading,
+  .site-footer {
+    align-items: start;
+    flex-direction: column;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    scroll-behavior: auto !important;
+    transition-duration: 0.01ms !important;
+  }
+}

@@ -1,0 +1,29 @@
+# ---- 本地知识与凭据 ----
+.internal-docs
+.playwright-mcp/
+/doc/
+/.pipeline-private/
+*.ipynb
+*.py
+.env
+.env.*
+!.env.example
+*.pem
+*.key
+
+# ---- 运行产物与真实模型 ----
+.DS_Store
+.venv/
+__pycache__/
+*.py[cod]
+*.glb
+*.blend
+*.blend1
+*.gltf
+*.fbx
+*.obj
+*.stl
+*.zip
+review.csv
+prepared/
+/lowpoly-world-v2/
