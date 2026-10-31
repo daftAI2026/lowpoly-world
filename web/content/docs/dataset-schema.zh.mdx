@@ -1,0 +1,38 @@
+---
+title: 数据集结构
+description: 读取版本 2 目录指针、快照与可选资产元数据。
+icon: Table
+---
+
+{/*
+[INPUT]: 依赖 web/src/lib/catalog.ts 与 asset-metadata.ts 的当前解析契约。
+[OUTPUT]: 描述版本 2 指针、资产记录、可选元数据和 URL 安全边界。
+[POS]: Dataset Schema 文档；随网站读取契约同步更新。
+[PROTOCOL]: 变更时更新此头部，然后检查 CLAUDE.md
+*/}
+
+## 目录指针
+
+`catalog/v1/latest.json` 是结构版本（schema version）为 2 的对象。它包含 `count`、`index_path` 以及完整的 `index_sha256`。不可变快照路径必须与该摘要的前 20 位十六进制字符匹配。
+
+快照同样使用结构版本 2。其 `count` 必须同时等于指针中的数量和资产记录条数。资产 ID 必须唯一。浏览器会在解析记录前校验原始快照字节。
+
+## 必填记录字段
+
+每条记录都必须包含唯一的 `id`、非空的 `name_en` 以及 64 个字符的 `source_sha256`。记录可以包含 `name_zh`、分类、标签、三角面数与顶点数、尺寸、文件大小、发布时间以及文件 URL。
+
+可选的文本和数值字段允许缺失或设为 `null`。界面会将缺失值显示为 **未提供**。`preview_urls` 必须是安全公开 Dataset URL 组成的数组。
+
+分类值使用 `/` 或 `>` 作为层级分隔符。缺失分类的记录会归入 **未分类**。三角面数筛选器将记录分为少于 5,000、5,000 至 24,999 或不少于 25,000 个三角面三档。这些区间不对资产质量进行评级。
+
+## 详情资源
+
+`metadata_url` 指向可选的发布 JSON 对象。读取器识别 `id`、`source`、`revision`、`published_at_utc`、`quality`、`recipe` 和 `preview_urls`。若存在 `id`，则必须与目录记录匹配。
+
+`prompt_url` 指向可选的纯文本。`settings_url` 指向可选的 JSON 配方参数。可选资源加载失败不会隐藏已通过校验的模型记录。
+
+仅当 `source_input_image` 包含 Dataset URL、`rights_confirmed: true` 以及非空的 `rights_statement` 时，读取器才会显示该来源输入图。它绝不会将预览图当作来源输入图处理。
+
+## URL 边界
+
+每条记录的 URL 都必须使用 HTTPS、不包含内嵌凭证，并保持在 `daftAI2026/3d-assets` Dataset 路径下。指向其他仓库、外部主机或非 HTTPS 协议的 URL 均无法通过目录校验。

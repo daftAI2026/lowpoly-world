@@ -1,0 +1,22 @@
+---
+title: Contributing
+description: Contribute to the public website without publishing unapproved assets.
+icon: GitPullRequest
+---
+
+{/*
+[INPUT]: 依赖公开网站仓库、数据读取边界与人工发布门槛。
+[OUTPUT]: 列出网站贡献范围、隐私限制和提交流程入口。
+[POS]: Contributing 文档；不公开生产工具、私有数据或凭证。
+[PROTOCOL]: 变更时更新此头部，然后检查 CLAUDE.md
+*/}
+
+Contributions to this repository should improve the public website, its documentation, or its
+offline tests. Keep changes small and describe their effect on the static output.
+
+Do not commit model files, Google Drive content, review records, credentials, or unpublished
+metadata. Do not add an asset to the public Dataset without separate rights review and explicit
+publisher approval.
+
+Before opening a pull request, install from the lockfile and run the website's configured checks.
+The repository's CI workflow is the source of truth for required commands.

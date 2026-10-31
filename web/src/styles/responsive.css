@@ -1,0 +1,119 @@
+/**
+ * [INPUT]: 依赖 shell、目录和详情模块的响应式语义 class。
+ * [OUTPUT]: 提供窄屏布局、筛选折叠和减少动态偏好。
+ * [POS]: 跨组件断点规则；细节样式仍归属各模块文件。
+ * [PROTOCOL]: 变更时更新此头部，然后检查 CLAUDE.md
+ */
+@media (min-width: 720px) {
+  .filter-disclosure > summary {
+    display: none;
+  }
+
+  .filter-disclosure > .filter-panel {
+    display: block;
+  }
+}
+
+@media (max-width: 900px) {
+  .gallery-heading {
+    align-items: start;
+    flex-direction: column;
+  }
+
+  .catalog-workspace {
+    grid-template-columns: 220px minmax(0, 1fr);
+    gap: 20px;
+  }
+
+  .asset-detail {
+    grid-template-columns: minmax(0, 1fr) minmax(260px, 0.8fr);
+    gap: 20px;
+  }
+}
+
+@media (max-width: 719px) {
+  .site-main,
+  .detail-main {
+    width: min(100% - 32px, 1440px);
+  }
+
+  .gallery-heading {
+    gap: 16px;
+    padding: 24px 0 18px;
+  }
+
+  .gallery-links {
+    gap: 14px;
+  }
+
+  .catalog-section {
+    padding: 20px 0 44px;
+  }
+
+  .catalog-toolbar {
+    grid-template-columns: minmax(0, 1fr) auto;
+  }
+
+  .catalog-search {
+    grid-column: 1 / -1;
+  }
+
+  .catalog-result-count {
+    text-align: right;
+  }
+
+  .catalog-workspace {
+    grid-template-columns: minmax(0, 1fr);
+    gap: 14px;
+  }
+
+  .catalog-filters {
+    order: 0;
+  }
+
+  .catalog-results {
+    order: 1;
+  }
+
+  .asset-detail {
+    grid-template-columns: minmax(0, 1fr);
+    gap: 22px;
+  }
+
+  .detail-main {
+    padding-top: 16px;
+  }
+
+  .viewer-stage {
+    min-height: 240px;
+  }
+
+  .site-footer {
+    align-items: start;
+    flex-direction: column;
+  }
+}
+
+@media (max-width: 359px) {
+  .catalog-toolbar {
+    grid-template-columns: 1fr;
+  }
+
+  .sort-control {
+    justify-content: space-between;
+  }
+
+  .sort-control select {
+    flex: 1;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    scroll-behavior: auto !important;
+    animation-duration: 0.01ms !important;
+    transition-duration: 0.01ms !important;
+  }
+}

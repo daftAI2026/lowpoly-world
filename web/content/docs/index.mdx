@@ -1,38 +1,37 @@
 ---
 title: Getting Started
-description: How the Lowpoly World gallery reads published assets.
+description: Browse the verified Lowpoly World public asset catalog.
 icon: BookOpen
 ---
 
 {/*
-[INPUT]: 依赖公开 Dataset 的已发布目录与当前静态网站边界。
-[OUTPUT]: 说明目录校验、资产下载与部署约束。
-[POS]: Fumadocs 入门页；标题来自 frontmatter，正文从主题段落开始。
+[INPUT]: 依赖公开 Dataset 的目录指针、静态网站和已发布字段边界。
+[OUTPUT]: 说明资产浏览入口、空目录行为和后续文档路径。
+[POS]: Getting Started 文档；唯一页面标题来自 frontmatter。
 [PROTOCOL]: 变更时更新此头部，然后检查 CLAUDE.md
 */}
 
-Lowpoly World is a static gallery for assets published in the public Hugging Face Dataset.
-The gallery does not bundle model files in the website source.
+Lowpoly World is a static browser for records published in the Hugging Face Dataset
+`daftAI2026/3d-assets`. The website reads the public catalog and does not store model files.
 
-## Browse the catalog
+## Browse published records
 
-The gallery reads `catalog/v1/latest.json` from `daftAI2026/3d-assets`. It then downloads the
-immutable catalog snapshot and checks its SHA256 before it displays asset records.
+The gallery reads `catalog/v1/latest.json`, downloads the immutable snapshot it names, and checks
+the snapshot SHA256, schema, record count, unique IDs, and Dataset URLs before display.
 
-The website shows an empty state when the Dataset has no catalog pointer. It shows an error when
-the pointer, snapshot, schema, count, or SHA256 check fails.
+Use search, category facets, format and tag filters, or triangle-count bands. The gallery sorts the
+verified snapshot in the browser and virtualizes visible rows. It does not invent example records.
 
-## Download source files
+## Open one asset
 
-The asset detail page links to GLB and BLEND files in the Dataset. The site does not upload or
-modify Dataset files. Asset release remains a separate, manually approved workflow.
+Open a record from the gallery to view its GLB, download available files, and inspect public
+metadata. The detail route uses a static path and an `id` query parameter.
 
-## Deployment boundary
+## Empty and error states
 
-The gallery targets a Hugging Face Static HTML Space. Its build must emit static HTML, CSS, and
-JavaScript files. The deployed Space must not require a Node.js server, database, model storage, or
-write token.
+If the Dataset has no `latest.json` pointer, the gallery shows its first-release empty state. If a
+request or validation check fails, the gallery shows a failure state and a retry action.
 
-The first version includes the catalog contract, loading and error states, the gallery shell, a
-static detail route, Fumadocs content, and static search. Filters, virtualization, and a 3D viewer
-remain outside this scaffold.
+## Continue
+
+Open **Download**, **License**, or **Dataset Schema** from the documentation navigation.

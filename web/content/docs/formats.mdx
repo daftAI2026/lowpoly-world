@@ -1,0 +1,25 @@
+---
+title: 3D Formats
+description: Learn which published model and preview formats the gallery reads.
+icon: Box
+---
+
+{/*
+[INPUT]: 依赖目录中的 GLB、BLEND 和 preview URL 字段。
+[OUTPUT]: 说明浏览器查看格式、源文件下载和预览回退。
+[POS]: 3D Formats 文档；不承诺未发布的转换格式。
+[PROTOCOL]: 变更时更新此头部，然后检查 CLAUDE.md
+*/}
+
+The gallery uses a published GLB URL for the interactive detail viewer. The viewer supports mouse
+and touch camera controls. It loads a model only after a visitor opens that model's detail page.
+
+BLEND is the Blender source format. The detail page shows a download action only when the record
+contains a safe public BLEND URL.
+
+Preview images come from the record's `preview_url` and optional `preview_urls` fields. If a GLB
+fails to load, the viewer keeps the same record's preview image. It never substitutes another
+asset's image.
+
+The gallery does not claim OpenUSD, FBX, OBJ, AR, or simulation-ready support unless a published
+record and a future implementation explicitly provide it.

@@ -1,0 +1,53 @@
+---
+title: Dataset Schema
+description: Read the version 2 catalog pointer, snapshot, and optional asset metadata.
+icon: Table
+---
+
+{/*
+[INPUT]: 依赖 web/src/lib/catalog.ts 与 asset-metadata.ts 的当前解析契约。
+[OUTPUT]: 描述版本 2 指针、资产记录、可选元数据和 URL 安全边界。
+[POS]: Dataset Schema 文档；随网站读取契约同步更新。
+[PROTOCOL]: 变更时更新此头部，然后检查 CLAUDE.md
+*/}
+
+## Catalog pointer
+
+`catalog/v1/latest.json` is a schema version 2 object. It contains `count`, `index_path`, and a
+full `index_sha256`. The immutable snapshot path must match the first 20 hexadecimal characters of
+that digest.
+
+The snapshot also uses schema version 2. Its `count` must equal both the pointer count and the
+number of asset records. Asset IDs must be unique. The browser verifies the raw snapshot bytes
+before parsing the records.
+
+## Required record values
+
+Every record requires a unique `id`, a non-empty `name_en`, and a 64-character `source_sha256`.
+The record may include `name_zh`, category, tags, triangle and vertex counts, dimensions, file size,
+publication time, and file URLs.
+
+Optional text and numeric fields accept missing or `null` values. The interface displays missing
+values as **Not supplied**. `preview_urls` must be an array of safe public Dataset URLs.
+
+Category values use `/` or `>` as hierarchy separators. A missing category appears under
+**Uncategorized**. Triangle filters group records as fewer than 5,000, 5,000–24,999, or at least
+25,000 triangles. These bands do not rate asset quality.
+
+## Detail resources
+
+`metadata_url` points to an optional release JSON object. The reader recognizes `id`, `source`,
+`revision`, `published_at_utc`, `quality`, `recipe`, and `preview_urls`. A present `id` must match
+the catalog record.
+
+`prompt_url` points to optional plain text. `settings_url` points to optional JSON recipe
+parameters. A failed optional resource does not hide the validated model record.
+
+The reader shows `source_input_image` only when it contains a Dataset URL, `rights_confirmed: true`,
+and a non-empty `rights_statement`. It never treats a preview image as a source image.
+
+## URL boundary
+
+Every record URL must use HTTPS, omit embedded credentials, and stay under the
+`daftAI2026/3d-assets` Dataset path. URLs to other repositories, external hosts, or non-HTTPS
+schemes fail catalog validation.

@@ -1,10 +1,11 @@
 # Lowpoly World - 只读公开资产目录的静态展厅
 
-TanStack Start 1.169.3 + React 19 + Fumadocs 16 + i18next 26 + Vite 8 + TypeScript 7。
+TanStack Start 1.169.3 + React 19 + Fumadocs 16 + i18next 26 + Vite+ 1.4 + TypeScript 7。
 网站只读 daftAI2026/3d-assets；静态产物面向 daftAI2026/gallery。
 
 <directory>
-web/ - 网站源码、内容、目录协议测试与静态部署配置
+web/ - 中英网站、资产浏览器、模型查看器与静态部署配置
+.github/ - 网站 CI 与显式触发的静态 Space 同步
 </directory>
 
 <config>

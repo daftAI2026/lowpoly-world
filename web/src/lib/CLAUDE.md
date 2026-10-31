@@ -4,13 +4,17 @@
 ## 成员清单
 
 catalog.ts: 读取 V2 指针与快照，校验 SHA256、字段和唯一 ID。
-layout.shared.tsx: 统一 Fumadocs 首页与文档页导航选项，并保留 URL 语言段。
+asset-metadata.ts: 校验详情可选 JSON、Prompt 与输入图权利字段；资源失败彼此隔离。
+catalog-view.ts: 纯函数构造分类/facet，执行搜索、筛选、排序和网格分行。
+layout.shared.tsx: 统一 Fumadocs 导航、保留 URL 语言段并关闭未实现的深色主题。
 messages.ts: 保存业务英文与简体中文文案，资源键必须成对。
-locale.ts: 定义 URL 语言段、回退规则、静态路径和目录首页路径。
+locale.ts: 定义 URL 语言段、回退规则、静态路径、正文源文件语言和目录首页路径。
 i18n.ts: 将 URL 语言与隔离的 i18next、Fumadocs UI 配置衔接；相对 TS 导入显式带 `.ts`。
 shared.ts: 保存公开站点名、文档路径和 GitHub 身份。
 source.server.ts: 从 `.source/server` 构造 en/zh 页面树；仅 SSR 搜索与静态函数读取。
 use-catalog.ts: 将目录请求映射为加载、空、成功和失败状态。
+use-asset-details.ts: 按需读取详情资源并在资产切换或卸载时取消请求。
+utils.ts: 提供 Base UI 组件共用的 class 合并函数。
 
 数据方向由路由指向目录客户端；模块不包含 HF 写入能力。
 

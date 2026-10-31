@@ -1,0 +1,20 @@
+---
+title: 3D 格式
+description: 了解画廊读取的已发布模型格式与预览图格式。
+icon: Box
+---
+
+{/*
+[INPUT]: 依赖目录中的 GLB、BLEND 和 preview URL 字段。
+[OUTPUT]: 说明浏览器查看格式、源文件下载和预览回退。
+[POS]: 3D Formats 文档；不承诺未发布的转换格式。
+[PROTOCOL]: 变更时更新此头部，然后检查 CLAUDE.md
+*/}
+
+画廊在交互式详情查看器中使用已发布的 GLB URL。查看器支持鼠标和触控相机操作，且仅在访客打开对应模型的详情页后才加载该模型。
+
+BLEND 是 Blender 源文件格式。仅当记录包含安全的公开 BLEND URL 时，详情页才会显示下载操作。
+
+预览图来自记录的 `preview_url` 和可选的 `preview_urls` 字段。如果 GLB 加载失败，查看器会保留同一条记录的预览图，绝不会用其他资产的图片替代。
+
+除非已发布的记录和未来的实现明确提供，否则画廊不承诺支持 OpenUSD、FBX、OBJ、AR 或仿真就绪（simulation-ready）格式。

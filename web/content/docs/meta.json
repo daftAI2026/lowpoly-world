@@ -1,0 +1,15 @@
+{
+  "title": "Documentation",
+  "pages": [
+    "index",
+    "download",
+    "license",
+    "formats",
+    "blender",
+    "threejs",
+    "dataset-schema",
+    "contributing",
+    "release-notes",
+    "faq"
+  ]
+}

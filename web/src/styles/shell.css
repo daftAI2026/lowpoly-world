@@ -1,0 +1,113 @@
+/**
+ * [INPUT]: 依赖网站语义 class 与视觉 token。
+ * [OUTPUT]: 提供页面宽度、品牌标题、公共链接、页脚和辅助文案样式。
+ * [POS]: 全站 shell 样式；资产工作台与详情规则由兄弟文件负责。
+ * [PROTOCOL]: 变更时更新此头部，然后检查 CLAUDE.md
+ */
+.site-main,
+.detail-main {
+  width: min(1440px, calc(100% - 48px));
+  margin: 0 auto;
+}
+
+.gallery-heading {
+  display: flex;
+  align-items: end;
+  justify-content: space-between;
+  gap: 28px;
+  padding: 36px 0 28px;
+  border-bottom: 1px solid var(--lpw-line);
+}
+
+.gallery-heading-copy {
+  max-width: 760px;
+}
+
+.section-kicker,
+.asset-id {
+  display: block;
+  color: var(--lpw-muted);
+  font-family: var(--font-mono);
+  font-size: 11px;
+  font-weight: 500;
+  letter-spacing: 0.04em;
+}
+
+.gallery-heading h1 {
+  margin: 6px 0 4px;
+  font-size: clamp(24px, 3vw, 32px);
+  font-weight: 650;
+  letter-spacing: -0.035em;
+  line-height: 1.15;
+}
+
+.gallery-heading p {
+  max-width: 660px;
+  margin: 8px 0 0;
+  color: var(--lpw-muted);
+  font-size: 13px;
+}
+
+.gallery-links {
+  display: flex;
+  align-items: center;
+  gap: 18px;
+  flex-wrap: wrap;
+  white-space: nowrap;
+}
+
+.gallery-links a,
+.text-link {
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  color: var(--lpw-ink);
+  font-size: 12px;
+  text-decoration: none;
+}
+
+.gallery-links svg {
+  width: 13px;
+  height: 13px;
+  color: var(--lpw-muted);
+}
+
+@media (hover: hover) {
+  .gallery-links a:hover,
+  .text-link:hover {
+    color: var(--lpw-accent);
+    text-decoration: underline;
+    text-underline-offset: 3px;
+  }
+}
+
+.site-footer {
+  display: flex;
+  justify-content: space-between;
+  gap: 16px;
+  padding: 16px 0 28px;
+  border-top: 1px solid var(--lpw-line);
+  color: var(--lpw-muted);
+  font-size: 11px;
+}
+
+.docs-locale-notice {
+  margin: 16px 0;
+  padding: 10px 12px;
+  border: 1px solid var(--lpw-line);
+  border-radius: 8px;
+  background: var(--lpw-surface);
+  color: var(--lpw-muted);
+  font-size: 12px;
+}
+
+.visually-hidden {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  white-space: nowrap;
+  clip-path: inset(50%);
+}

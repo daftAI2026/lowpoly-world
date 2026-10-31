@@ -1,0 +1,22 @@
+---
+title: Download
+description: Download only the files linked by a verified public catalog record.
+icon: Download
+---
+
+{/*
+[INPUT]: 依赖目录中的 GLB、BLEND 和公开文件 URL。
+[OUTPUT]: 说明下载入口、缺失文件行为和站点数据边界。
+[POS]: Download 文档；只引用已校验记录中的文件地址。
+[PROTOCOL]: 变更时更新此头部，然后检查 CLAUDE.md
+*/}
+
+Open an asset detail page from a verified gallery record. Use **Download GLB** or **Download
+BLEND** when the corresponding URL is present in that record.
+
+The links point to files in the public Dataset. The website does not proxy, rewrite, upload, or
+bundle those files. A missing file URL is shown as **Not supplied**. A preview image is not a
+downloadable source model.
+
+If the Dataset file cannot be opened, use the detail page's source links and retry later. A failed
+download does not change the published catalog record.

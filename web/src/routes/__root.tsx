@@ -1,7 +1,7 @@
 /**
  * [INPUT]: 依赖 TanStack URL 参数、隔离 i18next 工厂、Fumadocs Provider 与样式。
- * [OUTPUT]: 导出按 URL 设置 lang 的 HTML 根路由、搜索 Provider 和 Scripts。
- * [POS]: locale 唯一注入点；每个 SSR 树各自创建 i18next 实例。
+ * [OUTPUT]: 导出按 URL 设置 lang 的 HTML 根路由、静态搜索 Provider 和 Scripts。
+ * [POS]: locale 唯一注入点；每个 SSR 树各自建实例，并固定浅色主题。
  * [PROTOCOL]: 变更时更新此头部，然后检查 CLAUDE.md
  */
 import {
@@ -56,6 +56,7 @@ function RootComponent() {
         <I18nextProvider i18n={businessI18n}>
           <RootProvider
             i18n={fumadocsI18n}
+            theme={{ enabled: false }}
             search={{ SearchDialog }}
           >
             <Outlet />

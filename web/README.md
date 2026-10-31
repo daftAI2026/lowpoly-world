@@ -14,60 +14,45 @@
 - `/en/...` 与 `/zh/...` 是静态可预渲染的语言 URL。`/` 是默认英文首页。
 - URL 是唯一语言来源。站点不探测浏览器语言，不写语言 cookie。
 - i18next 管业务文案。Fumadocs 管文档路由与内置 UI 标签。
-- 现有文档仅有英文。`/zh/docs/...` 明确回退英文正文，并标注尚未完成翻译。
+- 10 篇文档均提供英文原文与完整简体中文译稿。新页面缺译时才标注英文回退。
 - 资产字段不自动翻译。`name_zh` 缺失时详情和卡片显示 `name_en`。
 - 搜索索引采用 Fumadocs 多语言配置，并按 URL locale 筛选。
 
 ## 本地开发
 
-需要 Node.js `>=22.12.0`。
+需要 Node.js `^22.18.0`、`^24.11.0` 或 `>=26.0.0`。
 
 ```bash
 npm ci
 npm run dev
 ```
 
-TypeScript 检查会先生成 Fumadocs adapter 与 TanStack 文件路由树：
+Vite+ 统一开发、构建、检查和测试入口。检查前生成 Fumadocs adapter 与文件路由树：
 
 ```bash
-npm run types:check
+npm run content:generate
+npm run routes:generate
+npm exec -- vp check
+npm test
 ```
 
 `.source/server.ts` 与 `.source/browser.ts` 分别提供服务端页面树和客户端 MDX 加载器。
 `source.config.ts` 只收集 `.mdx` 文件，避免发布 GEB Markdown 地图。
-`src/routeTree.gen.ts` 是路由类型契约。独立类型检查先运行 `content:generate`，再用
-`routes:generate` 加载同一份 Vite 配置，不监听端口。
-
-目录客户端的离线测试使用 Node 内置测试运行器：
-
-```bash
-npm test
-```
+`src/routeTree.gen.ts` 是路由类型契约。路由生成器加载同一份 Vite 配置，不监听端口。
 
 ## 静态构建
 
 ```bash
 npm run build
+npm run build:smoke
 npm run preview
 ```
 
-TanStack Start 的 Vite 客户端产物目标为 `dist/client/`。HF Static Space 模板引用
-`dist/client/index.html`，并要求将 `web/` 内容镜像到 Space 仓库根目录。
-
-2026-10-31 本地验收：22 项离线测试、类型检查和静态构建通过。
-构建输出包含 `/`、`/en/`、`/zh/`、双语资产详情、双语文档和 `/api/search` 静态文件。
-只用静态 HTTP 服务器验过中文首页、英文文档回退、静态搜索、语言切换保留查询与锚点、详情直链刷新和 390px 窄屏。
-公开目录尚无指针，页面显示首次发布空状态。线上 Space 尚未部署本站。
-
-构建保留上游 `::highlight(fd-search)` 的两条 CSS 优化提示，以及约 503 kB 主包提示。
-浏览器未出现脚本异常；默认 favicon 缺失和未发布目录指针返回 404。
-这些结果不包含真实资产预览或模型加载验收。
-
-构建可在托管端运行 Node.js。部署后的 Space 只托管静态文件，不启动 Node.js 服务。
-该网站不部署到 Dataset，也不向 Dataset 写入内容。
-
-本模块使用 Fumadocs 官方 `tanstack-start-spa` 模板。它保留构建期静态函数和搜索索引，
-移除 Nitro 服务与依赖重写规则的本地静态服务器配置。
+TanStack Start 客户端产物位于 `dist/client/`。构建需生成双语首页、资产详情壳、10 篇
+文档的双语页面和 `/api/search` 静态索引。`build:smoke` 检查文件、文档标题、HTML 语言、
+静态资源和 GEB 地图隔离。
+HF Static Space 模板引用 `dist/client/index.html`。托管端构建使用 Node.js；部署后的 Space
+只托管生成文件，不运行 Node 服务。网站不部署到 Dataset，也不向 Dataset 写入内容。
 
 ## 数据边界
 
@@ -79,8 +64,29 @@ TanStack Start 的 Vite 客户端产物目标为 `dist/client/`。HF Static Spac
 
 ## 当前范围
 
-本模块提供首页、资产详情骨架、目录状态、Fumadocs 文档与静态搜索配置。
-搜索筛选、虚拟滚动和 3D 查看器未纳入本轮。
+本模块提供浏览器搜索、分类树和计数、格式/标签/三角面数筛选、排序与虚拟网格。
+详情页使用单一 `<model-viewer>`，提供相机控件、复位、自动旋转和全屏。
+详情资源按需读取。缺失字段显示 `Not supplied`。输入源图必须有权利声明。
+10 篇中英双语文档覆盖入门、下载、许可、格式、Blender、Three.js、schema、贡献、更新和 FAQ。
+两种语言各自编译正文、标题与搜索索引。语言切换保留当前页面。
+
+`src/components/ui/` 保存已审阅的 Base UI 源码组件。它不依赖 shadcn CLI 运行。
+`components.json` 保留组件生成配置。CLI 不在默认依赖中。
+新增组件时，使用固定且经审阅的 CLI 版本。不要直接运行未审阅的 `latest`。
+
+目录没有 `latest.json` 时，首页显示诚实空状态。测试 fixture 不进入应用目录或构建输出。
+
+## 本轮验收（2026-10-31）
+
+- Vite+ 类型与 lint 检查通过，43 项离线测试通过。
+- 无插桩静态构建通过，生成 28 个预渲染输出；smoke 覆盖 24 条路由、20 篇本地化文档和搜索。
+- 浏览器逐页验证 20 条文档直链、中英搜索跳转、语言切换和 390px 文档排版。
+- 合成 1,200 条记录验证筛选、排序、虚拟网格与 GLB 查看器。合成数据不进入发布产物。
+- 实际 Dataset 仍无目录指针，真实页面显示空状态。真实模型发布与 HF 线上部署另行验收。
+- npm audit 当前为零告警。构建保留两条上游 CSS highlight 提示和按需查看器 chunk 大小提示。
+
+CI 只检查公开网站。HF 同步必须手动触发，缺省关闭。
+专用 `HF_SPACE_TOKEN` 由所有者独立设置；本项目不会自动复制本机凭据。
 
 ## 官方依据
 
@@ -97,3 +103,10 @@ TanStack Start 的 Vite 客户端产物目标为 `dist/client/`。HF Static Spac
 - [i18next configuration](https://www.i18next.com/overview/configuration-options)
 - [react-i18next useTranslation](https://react.i18next.com/latest/usetranslation-hook)
 - [Hugging Face Static HTML Spaces](https://huggingface.co/docs/hub/spaces-sdks-static)
+- [Vite+ overview](https://viteplus.dev/guide)
+- [Vite+ test runner](https://viteplus.dev/guide/test)
+- [TanStack Virtual](https://tanstack.com/virtual/latest/docs/introduction)
+- [Google model-viewer](https://modelviewer.dev/docs/index.html)
+- [shadcn/ui TanStack Start](https://ui.shadcn.com/docs/installation/tanstack)
+- [NVIDIA SimReady assets](https://huggingface.co/datasets/nvidia/simready-assets)
+- [Scenario 3D Collection](https://huggingface.co/datasets/scenario-labs/3d-collection)

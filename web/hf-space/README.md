@@ -4,7 +4,7 @@ emoji: 🌱
 colorFrom: green
 colorTo: yellow
 sdk: static
-app_build_command: npm ci && npm run build
+app_build_command: npm ci --include=dev && npm run build && npm run build:smoke
 app_file: dist/client/index.html
 ---
 <!--

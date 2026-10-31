@@ -3,7 +3,7 @@
 
 ## 成员清单
 
-README.md: Static Space 配置草案，指向 dist/client/index.html。
+README.md: Static Space 配置草案，执行 build 与 smoke 后指向 dist/client/index.html。
 
 此文件只作集成模板，不表示已创建或部署 Space。
 

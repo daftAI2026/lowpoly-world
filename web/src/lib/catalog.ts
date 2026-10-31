@@ -1,6 +1,6 @@
 /**
  * [INPUT]: 读取公开 Dataset 的 V2 latest 指针与不可变目录快照。
- * [OUTPUT]: 导出目录资产类型和带 SHA256 校验的浏览器读取函数。
+ * [OUTPUT]: 导出资产元数据、Dataset URL 校验和带 SHA256 校验的目录读取函数。
  * [POS]: web 的唯一资产数据边界；不加载模型文件，不访问 Space 写接口。
  * [PROTOCOL]: 变更时更新此头部，然后检查 CLAUDE.md
  */
@@ -17,20 +17,24 @@ export type CatalogAsset = {
   id: string;
   name_en: string;
   name_zh: string;
-  category: string;
-  revision: string;
+  category: string | null;
+  revision: string | null;
   source_sha256: string;
-  license: string;
-  source: string;
+  license: string | null;
+  source: string | null;
   tags: string[];
   triangles: number | null;
   vertices: number | null;
-  glb_url: string;
-  blend_url: string;
-  preview_url: string;
-  metadata_url: string;
-  prompt_url: string;
-  settings_url: string;
+  dimensions_m: [number, number, number] | null;
+  file_size_bytes: number | null;
+  published_at_utc: string | null;
+  glb_url: string | null;
+  blend_url: string | null;
+  preview_url: string | null;
+  preview_urls: string[];
+  metadata_url: string | null;
+  prompt_url: string | null;
+  settings_url: string | null;
 };
 
 export type Catalog = {
@@ -66,7 +70,7 @@ function requireCount(value: unknown, field: string): number {
   return value;
 }
 
-function requireDatasetUrl(value: unknown, field: string): string {
+export function requireDatasetUrl(value: unknown, field: string): string {
   const url = requireString(value, field);
   let parsed: URL;
   try {
@@ -78,11 +82,27 @@ function requireDatasetUrl(value: unknown, field: string): string {
   if (
     parsed.protocol !== 'https:' ||
     parsed.hostname !== 'huggingface.co' ||
+    Boolean(parsed.port) ||
+    Boolean(parsed.username || parsed.password) ||
+    /%2f|%5c/i.test(parsed.pathname) ||
     !parsed.pathname.startsWith(DATASET_PATH_PREFIX)
   ) {
     throw new Error(`Catalog field "${field}" must point to the public Dataset.`);
   }
   return parsed.href;
+}
+
+function optionalString(value: unknown, field: string): string | null {
+  if (value === undefined || value === null || value === '') return null;
+  if (typeof value !== 'string') {
+    throw new Error(`Catalog field "${field}" must be a string or null.`);
+  }
+  return value;
+}
+
+function optionalDatasetUrl(value: unknown, field: string): string | null {
+  if (value === undefined || value === null || value === '') return null;
+  return requireDatasetUrl(value, field);
 }
 
 function parsePointer(value: unknown): LatestPointer {
@@ -109,8 +129,36 @@ function parsePointer(value: unknown): LatestPointer {
 }
 
 function requireOptionalCount(value: unknown, field: string): number | null {
-  if (value === null) return null;
+  if (value === null || value === undefined) return null;
   return requireCount(value, field);
+}
+
+function parseDimensions(value: unknown): [number, number, number] | null {
+  if (value === null || value === undefined) return null;
+  if (!Array.isArray(value) || value.length !== 3) {
+    throw new Error('Catalog field "dimensions_m" must contain three non-negative numbers.');
+  }
+  const [width, height, depth]: unknown[] = value;
+  const isNonNegativeNumber = (part: unknown): part is number =>
+    typeof part === 'number' && Number.isFinite(part) && part >= 0;
+  if (!isNonNegativeNumber(width) || !isNonNegativeNumber(height) || !isNonNegativeNumber(depth)) {
+    throw new Error('Catalog field "dimensions_m" must contain three non-negative numbers.');
+  }
+  return [width, height, depth];
+}
+
+function parseTags(value: unknown): string[] {
+  if (value === null || value === undefined) return [];
+  if (!Array.isArray(value) || !value.every((tag) => typeof tag === 'string')) {
+    throw new Error('Catalog asset tags must be an array of strings.');
+  }
+  return value;
+}
+
+function parsePreviewUrls(value: unknown): string[] {
+  if (value === null || value === undefined) return [];
+  if (!Array.isArray(value)) throw new Error('Catalog field "preview_urls" must be an array.');
+  return value.map((url, index) => requireDatasetUrl(url, `preview_urls[${index}]`));
 }
 
 function parseAsset(value: unknown): CatalogAsset {
@@ -118,28 +166,35 @@ function parseAsset(value: unknown): CatalogAsset {
 
   const sha256 = requireString(value.source_sha256, 'source_sha256');
   if (!SHA256_PATTERN.test(sha256)) throw new Error('Catalog asset has an invalid source SHA256.');
-  if (!Array.isArray(value.tags) || !value.tags.every((tag) => typeof tag === 'string')) {
-    throw new Error('Catalog asset tags must be an array of strings.');
+
+  const fileSizeBytes = requireOptionalCount(value.file_size_bytes, 'file_size_bytes');
+  const publishedAtUtc = optionalString(value.published_at_utc, 'published_at_utc');
+  if (publishedAtUtc && Number.isNaN(Date.parse(publishedAtUtc))) {
+    throw new Error('Catalog field "published_at_utc" must be a date string.');
   }
 
   return {
     id: requireString(value.id, 'id'),
     name_en: requireString(value.name_en, 'name_en'),
-    name_zh: typeof value.name_zh === 'string' ? value.name_zh : '',
-    category: requireString(value.category, 'category'),
-    revision: typeof value.revision === 'string' ? value.revision : '',
+    name_zh: optionalString(value.name_zh, 'name_zh') ?? '',
+    category: optionalString(value.category, 'category'),
+    revision: optionalString(value.revision, 'revision'),
     source_sha256: sha256,
-    license: requireString(value.license, 'license'),
-    source: requireString(value.source, 'source'),
-    tags: value.tags,
+    license: optionalString(value.license, 'license'),
+    source: optionalString(value.source, 'source'),
+    tags: parseTags(value.tags),
     triangles: requireOptionalCount(value.triangles, 'triangles'),
     vertices: requireOptionalCount(value.vertices, 'vertices'),
-    glb_url: requireDatasetUrl(value.glb_url, 'glb_url'),
-    blend_url: requireDatasetUrl(value.blend_url, 'blend_url'),
-    preview_url: requireDatasetUrl(value.preview_url, 'preview_url'),
-    metadata_url: requireDatasetUrl(value.metadata_url, 'metadata_url'),
-    prompt_url: requireDatasetUrl(value.prompt_url, 'prompt_url'),
-    settings_url: requireDatasetUrl(value.settings_url, 'settings_url'),
+    dimensions_m: parseDimensions(value.dimensions_m),
+    file_size_bytes: fileSizeBytes,
+    published_at_utc: publishedAtUtc,
+    glb_url: optionalDatasetUrl(value.glb_url, 'glb_url'),
+    blend_url: optionalDatasetUrl(value.blend_url, 'blend_url'),
+    preview_url: optionalDatasetUrl(value.preview_url, 'preview_url'),
+    preview_urls: parsePreviewUrls(value.preview_urls),
+    metadata_url: optionalDatasetUrl(value.metadata_url, 'metadata_url'),
+    prompt_url: optionalDatasetUrl(value.prompt_url, 'prompt_url'),
+    settings_url: optionalDatasetUrl(value.settings_url, 'settings_url'),
   };
 }
 

@@ -1,7 +1,7 @@
 /**
  * [INPUT]: 依赖 URL locale、server 页面树与 `.source/browser` MDX 加载器。
- * [OUTPUT]: 导出 `/en/docs/*`、`/zh/docs/*` 页面；中文缺译时显示英文回退提示。
- * [POS]: 分开读取 SSR 导航与浏览器正文；正文通过 Fumadocs `useContent` 渲染。
+ * [OUTPUT]: 导出 `/en/docs/*`、`/zh/docs/*` 页面；读取对应译稿，缺译时标明英文回退。
+ * [POS]: 分开读取 SSR 导航与浏览器正文；不以 DOM 包装层破坏文档网格。
  * [PROTOCOL]: 变更时更新此头部，然后检查 CLAUDE.md
  */
 import { createFileRoute, notFound } from '@tanstack/react-router';
@@ -14,17 +14,18 @@ import { Suspense } from 'react';
 import { useTranslation } from 'react-i18next';
 import { useMDXComponents } from '@/components/mdx';
 import { baseOptions } from '@/lib/layout.shared';
-import { resolveLocale, type Locale } from '@/lib/locale';
+import { documentLocaleFromPath, resolveLocale, type Locale } from '@/lib/locale';
 import browserCollections from '../../../../.source/browser';
 import { source } from '@/lib/source.server';
 
-const clientDocs = browserCollections.docs.createClientLoader({
-  component({ frontmatter, toc, default: MDX }) {
+const clientDocs = browserCollections.docs.createClientLoader<{ contentLocale: Locale; fallbackNotice: string | null }>({
+  component({ frontmatter, toc, default: MDX }, { contentLocale, fallbackNotice }) {
     return (
-      <DocsPage toc={toc}>
+      <DocsPage toc={toc} lang={contentLocale}>
         <DocsTitle>{frontmatter.title}</DocsTitle>
         <DocsDescription>{frontmatter.description}</DocsDescription>
         <DocsBody>
+          {fallbackNotice && <aside className="docs-locale-notice" role="note">{fallbackNotice}</aside>}
           <MDX components={useMDXComponents()} />
         </DocsBody>
       </DocsPage>
@@ -41,6 +42,12 @@ export const Route = createFileRoute('/$lang/docs/$')({
     await clientDocs.preload(data.path);
     return data;
   },
+  head: ({ loaderData }) => ({
+    meta: loaderData ? [
+      { title: `${loaderData.title} | Lowpoly World` },
+      { name: 'description', content: loaderData.description },
+    ] : [],
+  }),
 });
 
 const staticDocLoader = createServerFn({ method: 'GET' })
@@ -53,31 +60,31 @@ const staticDocLoader = createServerFn({ method: 'GET' })
     return {
       path: page.path,
       locale,
+      contentLocale: documentLocaleFromPath(page.path),
+      title: page.data.title,
+      description: page.data.description,
       pageTree: await source.serializePageTree(source.getPageTree(locale)),
     };
   });
 
-function Content({ path }: { path: string }) {
-  return clientDocs.useContent(path);
+function Content({ path, locale }: { path: string; locale: Locale }) {
+  const { t } = useTranslation();
+  const contentLocale = documentLocaleFromPath(path);
+  return clientDocs.useContent(path, {
+    contentLocale,
+    fallbackNotice: locale !== contentLocale ? t('docs.englishFallback') : null,
+  });
 }
 
 function Page() {
   const data = useFumadocsLoader(Route.useLoaderData());
-  const { t } = useTranslation();
   const locale = resolveLocale(data.locale);
 
   return (
     <DocsLayout {...baseOptions(locale)} tree={data.pageTree}>
-      {locale === 'zh' && (
-        <aside className="docs-locale-notice" role="note">
-          {t('docs.englishFallback')}
-        </aside>
-      )}
-      <div lang="en">
-        <Suspense>
-          <Content path={data.path} />
-        </Suspense>
-      </div>
+      <Suspense>
+        <Content path={data.path} locale={locale} />
+      </Suspense>
     </DocsLayout>
   );
 }

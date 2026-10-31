@@ -1,0 +1,28 @@
+---
+title: Use in Three.js
+description: Load a public GLB URL with the official Three.js GLTFLoader.
+icon: Code
+---
+
+{/*
+[INPUT]: 依赖已发布 GLB URL 与 Three.js 官方 GLTFLoader。
+[OUTPUT]: 给出最小浏览器加载示例和公开 URL 边界。
+[POS]: Three.js 使用指南；示例 URL 由调用方从真实目录记录取得。
+[PROTOCOL]: 变更时更新此头部，然后检查 CLAUDE.md
+*/}
+
+Read `glb_url` from a verified catalog record. Use the official `GLTFLoader` from Three.js to load
+that public URL into your scene:
+
+```ts
+import { GLTFLoader } from 'three/addons/loaders/GLTFLoader.js';
+
+const loader = new GLTFLoader();
+loader.load(publicGlbUrl, (gltf) => {
+  scene.add(gltf.scene);
+});
+```
+
+Set `publicGlbUrl` from the record. Do not copy a URL from a different asset. Cross-origin access
+depends on the Dataset response headers and browser policy. The gallery itself uses
+`<model-viewer>` and does not expose a Three.js rendering API.

@@ -1,0 +1,15 @@
+{
+  "title": "文档",
+  "pages": [
+    "index",
+    "download",
+    "license",
+    "formats",
+    "blender",
+    "threejs",
+    "dataset-schema",
+    "contributing",
+    "release-notes",
+    "faq"
+  ]
+}

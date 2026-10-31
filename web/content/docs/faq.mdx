@@ -1,0 +1,36 @@
+---
+title: FAQ
+description: Answers about empty catalogs, metadata, previews, and public files.
+icon: CircleQuestionMark
+---
+
+{/*
+[INPUT]: 依赖网站的公开目录状态、详情回退和 Dataset 边界。
+[OUTPUT]: 回答常见浏览、下载、空态和字段缺失问题。
+[POS]: FAQ 文档；只描述当前实现，不承诺未完成能力。
+[PROTOCOL]: 变更时更新此头部，然后检查 CLAUDE.md
+*/}
+
+## Why is the gallery empty?
+
+The site shows an empty state when the public Dataset has no `catalog/v1/latest.json` pointer. It
+does not create demo records.
+
+## Why does a field say Not supplied?
+
+The published catalog or optional detail metadata does not contain that value. The site does not
+guess or translate missing asset metadata.
+
+## Why does the viewer show an image?
+
+The GLB is loading, failed to load, or was not supplied. The image belongs to the same catalog
+record and is not a substitute model.
+
+## Does the site grant a model license?
+
+No. Read the license published with that asset and confirm that it covers your use.
+
+## Are source input images public?
+
+The page shows a source input image only when its release metadata includes a safe Dataset URL, an
+explicit `rights_confirmed: true` value, and a rights statement.
