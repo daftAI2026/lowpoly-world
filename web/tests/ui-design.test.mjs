@@ -126,6 +126,12 @@ describe('UI design constraints', () => {
     expect(sourceConfig).not.toMatch(/#[\da-f]{3,8}\b/i);
   });
 
+  it('keeps Fumadocs chapter navigation labels in Stone Ink', async () => {
+    const styles = await readStyles();
+    expect(styles).toContain("#nd-page > div[class*='@container'] > a > div:first-child");
+    expect(styles).toContain('color: var(--lpw-ink)');
+  });
+
   it('keeps middle-dot separators out of interface copy', () => {
     expect(allStrings(messages).every((copy) => !copy.includes('·'))).toBe(true);
   });

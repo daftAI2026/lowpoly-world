@@ -1,6 +1,6 @@
 /**
  * [INPUT]: 依赖 Fumadocs 语义变量、Tailwind class 和本地视觉 token。
- * [OUTPUT]: 将文档、侧栏和静态搜索收敛到资产库的色阶与排版。
+ * [OUTPUT]: 将文档正文、章节导航、侧栏和静态搜索收敛到资产库色阶。
  * [POS]: Fumadocs 唯一样式适配层；不覆盖文档内容或 URL。
  * [PROTOCOL]: 变更时更新此头部，然后检查 CLAUDE.md
  */
@@ -90,6 +90,10 @@ main article :is(h1, h2, h3, h4, h5, h6) a {
 
 main article :is(h1, h2, h3, h4, h5, h6) a:focus-visible {
   color: var(--lpw-accent-hover);
+}
+
+#nd-page > div[class*='@container'] > a > div:first-child {
+  color: var(--lpw-ink);
 }
 
 .shiki {
