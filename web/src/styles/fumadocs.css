@@ -1,99 +1,41 @@
 /**
- * [INPUT]: 依赖 Fumadocs 语义变量、Tailwind class 和本地视觉 token。
- * [OUTPUT]: 将文档正文、章节导航、侧栏和静态搜索收敛到资产库色阶。
- * [POS]: Fumadocs 唯一样式适配层；不覆盖文档内容或 URL。
+ * [INPUT]: 依赖 Fumadocs Home、Notebook 和主题语义变量。
+ * [OUTPUT]: 仅适配字号、半像素边线、代码色与键盘焦点。
+ * [POS]: 模板约束适配层；不重写布局、页脚或菜单几何。
  * [PROTOCOL]: 变更时更新此头部，然后检查 CLAUDE.md
  */
-:where([class~='border'], [class~='border-e'], [class~='border-s'], [class~='border-x'], [class~='border-y'], [class~='border-t'], [class~='border-b'], [class~='border-b-2']) {
+:where([class~='border'], [class~='border-b'], [class~='border-t'], [class~='border-e'], [class~='border-s'], [class~='border-x'], [class~='border-y'], [class~='border-b-2']) {
   border-width: 0.5px !important;
 }
 
-:where([class~='rounded-full']) {
-  border-radius: var(--radius-lg) !important;
+#nd-nav > nav,
+#nd-subnav {
+  background: var(--lpw-canvas);
+  backdrop-filter: none;
 }
 
-:where([class*='shadow']) {
-  box-shadow: none !important;
+#nd-nav a[aria-label],
+#nd-subnav a[aria-label] {
+  min-width: 40px;
+  min-height: 40px;
 }
 
-:where([class*='backdrop-blur']) {
-  backdrop-filter: none !important;
+#nd-page h1 {
+  font-size: 28px;
 }
 
-:where([class*='transition-'], [class*='animate-']) {
-  animation: none !important;
-  transition: none !important;
+#nd-page h2 {
+  font-size: 20px;
 }
 
-a,
-button,
-summary,
-[role='button'] {
-  transition: background-color 250ms ease-out, color 250ms ease-out, border-color 250ms ease-out !important;
+#nd-page :is(h3, h4, h5, h6),
+#nd-page .prose,
+#nd-sidebar {
+  font-size: 14px;
 }
 
-[data-active='true']::before {
-  display: none !important;
-}
-
-.shiki .highlighted::after {
-  display: none !important;
-}
-
-aside[class~='text-[0.9375rem]'],
-.fd-page-tree-item-name {
-  font-size: 14px !important;
-}
-
-main article .prose {
-  font-size: 14px !important;
-}
-
-main article h1,
-main article h2 {
-  font-size: 20px !important;
-  font-weight: 620;
-  line-height: 1.3;
-}
-
-main article h3,
-main article h4,
-main article h5,
-main article h6 {
-  font-size: 14px !important;
-  font-weight: 620;
-  line-height: 1.4;
-}
-
-main article :is(p, li, td, th, blockquote) {
-  font-size: 14px !important;
-  line-height: 1.6;
-}
-
-main article :is(code, kbd, samp, pre) {
-  font-size: 12px !important;
-}
-
-main article :is(th, td) {
-  border-bottom: 0.5px solid var(--lpw-line);
-}
-
-main article a {
-  color: var(--lpw-accent);
-  text-underline-offset: 3px;
-}
-
-main article :is(h1, h2, h3, h4, h5, h6) a {
-  color: var(--lpw-ink);
-  text-decoration: none;
-}
-
-main article :is(h1, h2, h3, h4, h5, h6) a:focus-visible {
-  color: var(--lpw-accent-hover);
-}
-
-#nd-page > div[class*='@container'] > a > div:first-child {
-  color: var(--lpw-ink);
+#nd-page :is(pre, code, kbd) {
+  font-size: 12px;
 }
 
 .shiki {
@@ -101,8 +43,6 @@ main article :is(h1, h2, h3, h4, h5, h6) a:focus-visible {
   --shiki-dark-bg: var(--lpw-surface) !important;
   --shiki-light: var(--lpw-ink) !important;
   --shiki-dark: var(--lpw-ink) !important;
-  background-color: var(--lpw-surface) !important;
-  color: var(--lpw-ink) !important;
 }
 
 :focus-visible {
@@ -114,9 +54,7 @@ main article :is(h1, h2, h3, h4, h5, h6) a:focus-visible {
 
 :where(a, button, summary, [role='button']):focus-visible {
   background-color: var(--lpw-accent-soft) !important;
-  color: var(--lpw-accent-hover) !important;
   text-decoration: underline !important;
-  text-decoration-color: var(--lpw-accent);
   text-decoration-thickness: 0.5px;
   text-underline-offset: 2px;
 }
@@ -125,33 +63,9 @@ main article :is(h1, h2, h3, h4, h5, h6) a:focus-visible {
   background-color: var(--lpw-accent-soft) !important;
 }
 
-[role='dialog'] {
-  border: 0.5px solid var(--lpw-line);
-  border-radius: var(--radius-lg);
-  background: var(--lpw-raised);
-  box-shadow: none !important;
-}
-
-[role='dialog'] :is(input, [role='combobox']) {
-  min-height: 40px;
-  border-radius: var(--radius-md);
-  font-size: 14px;
-}
-
-[role='dialog'] :is(code, kbd, samp, pre) {
-  font-size: 12px !important;
-}
-
-[role='dialog'] :is(button, [role='option']) {
-  min-height: 40px;
-  font-size: 14px;
-}
-
 @media (prefers-reduced-motion: reduce) {
-  a,
-  button,
-  summary,
-  [role='button'] {
-    transition: none !important;
+  #nd-home-layout,
+  #nd-notebook-layout {
+    scroll-behavior: auto;
   }
 }

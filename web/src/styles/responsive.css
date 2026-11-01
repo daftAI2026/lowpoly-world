@@ -33,18 +33,9 @@
 }
 
 @media (max-width: 719px) {
-  .site-main,
-  .detail-main {
-    width: min(calc(100% - 32px), 1440px);
-  }
-
   .gallery-heading {
     gap: 10px;
     padding: 18px 0;
-  }
-
-  .gallery-links {
-    gap: 12px;
   }
 
   .catalog-section {
@@ -97,11 +88,6 @@
 }
 
 @media (max-width: 359px) {
-  .site-main,
-  .detail-main {
-    width: calc(100% - 24px);
-  }
-
   .catalog-toolbar {
     grid-template-columns: minmax(0, 1fr);
   }

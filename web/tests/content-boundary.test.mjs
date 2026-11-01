@@ -77,6 +77,14 @@ describe('public documentation boundary', () => {
     expect(card).not.toMatch(/^app_build_command:/m);
   });
 
+  it('publishes the website MIT notice and links the two public surfaces', async () => {
+    const card = await readFile(new URL('../hf-space/README.md', import.meta.url), 'utf8');
+    const workflow = await readFile(new URL('../../.github/workflows/website.yml', import.meta.url), 'utf8');
+    expect(card).toMatch(/^license: mit$/m);
+    expect(card).toContain('https://huggingface.co/datasets/daftAI2026/3d-assets');
+    expect(workflow).toContain('cp ../LICENSE');
+  });
+
   it('pre-renders every MDX page for both URL locales', async () => {
     const mdxPages = (await listFiles(docsRoot))
       .filter((path) => path.endsWith('.mdx') && !path.endsWith('.zh.mdx'))

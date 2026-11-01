@@ -5,33 +5,33 @@ icon: BookOpen
 ---
 
 {/*
-[INPUT]: 依赖公开 Dataset 的目录指针、静态网站和已发布字段边界。
-[OUTPUT]: 说明资产浏览入口、空目录行为和后续文档路径。
+[INPUT]: 依赖已发布 Dataset、原生应用导航与模型查看能力。
+[OUTPUT]: 说明两个入口、模型查找、预览、下载与复用。
 [POS]: Getting Started 文档；唯一页面标题来自 frontmatter。
 [PROTOCOL]: 变更时更新此头部，然后检查 CLAUDE.md
 */}
 
-Lowpoly World is a static browser for records published in the Hugging Face Dataset
-`daftAI2026/3d-assets`. The website reads the public catalog and does not store model files.
+Lowpoly World is a library of low-poly 3D models. Browse online, inspect a model in 3D, and download GLB or Blender source files.
 
-## Browse published records
+## Choose an entry
 
-The gallery reads `catalog/v1/latest.json`, downloads the immutable snapshot it names, and checks
-the snapshot SHA256, schema, record count, unique IDs, and Dataset URLs before display.
+- [Hugging Face Dataset](https://huggingface.co/datasets/daftAI2026/3d-assets): browse previews and metadata in Data Studio, or open individual files.
+- [Online gallery](https://huggingface.co/spaces/daftAI2026/gallery): search models, use the interactive 3D viewer, and download files.
 
-Use search, category facets, format and tag filters, or triangle-count bands. The gallery sorts the
-verified snapshot in the browser and virtualizes visible rows. It does not invent example records.
+This documentation is part of the gallery application. The header links to **Assets**, **Documentation**, **Hugging Face**, and **GitHub**.
 
-## Open one asset
+## Find a model
 
-Open a record from the gallery to view its GLB, download available files, and inspect public
-metadata. The detail route uses a static path and an `id` query parameter.
+Open **Assets**. Search by name or asset ID, then narrow the results by category, file format, tags, or triangle count. Open a model card to see its details.
 
-## Empty and error states
+## Preview and download
 
-If the Dataset has no `latest.json` pointer, the gallery shows its first-release empty state. If a
-request or validation check fails, the gallery shows a failure state and a retry action.
+Drag the model to rotate it and scroll to zoom. Use **Reset view**, **Auto-rotate**, or **Fullscreen** when needed.
 
-## Continue
+Choose **Download GLB** for a portable 3D file, or **Download BLEND** to edit the native source in Blender. Downloads come directly from the public Dataset.
 
-Open **Download**, **License**, or **Dataset Schema** from the documentation navigation.
+## Check before reuse
+
+Read the model's license, version, and published quality information. A preview is not an engineering or simulation certification. Missing fields are shown as **Not supplied**.
+
+Use the **Hugging Face** icon in the header to open Data Studio and the original public files. Read **License**, **Use in Blender**, or **Use in Three.js** for the next steps.

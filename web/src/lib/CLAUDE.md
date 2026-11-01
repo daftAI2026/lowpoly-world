@@ -6,7 +6,7 @@
 catalog.ts: 读取 V2 指针与快照，校验 SHA256、字段和唯一 ID。
 asset-metadata.ts: 校验详情可选 JSON、Prompt 与输入图权利字段；资源失败彼此隔离。
 catalog-view.ts: 纯函数构造分类/facet，执行搜索、筛选、排序和网格分行。
-layout.shared.tsx: 统一 Fumadocs 导航、保留 URL 语言段并关闭未实现的深色主题。
+layout.shared.tsx: 配置原生模板主导航与 GitHub/HF 图标；展厅和文档共用，不替换 header。
 messages.ts: 保存业务英文与简体中文文案，资源键必须成对。
 locale.ts: 定义 URL 语言段、回退规则、静态路径、正文源文件语言和目录首页路径。
 static-pages.ts: 页面唯一注册表；共用文档 slug、双语标题、预渲染路径与 URL 白名单。

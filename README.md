@@ -6,7 +6,9 @@
 -->
 # Lowpoly World
 
-低多边形资产的静态展厅。网站只读取公开 Hugging Face Dataset，不接触私人 Drive 或审核目录。
+低多边形资产展示应用，采用 Fumadocs 原生壳。
+项目包含两个交付：HF Dataset 与 HF Static Space 应用。模型库、3D 查看与使用文档都在应用内。
+网站只读取公开 Dataset，不接触私人 Drive 或审核目录。
 
 [中文页面](https://daftai2026-gallery.static.hf.space/zh/index.html)
 [English](https://daftai2026-gallery.static.hf.space/en/index.html)

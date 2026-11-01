@@ -57,14 +57,14 @@ function renderFilters(facets) {
 }
 
 describe('UI design constraints', () => {
-  it('uses only the three approved type sizes', async () => {
+  it('uses at most four role-based type sizes', async () => {
     const styles = await readStyles();
     const sizes = [...styles.matchAll(/font-size\s*:\s*([^;]+);/g)]
       .map(([, value]) => `${Number.parseFloat(value)}px`);
 
     expect([...new Set(sizes)].sort((left, right) => Number.parseFloat(left) - Number.parseFloat(right)))
-      .toEqual(['12px', '14px', '20px']);
-    expect(styles).toContain('main article .prose');
+      .toEqual(['12px', '14px', '20px', '28px']);
+    expect(styles).toContain('#nd-page .prose');
   });
 
   it('maps semantic colors to the UI Colors palette and avoids custom colors', async () => {
@@ -124,12 +124,6 @@ describe('UI design constraints', () => {
     expect(sourceConfig).toContain('var(--lpw-ink)');
     expect(sourceConfig).toContain('var(--lpw-accent)');
     expect(sourceConfig).not.toMatch(/#[\da-f]{3,8}\b/i);
-  });
-
-  it('keeps Fumadocs chapter navigation labels in Stone Ink', async () => {
-    const styles = await readStyles();
-    expect(styles).toContain("#nd-page > div[class*='@container'] > a > div:first-child");
-    expect(styles).toContain('color: var(--lpw-ink)');
   });
 
   it('keeps middle-dot separators out of interface copy', () => {

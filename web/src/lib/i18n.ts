@@ -21,7 +21,7 @@ export const fumadocsTranslations = fumadocsI18n
   .translations()
   .extend(uiTranslations())
   .add({
-    en: { displayName: 'English' },
+    en: { displayName: 'English', 'Search(search trigger)': 'Search docs' },
     zh: {
       displayName: '简体中文',
       'Ask AI(AI chat button)': '询问 AI',

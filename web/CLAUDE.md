@@ -11,7 +11,7 @@ components.json: 声明 shadcn Base UI 风格、Tailwind CSS 与组件导入别�
 tsconfig.json: 配置严格 TypeScript 与 `@/` 源码别名。
 .gitignore: 排除构建产物、依赖目录、`.tanstack` 缓存和隔离 Playwright 会话。
 README.md: 说明 Vite+ 命令、数据边界和静态输出目标。
-DESIGN.md: 约束资产库布局、颜色、组件、响应式规则和设计引用。
+DESIGN.md: 约束两个交付边界、原生 Home/Notebook 壳与资产专属扩展。
 src/: 双语路由、资产库、模型查看器、数据边界和分层样式。
 content/: Fumadocs 编译期文档源。
 hf-space/: 预构建静态产物的 Space 元数据模板，禁用需额度的远端构建。

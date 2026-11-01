@@ -1,94 +1,102 @@
 <!--
-[INPUT]: 依赖产品定位、UI Colors v4 色阶与 sutto 公开 token。
-[OUTPUT]: 约束资产库色彩、排版、布局、交互和文案。
-[POS]: 网站唯一设计地图；src/styles/app.css 汇入分层样式并消费本契约。
+[INPUT]: 依赖 Fumadocs 官方模板、原生组件与用户界面约束。
+[OUTPUT]: 约束 Dataset 与展示应用的分工和模板扩展边界。
+[POS]: 展示应用设计地图；文档是应用内页面，不是第三个站。
 [PROTOCOL]: 变更时更新此头部，然后检查 CLAUDE.md
 -->
 # Lowpoly World Design System
 
-低多边形资产工作台。暖中性色承载数据，青绿标记主要动作，红色表示失败。
-资产预览是唯一高权重视觉内容。空目录不显示模型占位图。
+## 1. 产品与主题
 
-## Visual rules
+只有两个公开交付：HF Dataset 与 HF Static Space 展示应用。
+Dataset 提供原生 Data Studio、文件预览、许可与下载。
+展示应用提供资产浏览、3D 查看和使用文档。
+使用文档属于同一个展示应用，不另建站。
 
-1. 使用紧凑标题栏、目录工具栏、分类筛选和虚拟网格。
-2. 不创建营销 Hero，不重复展示标题、计数或数据集入口。
-3. 只使用 UI Colors 的 Stone、Teal、Red v4 色阶。
-4. 颜色通过 `tokens.css` 的语义变量进入组件。
-5. 文字只用 12、14、20 px。12 px 是最小字号。
-6. 边线和焦点轮廓使用 0.5 px。焦点使用 Teal100 底色和文字下划线。
-7. 只用 4、6、8 px 圆角。内层圆角补偿 0.5 px 外框。
-8. 不使用阴影、彩色左边线、渐变、纹理或玻璃模糊。
-9. 不移动控件。必要的颜色变化使用 250 ms ease-out。
-10. 尊重减少动态偏好，触控目标至少 40 px。
+以 Fumadocs 原生壳为起点，不自建导航框架。
+官方 CLI `create-fumadocs-app@16.2.27` 的 `tanstack-start-spa` 是本轮基线。
+运行依赖沿用已锁定的 Fumadocs Base UI 16.17.9。
 
-## Semantic tokens
+## 2. 调色板
 
-| Role | Token | Use |
-| --- | --- | --- |
-| Canvas | `--color-stone-50` | 页面底色 |
-| Surface | `--color-stone-100` | 预览区和次级表面 |
-| Ink | `--color-stone-900` | 正文、标题和图标 |
-| Muted | `--color-stone-600` | 标签和次级事实 |
-| Line | `--color-stone-300` | 0.5 px 边界 |
-| Primary | `--color-teal-800` | 主要动作和焦点文字 |
-| Hover | `--color-teal-900` | 主要动作悬停 |
-| Selected | `--color-teal-100` | 分类和筛选选中底色 |
-| Focus | `--color-teal-700` | 键盘焦点轮廓 |
-| Error | `--color-red-800` | 失败状态文案 |
-| Error surface | `--color-red-50` | 失败状态背景 |
-| Error line | `--color-red-300` | 失败状态边界 |
+UI Colors Stone 承载背景、正文和边界。
+Teal 表示链接、选中项与主操作，Red 表示错误。
+颜色通过 tokens.css 的语义变量进入原生主题。
+不重绘模型材质或源预览图。
 
-所有页面颜色只从上述色阶派生。Fumadocs 复用相同语义 token。
-页面使用浅色主题，不添加独立主题状态。
+## 3. 文字
 
-## Layout and components
+使用四档字号：12、14、20、28px。
+12px 用于编号和代码，14px 用于正文与操作。
+20px 用于章节标题，28px 用于页面标题。
+页面和章节保留独立层级，不再全部压成 20px。
+保留模板的行距、阅读间距和字重。
 
-- 桌面目录使用 232 px 筛选栏和流式结果网格。
-- 移动端筛选使用原生 disclosure。
-- 宽度低于 360 px 时资产卡改为单列。
-- 虚拟网格由容器测量高度，不固定视口高度。
-- 资产卡外框 8 px，预览内角为外框半径减 0.5 px。
-- 代码高亮只用 Stone、Teal 语义色；不覆盖资产材质。
-- 详情页只加载当前资产的 GLB。
-- Viewer 提供拖动旋转、缩放、复位、自动旋转和全屏。
-- GLB 失败时只回退同资产预览图。
-- 文档和搜索使用 Fumadocs 布局及静态索引。
-- 文档页的上一篇和下一篇标题使用 Stone Ink。
-- 正文链接、主操作和选中项使用 Teal。
-- 文档标题、正文、代码分别使用 20、14、12 px。
+## 4. 原生组件
 
-## Content rules
+- HomeLayout 承载模型库与模型详情。
+- Notebook DocsLayout 使用 `nav.mode=top`。
+- Notebook DocsPage 与该布局配套使用。
+- 原生 links 同时提供模型库、使用文档、HF 和 GitHub。
+- HF 与 GitHub 位于桌面右上角。
+- 窄屏外链沿用模板菜单或侧栏，不自建第二套菜单。
+- 原生 Card 只扩展正方形图片、名称、编号和格式。
+- 搜索、语言切换、页内目录和文档分页沿用模板。
 
-- 面向查找、预览、下载和检查 3D 资产的用户。
-- 一句只表达一项操作或事实。
-- 不使用中点分隔格式、标签或事实。
-- 不重复页面标题、分类、计数、链接或空态说明。
-- 空态说明目录索引状态，不推断模型已发布或未发布。
-- 错误态保留重试和可展开技术细节。
-- 缺失字段显示本地化的 `Not supplied`。
-- 三角面数区间不是质量评级。
-- 发布元数据不构成质量或权利认证。
-- 只有发布记录含权利确认 URL 和说明时才显示来源输入图。
-- 不自动翻译资产字段，不生成演示记录或伪模型。
+## 5. 布局与扩展
 
-## Responsive and accessibility
+主导航归 layout.shared.tsx，不在首页重复放项目链接。
+内容宽度读取模板 --fd-layout-width，与导航内边距对齐。
+模型库保留分类、格式与面数筛选，图片是主要内容。
+只有资产专属功能使用补充依赖：
 
-- 主内容最大宽度 1440 px。
-- 移动端保留 16 px 页面边距；320 px 视口不得横向溢出。
-- 详情页在窄屏先显示模型舞台，再显示文件和元数据。
-- 颜色不能单独表达选中、错误或焦点状态。
-- 所有控件具有可见键盘焦点和本地化名称。
-- 文档侧栏、搜索结果和目录共用同一字号与色阶。
+- TanStack Virtual 按行虚拟化真实目录。
+- Base UI 提供筛选与输入原语。
+- model-viewer 只加载当前资产的 GLB。
+- Prompt、配方与质量信息按需读取。
+
+Fumadocs 不提供 3D 资产查看器，不伪造同名组件。
+
+## 6. 边界与层次
+
+线条声明为 0.5px。DPR 1 的浏览器会量化到设备像素。
+保留原生弹层的功能性层次，不自建装饰阴影。
+卡片外角 8px，预览内角减去 0.5px 外框。
+原生搜索和控件的圆角不再被通用 class 规则强行替换。
+只为本应用的资产卡设置必要颜色反馈。
+键盘焦点不做动画，尊重减少动态偏好。
+
+## 7. 文案与禁止项
+
+- 不使用中点作分隔符，不写重复解释。
+- 不把首页做成文档目录或工程审核控制台。
+- 不把测试通过当成用户确认视觉通过。
+- 不拦截全部 shadow、rounded-full 或 transition class。
+- 不改模板网格和菜单几何来修局部问题。
+- 不把未审核模型、私人报告或参考输入图放到公开界面。
+- 不使用规划数量代替已发布数量。
+
+## 8. 响应式与访问性
+
+原生壳负责导航、搜索和文档断点。
+资产筛选在窄屏使用现有 disclosure。
+320、390 和桌面宽度均须实际验收。
+验证菜单中的 HF/GitHub 和模型库返回路径。
+图库不同时挂载多份 WebGL 画布。
+
+## 9. 后续修改契约
+
+先查 Fumadocs 原生选项，再考虑补充组件。
+布局变化先对照模板，不从旧覆盖层继续打补丁。
+数据读取、静态路由与模型发布器保持独立。
+Dataset Card 从真实目录生成，后续发布不得丢失互链。
 
 ## References
 
-- [UI Colors Stone v4](https://uicolors.app/tailwind-colors/stone)
-- [UI Colors Teal v4](https://uicolors.app/tailwind-colors/teal)
-- [UI Colors Red v4](https://uicolors.app/tailwind-colors/red)
-- [UI Colors semantic tokens](https://uicolors.app/tokens)
-- [sutto design tokens](https://github.com/daftAI2026/sutto/blob/main/src/index.css)
-- [sutto Base UI Button](https://github.com/daftAI2026/sutto/blob/main/src/components/ui/button.tsx)
-- [TanStack Virtual](https://tanstack.com/virtual/latest/docs/introduction)
-- [Google model-viewer](https://modelviewer.dev/docs/index.html)
-- [Fumadocs UI translations](https://www.fumadocs.dev/docs/ui/translations)
+- [Fumadocs CLI](https://www.fumadocs.dev/docs/cli/create-fumadocs-app)
+- [Fumadocs Layout Links](https://www.fumadocs.dev/docs/ui/layouts/links)
+- [Fumadocs Notebook](https://www.fumadocs.dev/docs/ui/layouts/notebook)
+- [NVIDIA Dataset](https://huggingface.co/datasets/nvidia/simready-assets)
+- [Scenario Dataset](https://huggingface.co/datasets/scenario-labs/3d-collection)
+- [HF Dataset Cards](https://huggingface.co/docs/hub/datasets-cards)
+- [UI Colors](https://uicolors.app/tokens)

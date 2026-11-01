@@ -57,6 +57,7 @@ jobs:
           mkdir -p "$RUNNER_TEMP/lowpoly-space"
           cp -R dist/client/. "$RUNNER_TEMP/lowpoly-space/"
           cp hf-space/README.md "$RUNNER_TEMP/lowpoly-space/README.md"
+          cp ../LICENSE "$RUNNER_TEMP/lowpoly-space/LICENSE"
           test -f "$RUNNER_TEMP/lowpoly-space/index.html"
           if find "$RUNNER_TEMP/lowpoly-space" -type f \( -name '*.glb' -o -name '*.blend' -o -name '*.ipynb' -o -name '*.py' -o -name '*.zip' \) -print -quit | grep -q .; then
             echo '网站同步包含禁止的模型或生产文件。' >&2

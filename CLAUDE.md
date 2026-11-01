@@ -17,6 +17,9 @@ AGENTS.md - 指向本文件，统一 Agent 入口
 
 ## 工作边界
 
+- 两个交付为 HF Dataset 与 HF Static Space 展示应用。
+- 文档是展示应用内页面，不单独算第三个站。
+- 应用以 Fumadocs 原生壳为基础，3D 能力用补充依赖。
 - 公开仓只包含网站及其必要脚本、测试和公开说明。
 - Colab、模型生产与审核工具留在独立私人工具代码区。
 - 本地 .pipeline-private/ 不进 Git，也不参与网站构建。

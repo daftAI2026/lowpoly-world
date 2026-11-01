@@ -3,7 +3,7 @@
 
 ## 成员清单
 
-README.md: 声明 sdk=static 与 index.html；仅承载预构建文件，不使用需额度的远端构建。
+README.md: 展示应用双语入口、Dataset 互链与 MIT 元数据；只托管预构建文件。
 
 此文件复制到构建产物根目录。发布状态单独核验。
 

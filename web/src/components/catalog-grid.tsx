@@ -12,6 +12,9 @@ import { groupIntoRows } from '@/lib/catalog-view';
 import type { CatalogAsset } from '@/lib/catalog';
 import type { Locale } from '@/lib/locale';
 
+// ---- 估算文字区与行间距；实际行高由 virtualizer.measureElement 校正 ----
+const CARD_DETAILS_ESTIMATE = 96;
+
 type CatalogGridProps = {
   assets: CatalogAsset[];
   locale: Locale;
@@ -36,7 +39,7 @@ export function CatalogGrid({ assets, locale, onClearFilters, hasFilters }: Cata
     count: rows.length,
     estimateSize: () => {
       const cardWidth = Math.max(150, containerWidth / columns - 18);
-      return Math.ceil(cardWidth * 0.75 + 134);
+      return Math.ceil(cardWidth + CARD_DETAILS_ESTIMATE);
     },
     getItemKey: (index) => rows[index]?.[0]?.id ?? index,
     overscan: 2,

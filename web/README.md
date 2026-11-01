@@ -6,7 +6,9 @@
 -->
 # Lowpoly World Web
 
-这是 Lowpoly World 的本地静态网站模块。它只读 Hugging Face Dataset 的公开目录。
+这是 Lowpoly World 的展示应用，部署到 HF Static Space。
+项目只有 Dataset 和展示应用两个交付，使用文档位于应用内。
+它只读 Hugging Face Dataset 的公开目录。
 它不保存模型、令牌或审核记录。
 
 ## 语言边界
@@ -54,7 +56,7 @@ TanStack Start 客户端产物位于 `dist/client/`。构建需生成双语首�
 文档的双语页面和 `/api/search` 静态索引。`build:smoke` 检查文件、文档标题、HTML 语言、
 静态资源、导航目标真实文件和 GEB 地图隔离。
 本机或 GitHub Actions 使用 Node.js 构建。将 `dist/client/` 内容复制到 Space 根目录，
-再加入 `hf-space/README.md`，入口为 `index.html`。HF 只托管生成文件，不运行 Node 服务。
+再加入 `hf-space/README.md` 与网站 `LICENSE`，入口为 `index.html`。HF 只托管生成文件，不运行 Node 服务。
 不设置 `app_build_command`，避免远端构建的额度要求。网站不写 Dataset。
 
 ## 数据边界
@@ -79,22 +81,31 @@ TanStack Start 客户端产物位于 `dist/client/`。构建需生成双语首�
 
 目录没有 `latest.json` 时，首页显示诚实空状态。测试 fixture 不进入应用目录或构建输出。
 
+## 模板基础
+
+本轮重新生成官方 `create-fumadocs-app@16.2.27` 的 `tanstack-start-spa` 基线。
+保留已锁定的依赖与已验证的数据协议，不引入另一套框架。
+模型库、详情使用 HomeLayout；文档使用顶部导航模式的 Notebook Layout 与配套 Page。
+导航、搜索、语言菜单和文档分页使用原生组件。HF 与 GitHub 共用右上角入口。
+原生 Card 仅扩展资产图片；筛选、虚拟网格和 3D 查看器属于模板外的必要补充。
+
 ## 当前验收（2026-11-02）
 
-- Vite+ 类型与 lint 检查通过，59 项离线测试通过。
-- 静态构建生成 26 个预渲染输出；smoke 覆盖 24 条路由、20 篇本地化文档和搜索。
-- 公开 Dataset 已发布 10 个逐件审核的真实模型。目录摘要、Parquet 十行与 Image 特征已核对。
-- 相同源 SHA 再次发布返回零变更，Dataset 提交不变；网站不参与模型发布。
-- UI 采用 UI Colors 的 Stone、Teal、Red 语义色，文字固定 12、14、20px，线条为 0.5px。
-- 首页省去重复说明与空标签筛选。焦点无需动画，其他必要颜色过渡为 250ms ease-out。
-- npm audit 当前为零告警。查看器按需加载；大 chunk 提示不作为测试失败。
-- HF Data Studio 索引已返回十条记录与图像特征，转换预览已读回核对；首次排队后自行就绪。
+- 类型与 lint 零问题，65 项网站测试与 57 项私人工具测试通过。
+- 静态构建生成 26 个输出，smoke 覆盖 24 路由、20 篇本地化文档和搜索。
+- Dataset 已发布十件模型；本轮只更新说明卡，不新增模型批准。
+- Dataset Card 从实际目录生成，预览链接打开原生 GLB，双语入口连接展示应用。
+- 样式适配从 157 行通用覆盖收敛为原生主题与局部约束，不接管模板网格。
+- 字号按标题、章节、正文、编号分为 28、20、14、12px，边线声明为 0.5px。
 
 
 CI 只检查公开网站。HF 同步必须手动触发，缺省关闭。
 专用 `HF_SPACE_TOKEN` 由所有者独立设置；本项目不会自动复制本机凭据。
 
 ## 官方依据
+
+- [Fumadocs Notebook Layout](https://www.fumadocs.dev/docs/ui/layouts/notebook)
+- [Fumadocs Layout Links](https://www.fumadocs.dev/docs/ui/layouts/links)
 
 - [Fumadocs Create App CLI](https://www.fumadocs.dev/docs/cli/create-fumadocs-app)
 - [Fumadocs TanStack Start](https://www.fumadocs.dev/docs/manual-installation/tanstack-start)

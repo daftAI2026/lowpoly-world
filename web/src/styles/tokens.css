@@ -4,6 +4,17 @@
  * [POS]: src/styles 的唯一视觉 token 来源；Fumadocs 与业务组件共用同一色阶。
  * [PROTOCOL]: 变更时更新此头部，然后检查 CLAUDE.md
  */
+@theme {
+  --text-xs: 12px;
+  --text-sm: 14px;
+  --text-base: 14px;
+  --text-lg: 20px;
+  --text-xl: 20px;
+  --text-2xl: 20px;
+  --text-3xl: 28px;
+  --text-4xl: 28px;
+}
+
 :root {
   color-scheme: light;
   --lpw-canvas: var(--color-stone-50);

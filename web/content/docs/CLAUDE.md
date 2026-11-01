@@ -6,7 +6,7 @@
 meta.json: 固定英文导航顺序与搜索分组名称。
 meta.zh.json: 复用导航顺序，提供中文搜索分组名称。
 
-index.mdx: Getting Started；说明目录读取、筛选工作台、详情和空态。
+index.mdx: Getting Started；面向模型使用者，说明两个入口、预览、下载与复用。
 index.zh.mdx: 快速开始；对应英文页面的完整简体中文译稿。
 download.mdx: 说明已发布 GLB/BLEND 下载链接和缺失行为。
 download.zh.mdx: 下载；对应英文页面的完整简体中文译稿。

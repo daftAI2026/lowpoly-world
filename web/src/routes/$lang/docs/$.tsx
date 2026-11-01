@@ -1,15 +1,15 @@
 /**
- * [INPUT]: 依赖 URL locale、server 页面树与 `.source/browser` MDX 加载器。
+ * [INPUT]: 依赖原生 Notebook 壳、URL locale 与编译后的 MDX。
  * [OUTPUT]: 导出 `/en/docs/*`、`/zh/docs/*` 页面；读取对应译稿，缺译时标明英文回退。
- * [POS]: 分开读取 SSR 导航与浏览器正文；不以 DOM 包装层破坏文档网格。
+ * [POS]: 应用内的使用文档；原生顶部导航与侧栏不另造壳。
  * [PROTOCOL]: 变更时更新此头部，然后检查 CLAUDE.md
  */
 import { createFileRoute, notFound } from '@tanstack/react-router';
 import { createServerFn } from '@tanstack/react-start';
 import { staticFunctionMiddleware } from '@tanstack/start-static-server-functions';
 import { useFumadocsLoader } from 'fumadocs-core/source/client';
-import { DocsLayout } from 'fumadocs-ui/layouts/docs';
-import { DocsBody, DocsPage, DocsTitle, DocsDescription } from 'fumadocs-ui/layouts/docs/page';
+import { DocsLayout } from 'fumadocs-ui/layouts/notebook';
+import { DocsBody, DocsPage, DocsTitle, DocsDescription } from 'fumadocs-ui/layouts/notebook/page';
 import { Suspense } from 'react';
 import { useTranslation } from 'react-i18next';
 import { useMDXComponents } from '@/components/mdx';
@@ -79,9 +79,10 @@ function Content({ path, locale }: { path: string; locale: Locale }) {
 function Page() {
   const data = useFumadocsLoader(Route.useLoaderData());
   const locale = resolveLocale(data.locale);
+  const options = baseOptions(locale);
 
   return (
-    <DocsLayout {...baseOptions(locale)} tree={data.pageTree}>
+    <DocsLayout {...options} nav={{ ...options.nav, mode: 'top' }} tree={data.pageTree}>
       <Suspense>
         <Content path={data.path} locale={locale} />
       </Suspense>

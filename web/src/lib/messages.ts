@@ -6,6 +6,7 @@
  */
 export const messages = {
   en: {
+    navigation: { assets: 'Assets', docs: 'Documentation' },
     meta: {
       title: 'Lowpoly World — Public 3D Asset Gallery',
       description: 'A static gallery for human-approved low-poly assets published in Hugging Face Dataset.',
@@ -106,6 +107,7 @@ export const messages = {
     },
   },
   zh: {
+    navigation: { assets: '模型库', docs: '使用文档' },
     meta: {
       title: 'Lowpoly World — 公开 3D 资产画廊',
       description: '展示 Hugging Face Dataset 中经过人工批准的低多边形资产。',
