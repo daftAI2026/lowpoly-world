@@ -6,18 +6,23 @@ icon: RotateCcwClock
 
 {/*
 [INPUT]: 依赖网站公开发布记录与当前实施状态。
-[OUTPUT]: 区分本地实现、验收结果和正式部署。
-[POS]: Release Notes 文档；未发布前不伪造线上版本记录。
+[OUTPUT]: 记录已验证的网站部署与模型发布。
+[POS]: 发布说明；区分网站部署与 Dataset 快照。
 [PROTOCOL]: 变更时更新此头部，然后检查 CLAUDE.md
 */}
 
-## Website release status
+## 2026-11-02: First model release
 
-No public website release is recorded on this page yet. A local implementation is not a deployment.
-The maintainers will add an entry after the static build and deployment checks pass.
+The public [Dataset](https://huggingface.co/datasets/daftAI2026/3d-assets) contains 10 individually reviewed models under CC BY 4.0. Each asset includes GLB, BLEND, preview images, and version metadata. Third-party reference images are excluded.
 
-## Dataset releases
+The existing gallery reads the new catalog without a website rebuild. Unreviewed assets remain private. This release does not certify engineering or simulation accuracy.
 
-Dataset release history belongs to the public catalog and its immutable snapshots. Adding a
-website release note does not publish a model. Publishing a Dataset snapshot does not deploy a new
-website build.
+## 2026-10-31: Bilingual gallery
+
+The static website is live in English and Simplified Chinese. It provides catalog browsing, model details, a 3D viewer, downloads, and 10 help topics in both languages.
+
+HF serves prebuilt files. It does not run a website server or a remote build. Website code uses the [MIT license](https://github.com/daftAI2026/lowpoly-world/blob/main/LICENSE).
+
+## Release boundaries
+
+Dataset snapshots and website deployments have separate histories. Publishing models updates the catalog; it does not deploy website code. The catalog is the source of the current model count.

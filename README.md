@@ -8,7 +8,9 @@
 
 低多边形资产的静态展厅。网站只读取公开 Hugging Face Dataset，不接触私人 Drive 或审核目录。
 
-[中文页面](https://daftai2026-gallery.static.hf.space/zh/index.html) · [English](https://daftai2026-gallery.static.hf.space/en/index.html) · [Hugging Face Space](https://huggingface.co/spaces/daftAI2026/gallery)
+[中文页面](https://daftai2026-gallery.static.hf.space/zh/index.html)
+[English](https://daftai2026-gallery.static.hf.space/en/index.html)
+[Hugging Face Space](https://huggingface.co/spaces/daftAI2026/gallery)
 
 ## 本地开发
 
@@ -18,9 +20,9 @@ npm ci
 npm run dev
 ```
 
-构建、检查和部署边界见[网站说明](web/README.md)。网站提供中英双语资产浏览、模型详情和 10 篇双语文档。
-51 项离线测试、类型检查、静态构建和本地浏览器验收通过。
-HF 线上部署与真实模型发布仍单独验收。
+构建、检查和部署边界见[网站说明](web/README.md)。网站提供中英双语资产浏览、模型详情，以及 10 个帮助主题的中英版本。
+
+网站已部署到免费 HF Static Space。首批 10 个逐件审核的真实模型已进入[公开 Dataset](https://huggingface.co/datasets/daftAI2026/3d-assets)。新增模型不需要重建网站。其余资产仍须逐件审核，不计入已发布数量。
 
 ## 公开范围
 
@@ -30,4 +32,5 @@ HF 线上部署与真实模型发布仍单独验收。
 
 模型与网站分离。只有经过质量和权利审核的资产才进入公开 Dataset。网站代码公开不代表资产获准再分发。
 
-代码许可证尚待所有者确定。10,000 是规划目标，不是已发布数量。
+网站源码采用 [MIT](LICENSE)。自有模型逐件审核后按 CC BY 4.0 发布，以资产记录为准。
+10,000 是规划目标，不是已发布数量。

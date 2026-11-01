@@ -5,18 +5,22 @@ icon: Scale
 ---
 
 {/*
-[INPUT]: 依赖每条已发布记录中的可选 license 字段。
-[OUTPUT]: 说明网站如何展示许可和缺失许可。
+[INPUT]: 依赖所有者确认的 MIT、CC BY 4.0 与逐资产许可字段。
+[OUTPUT]: 区分网站源码许可与逐件审核后的模型许可。
 [POS]: License 文档；不为模型或图片授予新许可。
 [PROTOCOL]: 变更时更新此头部，然后检查 CLAUDE.md
 */}
 
-Check the **License** field on each asset detail page before reuse. The website displays the value
-published in the catalog. It does not grant rights to an asset or source image.
+## Website code
 
-If a record has no license value, the page shows **Not supplied**. Do not infer a license from the
-website, a preview image, or the file format. Ask the publisher for clarification before reuse.
+The website source code is licensed under [MIT](https://github.com/daftAI2026/lowpoly-world/blob/main/LICENSE).
+This software license does not cover models, preview images or source inputs.
 
-The license for the website's source code is separate from the license for every model, preview,
-texture, prompt, and input image. Verify the license in the public repository and the individual
-Dataset record.
+## Published assets
+
+Project-owned models are published under [CC BY 4.0](https://creativecommons.org/licenses/by/4.0/) only after individual quality and rights review.
+CC BY 4.0 permits sharing and modification, including commercial use, with attribution and an indication of changes.
+Check the **License** field on the asset detail page for the license of that record.
+
+Third-party reference images and assets without publication rights are excluded.
+A missing license is shown as **Not supplied**. Do not infer permission from a preview or file format.
