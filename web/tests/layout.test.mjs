@@ -30,11 +30,12 @@ describe('Fumadocs application foundation', () => {
     });
   }
 
-  it('uses the native Notebook header and matching page components for guides', async () => {
+  it('uses the official website Spacious layout and matching page components', async () => {
     const route = await readSource('../src/routes/$lang/docs/$.tsx');
-    expect(route).toContain("from 'fumadocs-ui/layouts/notebook'");
-    expect(route).toContain("from 'fumadocs-ui/layouts/notebook/page'");
-    expect(route).toContain("mode: 'top'");
+    const shell = await readSource('../src/components/app-shell.tsx');
+    expect(shell).toContain("from 'fumadocs-ui/layouts/spacious'");
+    expect(route).toContain("from 'fumadocs-ui/layouts/spacious/page'");
+    expect(route).not.toContain('<DocsLayout');
     expect(route).not.toContain("from 'fumadocs-ui/layouts/docs'");
   });
 
@@ -47,12 +48,41 @@ describe('Fumadocs application foundation', () => {
 
   it('aligns gallery content with the native shell width token', async () => {
     const css = await readSource('../src/styles/shell.css');
-    expect(css).toContain('var(--fd-layout-width, 1400px)');
+    expect(css).not.toContain('--fd-layout-width');
+    expect(css).not.toContain('1400px');
   });
 
   it('does not replace framework geometry with global class-name interception', async () => {
     const css = await readSource('../src/styles/fumadocs.css');
     expect(css).not.toMatch(/\[class\*=['"](?:shadow|backdrop-blur|transition-|animate-)/);
     expect(css).not.toContain("#nd-page > div[class*='@container']");
+  });
+});
+
+
+describe('Official source fidelity', () => {
+  it('uses the original multicolor HF brand asset without currentColor substitution', async () => {
+    const icon = await readSource('../src/components/hugging-face-icon.tsx');
+    const svg = await readSource('../src/assets/hugging-face.svg');
+    expect(icon).toContain('hugging-face.svg');
+    expect(svg).toContain('#FFD21E');
+    expect(svg).not.toContain('currentColor');
+  });
+  it('imports the same spacious styles and removes project-wide geometry overrides', async () => {
+    const app = await readSource('../src/styles/app.css');
+    const tokens = await readSource('../src/styles/tokens.css');
+    const css = await readSource('../src/styles/fumadocs.css');
+    expect(app).toContain('fumadocs-ui/css/generated/spacious.css');
+    expect(tokens).not.toMatch(/--(?:text-|radius-)/);
+    expect(tokens).not.toContain('--color-fd-background:');
+    expect(tokens).toContain("'Geist'");
+    expect(css).not.toMatch(/#nd-(?:nav|subnav|page|sidebar)/);
+  });
+  it('virtualizes against the real native page scroller, with a window fallback on mobile', async () => {
+    const grid = await readSource('../src/components/catalog-grid.tsx');
+    expect(grid).toContain('useVirtualizer');
+    expect(grid).toContain('getScrollElement');
+    expect(grid).toContain('overflowY');
+    expect(grid).toContain('ancestor.scrollTop');
   });
 });

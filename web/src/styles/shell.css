@@ -1,29 +1,14 @@
 /**
- * [INPUT]: 依赖原生壳的宽度 token 与应用内容 class。
- * [OUTPUT]: 提供内容对齐、页面标题和无障碍隐藏文本样式。
+ * [INPUT]: 依赖 Spacious Page 的内容宽度与应用内容 class。
+ * [OUTPUT]: 提供内容容器、回退提示和无障碍隐藏文本。
  * [POS]: 应用内容样式；原生壳负责导航几何，兄弟文件负责资产区域。
  * [PROTOCOL]: 变更时更新此头部，然后检查 CLAUDE.md
  */
 .site-main,
 .detail-main {
-  width: min(calc(var(--fd-layout-width, 1400px) - 32px), calc(100% - 32px));
-  margin-inline: auto;
-}
-
-.gallery-heading {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  gap: 24px;
-  padding: 24px 0;
-  border-bottom: 0.5px solid var(--lpw-line);
-}
-
-.gallery-heading h1 {
-  margin: 0;
-  font-size: 28px;
-  font-weight: 650;
-  line-height: 1.25;
+  width: 100%;
+  min-width: 0;
+  container-type: inline-size;
 }
 
 .docs-locale-notice {

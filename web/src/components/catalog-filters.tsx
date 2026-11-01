@@ -1,11 +1,11 @@
 /**
- * [INPUT]: 依赖目录派生 facet、当前筛选状态和本地化事件处理器。
+ * [INPUT]: 依赖目录派生 facet、当前筛选状态、实际内容宽度和本地化事件。
  * [OUTPUT]: 导出分类树、格式、三角面数和标签筛选面板。
  * [POS]: 画廊筛选唯一视图；计数来自已校验目录，不读取外部统计。
  * [PROTOCOL]: 变更时更新此头部，然后检查 CLAUDE.md
  */
 import { ChevronDown, ChevronRight } from 'lucide-react';
-import { useEffect, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { Checkbox } from '@/components/ui/checkbox';
 import type { CatalogFacets, CatalogFilters, CategoryNode, CatalogFormat, TriangleBand } from '@/lib/catalog-view';
@@ -120,14 +120,17 @@ export function CatalogFilters({
   hasFilters,
 }: CatalogFiltersProps) {
   const { t } = useTranslation();
+  const filtersRef = useRef<HTMLElement>(null);
   const [isDesktop, setIsDesktop] = useState<boolean | null>(null);
   const [isExpanded, setIsExpanded] = useState(false);
   useEffect(() => {
-    const media = window.matchMedia('(min-width: 720px)');
-    const syncViewport = () => setIsDesktop(media.matches);
-    syncViewport();
-    media.addEventListener('change', syncViewport);
-    return () => media.removeEventListener('change', syncViewport);
+    const host = filtersRef.current?.closest<HTMLElement>('.site-main');
+    if (!host) return;
+    const syncWidth = () => setIsDesktop(host.clientWidth >= 720);
+    syncWidth();
+    const observer = new ResizeObserver(syncWidth);
+    observer.observe(host);
+    return () => observer.disconnect();
   }, []);
 
   const filtersOpen = isDesktop === null || isDesktop || isExpanded;
@@ -145,7 +148,7 @@ export function CatalogFilters({
   ];
 
   return (
-    <aside className="catalog-filters" aria-label={t('home.filters')}>
+    <aside ref={filtersRef} className="catalog-filters" aria-label={t('home.filters')}>
       <details
         className="filter-disclosure"
         open={filtersOpen}

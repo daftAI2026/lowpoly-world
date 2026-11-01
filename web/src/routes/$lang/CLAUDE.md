@@ -3,7 +3,7 @@
 
 ## 成员清单
 
-route.tsx: 校验 `en`、`zh` URL 段，并为该语言页面设置元数据。
+route.tsx: 校验语言并读取静态导航；统一在 Spacious 内渲染所有子页面。
 index.tsx: 读取 URL 语言并渲染本地化首页。
 asset/: 以语言前缀读取资产查询参数与公开目录记录。
 docs/: 按同一语言构建 Fumadocs 页面树与正文；缺译时标明英文回退。

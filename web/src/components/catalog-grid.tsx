@@ -1,10 +1,10 @@
 /**
- * [INPUT]: 依赖筛选排序后的真实资产、locale 和容器宽度。
+ * [INPUT]: 依赖真实资产、locale、容器宽度与原生页面滚动元素。
  * [OUTPUT]: 导出响应式行虚拟化网格与无匹配结果状态。
  * [POS]: 首页唯一资产列表；虚拟化只挂载视窗附近的 AssetCard。
  * [PROTOCOL]: 变更时更新此头部，然后检查 CLAUDE.md
  */
-import { useWindowVirtualizer } from '@tanstack/react-virtual';
+import { useVirtualizer, useWindowVirtualizer } from '@tanstack/react-virtual';
 import { useEffect, useMemo, useRef, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { AssetCard } from '@/components/asset-card';
@@ -33,18 +33,26 @@ export function CatalogGrid({ assets, locale, onClearFilters, hasFilters }: Cata
   const gridRef = useRef<HTMLDivElement>(null);
   const [containerWidth, setContainerWidth] = useState(0);
   const [scrollMargin, setScrollMargin] = useState(0);
+  const [scrollElement, setScrollElement] = useState<HTMLElement | null>(null);
   const columns = columnCountForWidth(containerWidth);
   const rows = useMemo(() => groupIntoRows(assets, columns), [assets, columns]);
-  const virtualizer = useWindowVirtualizer({
+  const options = {
     count: rows.length,
     estimateSize: () => {
       const cardWidth = Math.max(150, containerWidth / columns - 18);
       return Math.ceil(cardWidth + CARD_DETAILS_ESTIMATE);
     },
-    getItemKey: (index) => rows[index]?.[0]?.id ?? index,
+    getItemKey: (index: number) => rows[index]?.[0]?.id ?? index,
     overscan: 2,
     scrollMargin,
+  };
+  const windowVirtualizer = useWindowVirtualizer({ ...options, enabled: !scrollElement });
+  const elementVirtualizer = useVirtualizer({
+    ...options,
+    enabled: Boolean(scrollElement),
+    getScrollElement: () => scrollElement,
   });
+  const virtualizer = scrollElement ? elementVirtualizer : windowVirtualizer;
 
   useEffect(() => {
     const element = gridRef.current;
@@ -52,7 +60,15 @@ export function CatalogGrid({ assets, locale, onClearFilters, hasFilters }: Cata
 
     const updateMeasurements = () => {
       setContainerWidth(element.clientWidth);
-      setScrollMargin(element.getBoundingClientRect().top + window.scrollY);
+      let ancestor = element.parentElement;
+      while (ancestor && !['auto', 'scroll'].includes(getComputedStyle(ancestor).overflowY)) {
+        ancestor = ancestor.parentElement;
+      }
+      setScrollElement(ancestor);
+      // ---- 记录滚动宿主偏移，不改变模板的 overflow 几何 ----
+      setScrollMargin(ancestor
+        ? element.getBoundingClientRect().top - ancestor.getBoundingClientRect().top + ancestor.scrollTop
+        : element.getBoundingClientRect().top + window.scrollY);
     };
     updateMeasurements();
     const observer = new ResizeObserver(updateMeasurements);

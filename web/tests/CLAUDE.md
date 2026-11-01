@@ -9,8 +9,8 @@ asset-metadata.test.mjs: 验证可选资源、权利确认、错误隔离和 rec
 i18n.test.mjs: 验证 locale、路径、正文语言、回退、双语键对齐和组件文案引用完整性。
 static-href.test.mjs: 验证语义路由与 index.html 双向映射、静态路径清单、query/hash、API 与未知路径边界。
 content-boundary.test.mjs: 验证 MDX 集合排除地图、合法注释、免费静态部署边界、完整中文译稿、代码与 URL 一致性、MIT 托管通知与静态路由完整性。
-layout.test.mjs: 验证 Fumadocs 原生壳、双语主导航、HF/GitHub 入口与资产卡扩展边界。
-ui-design.test.mjs: 验证三档字号、UI Colors 色阶、0.5 px 边线与焦点、圆角、动效和双语文案。
+layout.test.mjs: 验证官网 Spacious 壳、彩色标识、真实滚动宿主、双语主导航、HF/GitHub 入口与资产卡扩展边界。
+ui-design.test.mjs: 验证资产字号、原生主题色别名、0.5 px 边线与焦点、圆角、动效和双语文案。
 
 Vite+ Vitest 运行全部测试。测试替换 fetch，不访问 HF 网络或仓库资源。
 合成目录记录只存在于测试模块。

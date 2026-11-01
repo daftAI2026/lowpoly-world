@@ -274,70 +274,7 @@
   margin-top: 12px;
 }
 
-.ui-button {
-  display: inline-flex;
-  min-height: 40px;
-  align-items: center;
-  justify-content: center;
-  gap: 7px;
-  border: 0.5px solid var(--lpw-line);
-  border-radius: var(--radius-md);
-  background: transparent;
-  color: var(--lpw-ink);
-  font-size: 14px;
-  font-weight: 520;
-  line-height: 1.2;
-  white-space: nowrap;
-}
-
-.ui-button-sm {
-  min-height: 40px;
-  padding: 0 10px;
-}
-
-.ui-button-md {
-  padding: 0 13px;
-}
-
-.ui-button-icon {
-  width: 40px;
-  padding: 0;
-}
-
-.ui-button-primary {
-  border-color: var(--lpw-accent);
-  background: var(--lpw-accent);
-  color: var(--lpw-raised);
-}
-
-.ui-button-secondary {
-  background: var(--lpw-raised);
-}
-
-.ui-button-ghost {
-  border-color: transparent;
-}
-
-.ui-button svg {
-  width: 15px;
-  height: 15px;
-  flex: 0 0 auto;
-}
-
-.ui-button:disabled {
-  cursor: not-allowed;
-  opacity: 0.5;
-}
-
 @media (hover: hover) {
-  .ui-button:not(:disabled):hover {
-    border-color: var(--lpw-accent);
-  }
-
-  .ui-button-primary:not(:disabled):hover {
-    background: var(--lpw-accent-hover);
-  }
-
   .category-select:hover,
   .category-disclosure:hover {
     background: var(--lpw-surface);

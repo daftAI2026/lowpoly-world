@@ -1,10 +1,10 @@
 /**
  * [INPUT]: 依赖 shell、目录和详情模块的响应式 class。
- * [OUTPUT]: 提供窄屏布局、筛选 disclosure 与减少动态规则。
+ * [OUTPUT]: 按实际内容容器宽度提供布局、筛选 disclosure 与减少动态规则。
  * [POS]: 跨组件断点规则；局部尺寸仍归属各模块样式。
  * [PROTOCOL]: 变更时更新此头部，然后检查 CLAUDE.md
  */
-@media (min-width: 720px) {
+@container (min-width: 720px) {
   .filter-disclosure > summary {
     display: none;
   }
@@ -14,13 +14,7 @@
   }
 }
 
-@media (max-width: 900px) {
-  .gallery-heading {
-    align-items: flex-start;
-    flex-direction: column;
-    gap: 12px;
-  }
-
+@container (max-width: 900px) {
   .catalog-workspace {
     grid-template-columns: 212px minmax(0, 1fr);
     gap: 18px;
@@ -32,12 +26,7 @@
   }
 }
 
-@media (max-width: 719px) {
-  .gallery-heading {
-    gap: 10px;
-    padding: 18px 0;
-  }
-
+@container (max-width: 719px) {
   .catalog-section {
     padding: 16px 0 36px;
   }
@@ -78,16 +67,12 @@
     gap: 18px;
   }
 
-  .detail-main {
-    padding-top: 14px;
-  }
-
   .viewer-stage {
     min-height: 240px;
   }
 }
 
-@media (max-width: 359px) {
+@container (max-width: 359px) {
   .catalog-toolbar {
     grid-template-columns: minmax(0, 1fr);
   }

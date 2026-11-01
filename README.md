@@ -6,7 +6,7 @@
 -->
 # Lowpoly World
 
-低多边形资产展示应用，采用 Fumadocs 原生壳。
+低多边形资产展示应用，直接复用 Fumadocs 官网的 Spacious 布局、默认样式与字体。
 项目包含两个交付：HF Dataset 与 HF Static Space 应用。模型库、3D 查看与使用文档都在应用内。
 网站只读取公开 Dataset，不接触私人 Drive 或审核目录。
 

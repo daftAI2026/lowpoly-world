@@ -85,18 +85,19 @@ TanStack Start 客户端产物位于 `dist/client/`。构建需生成双语首�
 
 本轮重新生成官方 `create-fumadocs-app@16.2.27` 的 `tanstack-start-spa` 基线。
 保留已锁定的依赖与已验证的数据协议，不引入另一套框架。
-模型库、详情使用 HomeLayout；文档使用顶部导航模式的 Notebook Layout 与配套 Page。
+全站统一使用与 Fumadocs 官网相同的 Spacious Layout 与配套 Page。
+直接采用官方 neutral、spacious、preset 和官网字体，撤销旧字号、圆角和主题覆盖。
 导航、搜索、语言菜单和文档分页使用原生组件。HF 与 GitHub 共用右上角入口。
 原生 Card 仅扩展资产图片；筛选、虚拟网格和 3D 查看器属于模板外的必要补充。
 
 ## 当前验收（2026-11-02）
 
-- 类型与 lint 零问题，65 项网站测试与 57 项私人工具测试通过。
+- 类型与 lint 零问题，68 项网站测试与 57 项私人工具测试通过。
 - 静态构建生成 26 个输出，smoke 覆盖 24 路由、20 篇本地化文档和搜索。
 - Dataset 已发布十件模型；本轮只更新说明卡，不新增模型批准。
 - Dataset Card 从实际目录生成，预览链接打开原生 GLB，双语入口连接展示应用。
-- 样式适配从 157 行通用覆盖收敛为原生主题与局部约束，不接管模板网格。
-- 字号按标题、章节、正文、编号分为 28、20、14、12px，边线声明为 0.5px。
+- 官网布局、字体与默认排版直接复用；HF 使用官方黄色 SVG。
+- 虚拟网格随原生阅读容器滚动，资产区响应式依据实际内容宽度。
 
 
 CI 只检查公开网站。HF 同步必须手动触发，缺省关闭。
@@ -104,7 +105,7 @@ CI 只检查公开网站。HF 同步必须手动触发，缺省关闭。
 
 ## 官方依据
 
-- [Fumadocs Notebook Layout](https://www.fumadocs.dev/docs/ui/layouts/notebook)
+- [Fumadocs 官网布局源码](https://github.com/fuma-nama/fumadocs/tree/ef5911245865c04140e3dae7ff51e7ef6260ef68/apps/docs/components/layouts/spacious)
 - [Fumadocs Layout Links](https://www.fumadocs.dev/docs/ui/layouts/links)
 
 - [Fumadocs Create App CLI](https://www.fumadocs.dev/docs/cli/create-fumadocs-app)

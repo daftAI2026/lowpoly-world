@@ -1,11 +1,12 @@
 /**
- * [INPUT]: 依赖 Tailwind CSS 4、Fumadocs 样式和本地分层 CSS。
+ * [INPUT]: 依赖 Tailwind CSS 4、Fumadocs 官网 Spacious 样式和本地资产 CSS。
  * [OUTPUT]: 导入 token、shell、目录、详情、断点和 Fumadocs 适配样式。
  * [POS]: 全站 CSS 入口；视觉规则按模块职责拆分。
  * [PROTOCOL]: 变更时更新此头部，然后检查 CLAUDE.md
  */
 @import 'tailwindcss';
 @import 'fumadocs-ui/css/neutral.css';
+@import 'fumadocs-ui/css/generated/spacious.css';
 @import 'fumadocs-ui/css/preset.css';
 @import './tokens.css';
 @import './shell.css';

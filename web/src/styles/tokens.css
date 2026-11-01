@@ -1,103 +1,58 @@
 /**
- * [INPUT]: 依赖 Tailwind CSS 4 提供的 Stone、Teal、Red 色阶。
- * [OUTPUT]: 提供页面语义色、四档字号和控件圆角 token。
- * [POS]: src/styles 的唯一视觉 token 来源；Fumadocs 与业务组件共用同一色阶。
+ * [INPUT]: 依赖 Fumadocs neutral 主题与官网使用的 Geist 字体。
+ * [OUTPUT]: 将资产区语义色映射到原生主题，不反向覆盖模板颜色、字号或圆角。
+ * [POS]: 业务视觉适配；官网布局保持上游样式，HF 品牌 SVG 独立保色。
  * [PROTOCOL]: 变更时更新此头部，然后检查 CLAUDE.md
  */
+@font-face {
+  font-family: 'Geist';
+  font-style: normal;
+  font-weight: 100 900;
+  font-display: swap;
+  src: url('../assets/geist-latin.woff2') format('woff2');
+}
+
+@font-face {
+  font-family: 'JetBrains Mono';
+  font-style: normal;
+  font-weight: 400 700;
+  font-display: swap;
+  src: url('../assets/jetbrains-mono-latin.woff2') format('woff2');
+}
+
 @theme {
-  --text-xs: 12px;
-  --text-sm: 14px;
-  --text-base: 14px;
-  --text-lg: 20px;
-  --text-xl: 20px;
-  --text-2xl: 20px;
-  --text-3xl: 28px;
-  --text-4xl: 28px;
+  --font-sans: 'Geist', 'PingFang SC', 'Microsoft YaHei', sans-serif;
+  --font-mono: 'JetBrains Mono', ui-monospace, monospace;
 }
 
 :root {
   color-scheme: light;
-  --lpw-canvas: var(--color-stone-50);
-  --lpw-surface: var(--color-stone-100);
-  --lpw-raised: var(--color-stone-50);
-  --lpw-ink: var(--color-stone-900);
-  --lpw-muted: var(--color-stone-600);
-  --lpw-line: var(--color-stone-300);
-  --lpw-accent: var(--color-teal-800);
-  --lpw-accent-hover: var(--color-teal-900);
-  --lpw-accent-soft: var(--color-teal-100);
-  --lpw-focus: var(--color-teal-700);
+  --lpw-canvas: var(--color-fd-background);
+  --lpw-surface: var(--color-fd-card);
+  --lpw-raised: var(--color-fd-background);
+  --lpw-ink: var(--color-fd-foreground);
+  --lpw-muted: var(--color-fd-muted-foreground);
+  --lpw-line: var(--color-fd-border);
+  --lpw-accent: var(--color-fd-primary);
+  --lpw-accent-hover: var(--color-fd-primary);
+  --lpw-accent-soft: var(--color-fd-accent);
+  --lpw-focus: var(--color-fd-ring);
   --lpw-danger: var(--color-red-800);
   --lpw-danger-soft: var(--color-red-50);
   --lpw-danger-line: var(--color-red-300);
-  --font-sans: ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
-  --font-mono: ui-monospace, 'SFMono-Regular', Menlo, Monaco, Consolas, monospace;
-  --radius-sm: 4px;
-  --radius-md: 6px;
-  --radius-lg: 8px;
-  --radius-xl: 8px;
-  --radius-2xl: 8px;
-  --radius-3xl: 8px;
-  --color-fd-background: var(--lpw-canvas);
-  --color-fd-foreground: var(--lpw-ink);
-  --color-fd-muted: var(--lpw-surface);
-  --color-fd-muted-foreground: var(--lpw-muted);
-  --color-fd-card: var(--lpw-surface);
-  --color-fd-card-foreground: var(--lpw-ink);
-  --color-fd-popover: var(--lpw-raised);
-  --color-fd-popover-foreground: var(--lpw-ink);
-  --color-fd-primary: var(--lpw-accent);
-  --color-fd-primary-foreground: var(--lpw-raised);
-  --color-fd-secondary: var(--lpw-surface);
-  --color-fd-secondary-foreground: var(--lpw-ink);
-  --color-fd-accent: var(--lpw-accent-soft);
-  --color-fd-accent-foreground: var(--lpw-ink);
-  --color-fd-ring: var(--lpw-focus);
-  --color-fd-border: var(--lpw-line);
-  --color-fd-info: var(--lpw-accent);
-  --color-fd-warning: var(--color-stone-700);
-  --color-fd-error: var(--lpw-danger);
-  --color-fd-success: var(--lpw-accent);
-  --color-fd-idea: var(--lpw-accent);
-  --color-fd-diff-remove: color-mix(in srgb, var(--lpw-danger) 12%, transparent);
-  --color-fd-diff-remove-symbol: var(--lpw-danger);
-  --color-fd-diff-add: color-mix(in srgb, var(--lpw-accent) 12%, transparent);
-  --color-fd-diff-add-symbol: var(--lpw-accent);
-  --color-fd-overlay: color-mix(in srgb, var(--lpw-ink) 24%, transparent);
-  background: var(--lpw-canvas);
-  color: var(--lpw-ink);
-  font-family: var(--font-sans);
+}
+
+/* ---- 官网 UI 文档分区的主色；只取这一项，不复制演示功能 ---- */
+.ui {
+  --color-fd-primary: hsl(217 100% 58%);
 }
 
 html {
   min-width: 320px;
-  background: var(--lpw-canvas);
   scrollbar-gutter: stable;
 }
 
 body {
-  min-height: 100vh;
-  margin: 0;
-  background: var(--lpw-canvas);
-  color: var(--lpw-ink);
+  background-color: var(--color-fd-background);
   font-family: var(--font-sans);
-  font-size: 14px;
-  line-height: 1.5;
-}
-
-button,
-select,
-input,
-a {
-  font: inherit;
-}
-
-button:not(:disabled),
-[role='button']:not([aria-disabled='true']) {
-  cursor: pointer;
-}
-
-::selection {
-  background: var(--lpw-accent-soft);
-  color: var(--lpw-ink);
 }

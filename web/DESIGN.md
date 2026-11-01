@@ -1,102 +1,92 @@
 <!--
-[INPUT]: 依赖 Fumadocs 官方模板、原生组件与用户界面约束。
-[OUTPUT]: 约束 Dataset 与展示应用的分工和模板扩展边界。
-[POS]: 展示应用设计地图；文档是应用内页面，不是第三个站。
+[INPUT]: 依赖 Fumadocs 官网源码、实测截图与 HF 官方品牌页。
+[OUTPUT]: 固定官网 Spacious 基线与资产区扩展边界。
+[POS]: 当前展示层设计地图；取代此前 Home/Notebook 和自定义主题。
 [PROTOCOL]: 变更时更新此头部，然后检查 CLAUDE.md
 -->
 # Lowpoly World Design System
 
-## 1. 产品与主题
+## 1. 产品与视觉方向
 
-只有两个公开交付：HF Dataset 与 HF Static Space 展示应用。
-Dataset 提供原生 Data Studio、文件预览、许可与下载。
-展示应用提供资产浏览、3D 查看和使用文档。
-使用文档属于同一个展示应用，不另建站。
+只有 HF Dataset 与 Static Space 应用两个交付。
+使用文档位于应用内，不建第三个站。
+视觉直接复用 Fumadocs 当前文档站，而非泛指使用组件库。
+用户已拒绝此前 Notebook 与自定义主题组合。
+本轮以官网 Spacious 左侧导航、阅读面板和右上操作为准。
 
-以 Fumadocs 原生壳为起点，不自建导航框架。
-官方 CLI `create-fumadocs-app@16.2.27` 的 `tanstack-start-spa` 是本轮基线。
-运行依赖沿用已锁定的 Fumadocs Base UI 16.17.9。
+官网源码锁定 `ef5911245865c04140e3dae7ff51e7ef6260ef68`。
+入口为 `apps/docs/app/docs/layout.tsx`。
+它转到 `components/layouts/spacious/`，使用官方 Spacious。
+运行依赖沿用 Fumadocs Base UI 16.17.9，不另建框架。
 
-## 2. 调色板
+## 2. 颜色
 
-UI Colors Stone 承载背景、正文和边界。
-Teal 表示链接、选中项与主操作，Red 表示错误。
-颜色通过 tokens.css 的语义变量进入原生主题。
-不重绘模型材质或源预览图。
+直接导入官方 neutral、generated/spacious 与 preset。
+采用官网 UI 分区主色 `hsl(217 100% 58%)`。
+资产语义色单向引用 `--color-fd-*`，不反向覆盖模板。
+撤销旧 Stone/Teal 全局重映射。
+HF 标识使用官方彩色 SVG，保留黄色和比例。
+品牌原件不套用 UI 调色板，模型材质同样不染色。
 
-## 3. 文字
+## 3. 字体与排版
 
-使用四档字号：12、14、20、28px。
-12px 用于编号和代码，14px 用于正文与操作。
-20px 用于章节标题，28px 用于页面标题。
-页面和章节保留独立层级，不再全部压成 20px。
-保留模板的行距、阅读间距和字重。
+Geist 与 JetBrains Mono 与官网一致。
+字体本地托管，保留 OFL 原文，中文回退系统字体。
+不改模板 `--text-*`、标题、正文和代码字号。
+资产信息保持最多四档字号，最小 12px。
+当前直接复用官网的要求优先于旧模板覆盖规则。
 
 ## 4. 原生组件
 
-- HomeLayout 承载模型库与模型详情。
-- Notebook DocsLayout 使用 `nav.mode=top`。
-- Notebook DocsPage 与该布局配套使用。
-- 原生 links 同时提供模型库、使用文档、HF 和 GitHub。
-- HF 与 GitHub 位于桌面右上角。
-- 窄屏外链沿用模板菜单或侧栏，不自建第二套菜单。
-- 原生 Card 只扩展正方形图片、名称、编号和格式。
-- 搜索、语言切换、页内目录和文档分页沿用模板。
+AppShell 只调用官方 Spacious DocsLayout。
+模型库、详情和文档全部使用匹配的 Spacious DocsPage。
+侧栏、搜索、语言、外链、目录和分页均由官方组件生成。
+桌面右上显示 HF 与 GitHub，窄屏沿用原生菜单。
+资产按钮复用 Fumadocs buttonVariants，不以 shadcn 构造壳。
+资产输入和复选框只负责筛选，不参与导航布局。
 
-## 5. 布局与扩展
+## 5. 布局与内容
 
-主导航归 layout.shared.tsx，不在首页重复放项目链接。
-内容宽度读取模板 --fd-layout-width，与导航内边距对齐。
-模型库保留分类、格式与面数筛选，图片是主要内容。
-只有资产专属功能使用补充依赖：
+父路由静态读取双语树，全应用只有一个壳。
+模型库与详情使用 full 页面，文档使用标准阅读宽度。
+模型网格与筛选是资产专属扩展，不模仿文档功能。
+业务响应式断点依据内容容器，不误用整个窗口宽度。
+桌面虚拟列表监听原生阅读容器，移动端监听窗口。
+3D 查看器只挂载当前资产，数据协议与发布器不变。
 
-- TanStack Virtual 按行虚拟化真实目录。
-- Base UI 提供筛选与输入原语。
-- model-viewer 只加载当前资产的 GLB。
-- Prompt、配方与质量信息按需读取。
+## 6. 边界与深度
 
-Fumadocs 不提供 3D 资产查看器，不伪造同名组件。
-
-## 6. 边界与层次
-
-线条声明为 0.5px。DPR 1 的浏览器会量化到设备像素。
-保留原生弹层的功能性层次，不自建装饰阴影。
-卡片外角 8px，预览内角减去 0.5px 外框。
-原生搜索和控件的圆角不再被通用 class 规则强行替换。
-只为本应用的资产卡设置必要颜色反馈。
-键盘焦点不做动画，尊重减少动态偏好。
+不覆盖模板圆角、阴影、边框和原生交互几何。
+原生页面面板保留官网自身的边框、圆角和层次。
+仅资产自有区域声明 0.5px 边框，不拦截通用 class。
+不自造装饰动画；保留原生 reduced-motion 支持。
+不复制官网 AI 服务、赞助和反馈功能来冒充可用能力。
 
 ## 7. 文案与禁止项
 
-- 不使用中点作分隔符，不写重复解释。
-- 不把首页做成文档目录或工程审核控制台。
-- 不把测试通过当成用户确认视觉通过。
-- 不拦截全部 shadow、rounded-full 或 transition class。
-- 不改模板网格和菜单几何来修局部问题。
-- 不把未审核模型、私人报告或参考输入图放到公开界面。
-- 不使用规划数量代替已发布数量。
+不使用中点分隔符，不重复解释，不制造资产数量。
+不把页面变成工程审核控制台。
+不将第三方单色图标当作官方彩色标识。
+不把测试通过写成用户已经认可视觉。
+不复制 Fumadocs 品牌与内容冒充本站身份。
 
 ## 8. 响应式与访问性
 
-原生壳负责导航、搜索和文档断点。
-资产筛选在窄屏使用现有 disclosure。
-320、390 和桌面宽度均须实际验收。
-验证菜单中的 HF/GitHub 和模型库返回路径。
-图库不同时挂载多份 WebGL 画布。
+验证 320、390、768、1024 与桌面宽度。
+验证原生侧栏和 Options 菜单、静态直链与语言切换。
+验证文档搜索、资产滚动、过滤和真实模型旋转。
+确认 HF 彩色标识在桌面与移动菜单均未染色。
 
 ## 9. 后续修改契约
 
-先查 Fumadocs 原生选项，再考虑补充组件。
-布局变化先对照模板，不从旧覆盖层继续打补丁。
-数据读取、静态路由与模型发布器保持独立。
-Dataset Card 从真实目录生成，后续发布不得丢失互链。
+先对照官网固定源码，再查已安装版本的原生选项。
+新增功能不得重新创建导航、排版主题或菜单壳。
+数据与模型不进网站 Git，仍由 Dataset 单独发布。
 
 ## References
 
-- [Fumadocs CLI](https://www.fumadocs.dev/docs/cli/create-fumadocs-app)
-- [Fumadocs Layout Links](https://www.fumadocs.dev/docs/ui/layouts/links)
-- [Fumadocs Notebook](https://www.fumadocs.dev/docs/ui/layouts/notebook)
-- [NVIDIA Dataset](https://huggingface.co/datasets/nvidia/simready-assets)
-- [Scenario Dataset](https://huggingface.co/datasets/scenario-labs/3d-collection)
-- [HF Dataset Cards](https://huggingface.co/docs/hub/datasets-cards)
-- [UI Colors](https://uicolors.app/tokens)
+- [官网布局入口](https://github.com/fuma-nama/fumadocs/blob/ef5911245865c04140e3dae7ff51e7ef6260ef68/apps/docs/app/docs/layout.tsx)
+- [官网 Spacious 实现](https://github.com/fuma-nama/fumadocs/tree/ef5911245865c04140e3dae7ff51e7ef6260ef68/apps/docs/components/layouts/spacious)
+- [官网样式与 UI 主色](https://github.com/fuma-nama/fumadocs/blob/ef5911245865c04140e3dae7ff51e7ef6260ef68/apps/docs/app/global.css)
+- [官网字体](https://github.com/fuma-nama/fumadocs/blob/ef5911245865c04140e3dae7ff51e7ef6260ef68/apps/docs/app/layout.tsx)
+- [HF 官方品牌资源](https://huggingface.co/brand)

@@ -62,18 +62,17 @@ describe('UI design constraints', () => {
     const sizes = [...styles.matchAll(/font-size\s*:\s*([^;]+);/g)]
       .map(([, value]) => `${Number.parseFloat(value)}px`);
 
-    expect([...new Set(sizes)].sort((left, right) => Number.parseFloat(left) - Number.parseFloat(right)))
-      .toEqual(['12px', '14px', '20px', '28px']);
-    expect(styles).toContain('#nd-page .prose');
+    expect(new Set(sizes).size).toBeLessThanOrEqual(4);
+    expect(sizes.every((size) => Number.parseFloat(size) >= 12)).toBe(true);
+    expect(styles).not.toContain('--text-base:');
   });
 
   it('maps semantic colors to the UI Colors palette and avoids custom colors', async () => {
     const styles = await readStyles();
-    expect(styles).toContain('--lpw-canvas: var(--color-stone-50)');
-    expect(styles).toContain('--lpw-accent: var(--color-teal-800)');
+    expect(styles).toContain('--lpw-canvas: var(--color-fd-background)');
+    expect(styles).toContain('--lpw-accent: var(--color-fd-primary)');
     expect(styles).toContain('--lpw-danger: var(--color-red-800)');
     expect(styles).toContain('--progress-bar-color: var(--lpw-focus)');
-    expect(styles).toContain('--shiki-light: var(--lpw-ink)');
     expect(styles).not.toMatch(/#[\da-f]{3,8}\b/i);
   });
 
@@ -86,15 +85,13 @@ describe('UI design constraints', () => {
     expect(styles).not.toMatch(/border-left\s*:/);
     expect([...styles.matchAll(/box-shadow\s*:\s*([^;]+);/g)]
       .every(([, value]) => value.trim().startsWith('none'))).toBe(true);
-    expect(styles).toContain('outline: 0.5px solid var(--lpw-focus)');
+    expect(styles).not.toContain('#nd-page h1');
     expect(styles).not.toMatch(/outline\s*:\s*2px/);
   });
 
   it('uses a small nested radius scale and only color feedback motion', async () => {
     const styles = await readStyles();
-    expect(styles).toContain('--radius-sm: 4px');
-    expect(styles).toContain('--radius-md: 6px');
-    expect(styles).toContain('--radius-lg: 8px');
+    expect(styles).not.toMatch(/--radius-(?:sm|md|lg):/);
     expect(styles).toContain('250ms ease-out');
     expect(styles).toContain('prefers-reduced-motion: reduce');
     expect(styles).toContain('border-radius: calc(var(--radius-lg) - 0.5px)');
@@ -118,11 +115,10 @@ describe('UI design constraints', () => {
     expect(withTags).toContain('low-poly');
   });
 
-  it('uses only the site palette for static code highlighting', async () => {
+  it('uses the official default code theme without a project palette', async () => {
     const sourceConfig = await readFile(sourceConfigPath, 'utf8');
-    expect(sourceConfig).toContain('rehypeCodeOptions');
-    expect(sourceConfig).toContain('var(--lpw-ink)');
-    expect(sourceConfig).toContain('var(--lpw-accent)');
+    expect(sourceConfig).toContain('defineConfig()');
+    expect(sourceConfig).not.toContain('lowpolyCodeTheme');
     expect(sourceConfig).not.toMatch(/#[\da-f]{3,8}\b/i);
   });
 

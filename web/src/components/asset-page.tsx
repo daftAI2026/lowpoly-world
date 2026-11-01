@@ -1,5 +1,5 @@
 /**
- * [INPUT]: 依赖已验证目录、查询资产编号、本地化路径、静态 href helper 和详情子组件。
+ * [INPUT]: 依赖已验证目录、查询资产编号、本地化路径、Spacious Page 和详情子组件。
  * [OUTPUT]: 导出资产查看器、模型文件入口、发布元数据和缺失状态。
  * [POS]: 资产详情唯一组合视图；返回链接指向当前语言文件，且只挂载一个查看器。
  * [PROTOCOL]: 变更时更新此头部，然后检查 CLAUDE.md
@@ -9,10 +9,9 @@ import { AssetMetadataPanel } from '@/components/asset-metadata-panel';
 import { CatalogStateView } from '@/components/catalog-state';
 import { ModelViewerPanel } from '@/components/model-viewer-panel';
 import { useCatalog } from '@/lib/use-catalog';
-import { baseOptions } from '@/lib/layout.shared';
 import { getAssetDisplayName, localizedHomePath, type Locale } from '@/lib/locale';
 import { toStaticHref } from '@/lib/static-href';
-import { HomeLayout } from 'fumadocs-ui/layouts/home';
+import { DocsPage } from 'fumadocs-ui/layouts/spacious/page';
 
 export function AssetPage({ id, locale }: { id?: string; locale: Locale }) {
   const { t } = useTranslation();
@@ -21,13 +20,13 @@ export function AssetPage({ id, locale }: { id?: string; locale: Locale }) {
 
   if (state.status !== 'ready') {
     return (
-      <HomeLayout {...baseOptions(locale)}>
-        <main id="main-content" className="detail-main">
+      <DocsPage full breadcrumb={{ enabled: false }} footer={{ enabled: false }}>
+        <div id="main-content" className="detail-main">
           <a className="back-link" href={galleryUrl}>{t('asset.backGallery')}</a>
           <h1 className="detail-heading">{t('asset.detailTitle')}</h1>
           <CatalogStateView state={state} onRetry={retry} />
-        </main>
-      </HomeLayout>
+        </div>
+      </DocsPage>
     );
   }
 
@@ -35,8 +34,8 @@ export function AssetPage({ id, locale }: { id?: string; locale: Locale }) {
   const assetName = asset ? getAssetDisplayName(asset, locale) : undefined;
 
   return (
-    <HomeLayout {...baseOptions(locale)}>
-      <main id="main-content" className="detail-main">
+    <DocsPage full breadcrumb={{ enabled: false }} footer={{ enabled: false }}>
+      <div id="main-content" className="detail-main">
         <a className="back-link" href={galleryUrl}>{t('asset.backGallery')}</a>
         {!id && (
           <section className="detail-empty" role="status">
@@ -89,7 +88,7 @@ export function AssetPage({ id, locale }: { id?: string; locale: Locale }) {
             <AssetMetadataPanel asset={asset} />
           </>
         )}
-      </main>
-    </HomeLayout>
+      </div>
+    </DocsPage>
   );
 }
