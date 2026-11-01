@@ -6,10 +6,10 @@
 package.json: 锁定前端依赖；用 npm overrides 对齐 Vite+ core 与 Vitest 版本。
 package-lock.json: 固定 npm 依赖解析结果，供离线可复现安装。
 vite.config.ts: 接入 Vite+、TanStack Start、Fumadocs 与静态路由；预渲染预览固定绑定 127.0.0.1。
-source.config.ts: 声明只包含 `.mdx` 页面、排除 GEB 地图的 Fumadocs 集合。
+source.config.ts: 声明 Fumadocs `.mdx` 集合并把代码高亮限制为 Stone、Teal 语义色。
 components.json: 声明 shadcn Base UI 风格、Tailwind CSS 与组件导入别名。
 tsconfig.json: 配置严格 TypeScript 与 `@/` 源码别名。
-.gitignore: 排除构建产物、依赖目录和 `.tanstack` 缓存。
+.gitignore: 排除构建产物、依赖目录、`.tanstack` 缓存和隔离 Playwright 会话。
 README.md: 说明 Vite+ 命令、数据边界和静态输出目标。
 DESIGN.md: 约束资产库布局、颜色、组件、响应式规则和设计引用。
 src/: 双语路由、资产库、模型查看器、数据边界和分层样式。

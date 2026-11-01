@@ -1,40 +1,32 @@
 /**
- * [INPUT]: 依赖 Tailwind CSS 4 与 Fumadocs 变量。
- * [OUTPUT]: 提供网站颜色、字体、边界和基础页面 token。
- * [POS]: src/styles 的唯一 token 来源；各布局样式只消费语义变量。
+ * [INPUT]: 依赖 Tailwind CSS 4 提供的 Stone、Teal、Red 色阶。
+ * [OUTPUT]: 提供页面语义色、字体和两级圆角 token。
+ * [POS]: src/styles 的唯一视觉 token 来源；Fumadocs 与业务组件共用同一色阶。
  * [PROTOCOL]: 变更时更新此头部，然后检查 CLAUDE.md
  */
-@theme static {
-  --color-lpw-canvas: #fcfcf9;
-  --color-lpw-surface: #faf8f5;
-  --color-lpw-raised: #ffffff;
-  --color-lpw-ink: #27251e;
-  --color-lpw-muted: #6f6a62;
-  --color-lpw-accent: #016a71;
-  --color-lpw-accent-hover: #00595f;
-  --color-lpw-accent-soft: #d9ecec;
-  --color-lpw-line: rgb(39 26 0 / 0.12);
-  --color-lpw-danger: #b42318;
+:root {
+  color-scheme: light;
+  --lpw-canvas: var(--color-stone-50);
+  --lpw-surface: var(--color-stone-100);
+  --lpw-raised: var(--color-stone-50);
+  --lpw-ink: var(--color-stone-900);
+  --lpw-muted: var(--color-stone-600);
+  --lpw-line: var(--color-stone-300);
+  --lpw-accent: var(--color-teal-800);
+  --lpw-accent-hover: var(--color-teal-900);
+  --lpw-accent-soft: var(--color-teal-100);
+  --lpw-focus: var(--color-teal-700);
+  --lpw-danger: var(--color-red-800);
+  --lpw-danger-soft: var(--color-red-50);
+  --lpw-danger-line: var(--color-red-300);
   --font-sans: ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
   --font-mono: ui-monospace, 'SFMono-Regular', Menlo, Monaco, Consolas, monospace;
   --radius-sm: 4px;
-  --radius-md: 8px;
-  --radius-lg: 12px;
-  --radius-xl: 16px;
-}
-
-:root {
-  color-scheme: light;
-  --lpw-canvas: #fcfcf9;
-  --lpw-surface: #faf8f5;
-  --lpw-raised: #fff;
-  --lpw-ink: #27251e;
-  --lpw-muted: #6f6a62;
-  --lpw-accent: #016a71;
-  --lpw-accent-hover: #00595f;
-  --lpw-accent-soft: #d9ecec;
-  --lpw-line: rgb(39 26 0 / 0.12);
-  --lpw-danger: #b42318;
+  --radius-md: 6px;
+  --radius-lg: 8px;
+  --radius-xl: 8px;
+  --radius-2xl: 8px;
+  --radius-3xl: 8px;
   --color-fd-background: var(--lpw-canvas);
   --color-fd-foreground: var(--lpw-ink);
   --color-fd-muted: var(--lpw-surface);
@@ -44,11 +36,26 @@
   --color-fd-popover: var(--lpw-raised);
   --color-fd-popover-foreground: var(--lpw-ink);
   --color-fd-primary: var(--lpw-accent);
-  --color-fd-primary-foreground: #fff;
+  --color-fd-primary-foreground: var(--lpw-raised);
+  --color-fd-secondary: var(--lpw-surface);
+  --color-fd-secondary-foreground: var(--lpw-ink);
+  --color-fd-accent: var(--lpw-accent-soft);
+  --color-fd-accent-foreground: var(--lpw-ink);
+  --color-fd-ring: var(--lpw-focus);
   --color-fd-border: var(--lpw-line);
-  font-family: var(--font-sans);
+  --color-fd-info: var(--lpw-accent);
+  --color-fd-warning: var(--color-stone-700);
+  --color-fd-error: var(--lpw-danger);
+  --color-fd-success: var(--lpw-accent);
+  --color-fd-idea: var(--lpw-accent);
+  --color-fd-diff-remove: color-mix(in srgb, var(--lpw-danger) 12%, transparent);
+  --color-fd-diff-remove-symbol: var(--lpw-danger);
+  --color-fd-diff-add: color-mix(in srgb, var(--lpw-accent) 12%, transparent);
+  --color-fd-diff-add-symbol: var(--lpw-accent);
+  --color-fd-overlay: color-mix(in srgb, var(--lpw-ink) 24%, transparent);
   background: var(--lpw-canvas);
   color: var(--lpw-ink);
+  font-family: var(--font-sans);
 }
 
 html {
@@ -77,11 +84,6 @@ a {
 button:not(:disabled),
 [role='button']:not([aria-disabled='true']) {
   cursor: pointer;
-}
-
-:focus-visible {
-  outline: 2px solid var(--lpw-accent);
-  outline-offset: 2px;
 }
 
 ::selection {

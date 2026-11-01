@@ -1,7 +1,7 @@
 /**
  * [INPUT]: 依赖已验证目录字段和详情页按需读取的公开 metadata 资源。
- * [OUTPUT]: 展示资产事实、Prompt、recipe、质量声明、预览和权利确认输入图。
- * [POS]: AssetPage 的元数据子视图；不推断缺失值或认证质量状态。
+ * [OUTPUT]: 展示资产事实、Prompt、recipe、质量信息、预览和权利确认输入图。
+ * [POS]: AssetPage 的元数据子视图；发布范围说明可展开，不推断缺失值或认证质量状态。
  * [PROTOCOL]: 变更时更新此头部，然后检查 CLAUDE.md
  */
 import { useMemo } from 'react';
@@ -119,7 +119,6 @@ export function AssetMetadataPanel({ asset }: AssetMetadataPanelProps) {
     <section className="asset-metadata" aria-labelledby="asset-metadata-heading">
       <header className="metadata-heading">
         <div>
-          <span className="section-kicker">{t('asset.metadataKicker')}</span>
           <h2 id="asset-metadata-heading">{t('asset.metadataTitle')}</h2>
         </div>
         {state.status === 'error' && (
@@ -146,7 +145,7 @@ export function AssetMetadataPanel({ asset }: AssetMetadataPanelProps) {
           <dd>{[
             assetHasFormat(asset, 'glb') ? 'GLB' : null,
             assetHasFormat(asset, 'blend') ? 'BLEND' : null,
-          ].filter(Boolean).join(' · ') || notSupplied}</dd>
+          ].filter(Boolean).join(', ') || notSupplied}</dd>
         </div>
         <div><dt>{t('asset.license')}</dt><dd>{displayValue(asset.license, notSupplied)}</dd></div>
         <div><dt>{t('asset.source')}</dt><dd>{displayValue(release?.source ?? asset.source, notSupplied)}</dd></div>
@@ -199,6 +198,11 @@ export function AssetMetadataPanel({ asset }: AssetMetadataPanelProps) {
         </details>
       </div>
 
+      <details className="metadata-scope">
+        <summary>{t('asset.metadataScope')}</summary>
+        <p className="metadata-note">{t('asset.metadataAsPublished')}</p>
+      </details>
+
       {release?.source_input_image && (
         <figure className="source-input-image">
           <img src={release.source_input_image.url} alt={t('asset.sourceInputImageAlt')} loading="lazy" />
@@ -208,8 +212,6 @@ export function AssetMetadataPanel({ asset }: AssetMetadataPanelProps) {
           </figcaption>
         </figure>
       )}
-
-      <p className="metadata-note">{t('asset.metadataAsPublished')}</p>
     </section>
   );
 }

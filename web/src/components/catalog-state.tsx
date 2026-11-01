@@ -1,10 +1,9 @@
 /**
- * [INPUT]: 依赖 use-catalog.ts 目录状态、Dataset 身份和 i18next Provider。
- * [OUTPUT]: 导出双语目录加载、空数据与失败状态提示。
- * [POS]: 首页与资产详情页共用状态视图；错误细节保持可展开，不生成示例资产。
+ * [INPUT]: 依赖 use-catalog.ts 目录状态、i18next 资源与 Base UI 按钮。
+ * [OUTPUT]: 导出双语目录加载、空目录与验证失败提示。
+ * [POS]: 首页与资产详情页共用状态视图；失败细节可展开，空目录不重复提供数据集入口。
  * [PROTOCOL]: 变更时更新此头部，然后检查 CLAUDE.md
  */
-import { DATASET_REPO_ID } from '@/lib/catalog';
 import type { CatalogState } from '@/lib/use-catalog';
 import { useTranslation } from 'react-i18next';
 import { Button } from '@/components/ui/button';
@@ -22,31 +21,18 @@ export function CatalogStateView({ state, onRetry }: CatalogStateViewProps) {
     <section className="catalog-state" aria-live="polite">
       {state.status === 'loading' && (
         <div className="state-panel">
-          <span className="state-kicker">{t('catalog.loadingEyebrow')}</span>
-          <h2>{t('catalog.loadingTitle')}</h2>
-          <p role="status">{t('catalog.connecting', { dataset: DATASET_REPO_ID })}</p>
+          <p className="state-loading" role="status">{t('catalog.loading')}</p>
         </div>
       )}
 
       {state.status === 'empty' && (
         <div className="state-panel">
-          <span className="state-kicker">{t('catalog.emptyEyebrow')}</span>
           <h2>{t('catalog.emptyTitle')}</h2>
-          <p>{t('catalog.emptyDescription')}</p>
-          <a
-            className="text-link"
-            href={`https://huggingface.co/datasets/${DATASET_REPO_ID}`}
-            target="_blank"
-            rel="noreferrer"
-          >
-            {t('catalog.openDataset')} <span aria-hidden="true">↗</span>
-          </a>
         </div>
       )}
 
       {state.status === 'error' && (
         <div className="state-panel state-panel-error" role="alert">
-          <span className="state-kicker">{t('catalog.errorEyebrow')}</span>
           <h2>{t('catalog.errorTitle')}</h2>
           <p>{t('catalog.errorDescription')}</p>
           <details className="catalog-error-details">

@@ -191,7 +191,9 @@ export function CatalogFilters({
           </section>
 
           <section className="filter-group" aria-labelledby="triangle-filter-heading">
-            <h3 id="triangle-filter-heading">{t('home.lowPolyLevel')}</h3>
+            <h3 id="triangle-filter-heading" title={t('home.triangleFilterNote')}>
+              {t('home.lowPolyLevel')}
+            </h3>
             {bandOptions.filter((option) => option.count > 0).map((option) => (
               <FilterOption
                 key={option.value}
@@ -205,25 +207,25 @@ export function CatalogFilters({
             {bandOptions.every((option) => option.count === 0) && (
               <p className="facet-empty">{t('home.noFacetValues')}</p>
             )}
-            <p className="facet-hint">{t('home.triangleFilterNote')}</p>
           </section>
 
-          <section className="filter-group" aria-labelledby="tag-filter-heading">
-            <h3 id="tag-filter-heading">{t('home.tags')}</h3>
-            <div className="tag-filter-list">
-              {facets.tags.map((tag) => (
-                <FilterOption
-                  key={tag.label}
-                  id={`tag-${encodeURIComponent(tag.label)}`}
-                  label={tag.label}
-                  count={tag.count}
-                  checked={selectedTags.has(tag.label)}
-                  onChange={(checked) => onTagChange(tag.label, checked)}
-                />
-              ))}
-              {facets.tags.length === 0 && <p className="facet-empty">{t('home.noFacetValues')}</p>}
-            </div>
-          </section>
+          {facets.tags.length > 0 && (
+            <section className="filter-group" aria-labelledby="tag-filter-heading">
+              <h3 id="tag-filter-heading">{t('home.tags')}</h3>
+              <div className="tag-filter-list">
+                {facets.tags.map((tag) => (
+                  <FilterOption
+                    key={tag.label}
+                    id={`tag-${encodeURIComponent(tag.label)}`}
+                    label={tag.label}
+                    count={tag.count}
+                    checked={selectedTags.has(tag.label)}
+                    onChange={(checked) => onTagChange(tag.label, checked)}
+                  />
+                ))}
+              </div>
+            </section>
+          )}
 
           {hasFilters && (
             <button className="text-button clear-filters" type="button" onClick={onClear}>

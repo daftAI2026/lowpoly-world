@@ -1,7 +1,7 @@
 /**
- * [INPUT]: 依赖 shell、目录和详情模块的响应式语义 class。
- * [OUTPUT]: 提供窄屏布局、筛选折叠和减少动态偏好。
- * [POS]: 跨组件断点规则；细节样式仍归属各模块文件。
+ * [INPUT]: 依赖 shell、目录和详情模块的响应式 class。
+ * [OUTPUT]: 提供窄屏布局、筛选 disclosure 与减少动态规则。
+ * [POS]: 跨组件断点规则；局部尺寸仍归属各模块样式。
  * [PROTOCOL]: 变更时更新此头部，然后检查 CLAUDE.md
  */
 @media (min-width: 720px) {
@@ -16,46 +16,56 @@
 
 @media (max-width: 900px) {
   .gallery-heading {
-    align-items: start;
+    align-items: flex-start;
     flex-direction: column;
+    gap: 12px;
   }
 
   .catalog-workspace {
-    grid-template-columns: 220px minmax(0, 1fr);
-    gap: 20px;
+    grid-template-columns: 212px minmax(0, 1fr);
+    gap: 18px;
   }
 
   .asset-detail {
-    grid-template-columns: minmax(0, 1fr) minmax(260px, 0.8fr);
-    gap: 20px;
+    grid-template-columns: minmax(0, 1.1fr) minmax(240px, 0.9fr);
+    gap: 18px;
   }
 }
 
 @media (max-width: 719px) {
   .site-main,
   .detail-main {
-    width: min(100% - 32px, 1440px);
+    width: min(calc(100% - 32px), 1440px);
   }
 
   .gallery-heading {
-    gap: 16px;
-    padding: 24px 0 18px;
+    gap: 10px;
+    padding: 18px 0;
   }
 
   .gallery-links {
-    gap: 14px;
+    gap: 12px;
   }
 
   .catalog-section {
-    padding: 20px 0 44px;
+    padding: 16px 0 36px;
   }
 
   .catalog-toolbar {
     grid-template-columns: minmax(0, 1fr) auto;
+    gap: 8px 12px;
   }
 
   .catalog-search {
     grid-column: 1 / -1;
+  }
+
+  .sort-control {
+    min-width: 0;
+  }
+
+  .sort-control select {
+    min-width: 142px;
   }
 
   .catalog-result-count {
@@ -64,39 +74,36 @@
 
   .catalog-workspace {
     grid-template-columns: minmax(0, 1fr);
-    gap: 14px;
+    gap: 12px;
   }
 
-  .catalog-filters {
-    order: 0;
-  }
-
+  .catalog-filters,
   .catalog-results {
-    order: 1;
+    order: initial;
   }
 
   .asset-detail {
     grid-template-columns: minmax(0, 1fr);
-    gap: 22px;
+    gap: 18px;
   }
 
   .detail-main {
-    padding-top: 16px;
+    padding-top: 14px;
   }
 
   .viewer-stage {
     min-height: 240px;
   }
-
-  .site-footer {
-    align-items: start;
-    flex-direction: column;
-  }
 }
 
 @media (max-width: 359px) {
+  .site-main,
+  .detail-main {
+    width: calc(100% - 24px);
+  }
+
   .catalog-toolbar {
-    grid-template-columns: 1fr;
+    grid-template-columns: minmax(0, 1fr);
   }
 
   .sort-control {
@@ -105,6 +112,18 @@
 
   .sort-control select {
     flex: 1;
+  }
+
+  .catalog-result-count {
+    text-align: left;
+  }
+
+  .asset-facts {
+    grid-template-columns: minmax(0, 1fr);
+  }
+
+  .viewer-stage {
+    min-height: 0;
   }
 }
 

@@ -33,7 +33,7 @@ export function AssetCard({ asset, locale }: { asset: CatalogAsset; locale: Loca
           ) : (
             <span className="asset-preview-empty">{t('asset.noPreview')}</span>
           )}
-          {formats.length > 0 && <span className="asset-format">{formats.join(' · ')}</span>}
+          {formats.length > 0 && <span className="asset-format">{formats.join(' + ')}</span>}
         </div>
         <div className="asset-card-copy">
           <div>

@@ -1,109 +1,92 @@
 <!--
-[INPUT]: 依赖冻结方案、Hugging Face 参考页与 sutto 已公开的设计 token。
-[OUTPUT]: 约束网站视觉、排版、布局、组件状态和后续代理提示。
+[INPUT]: 依赖产品定位、UI Colors v4 色阶与 sutto 公开 token。
+[OUTPUT]: 约束资产库色彩、排版、布局、交互和文案。
 [POS]: 网站唯一设计地图；src/styles/app.css 汇入分层样式并消费本契约。
 [PROTOCOL]: 变更时更新此头部，然后检查 CLAUDE.md
 -->
 # Lowpoly World Design System
 
-**视觉论文：** 紧凑资产库工作台。暖白纸面承载炭灰信息，青绿只标记主要操作。真实资产缩略图是唯一强视觉锚点。
+低多边形资产工作台。暖中性色承载数据，青绿标记主要动作，红色表示失败。
+资产预览是唯一高权重视觉内容。空目录不显示模型占位图。
 
-**内容计划：** 窄品牌栏与工具入口 → 分类筛选侧栏、搜索/排序/计数 → 虚拟资产网格。详情页使用模型舞台与元数据栏。文档页提供产品说明与静态搜索。
+## Visual rules
 
-**交互论文：** 筛选和排序立即更新。资产网格按行虚拟化。模型查看器提供相机控件、复位、自动旋转和全屏。无装饰动效，遵循减少动态偏好。
+1. 使用紧凑标题栏、目录工具栏、分类筛选和虚拟网格。
+2. 不创建营销 Hero，不重复展示标题、计数或数据集入口。
+3. 只使用 UI Colors 的 Stone、Teal、Red v4 色阶。
+4. 颜色通过 `tokens.css` 的语义变量进入组件。
+5. 文字只用 12、14、20 px。12 px 是最小字号。
+6. 边线和焦点轮廓使用 0.5 px。焦点使用 Teal100 底色和文字下划线。
+7. 只用 4、6、8 px 圆角。内层圆角补偿 0.5 px 外框。
+8. 不使用阴影、彩色左边线、渐变、纹理或玻璃模糊。
+9. 不移动控件。必要的颜色变化使用 250 ms ease-out。
+10. 尊重减少动态偏好，触控目标至少 40 px。
 
-## 1. Visual Theme and Atmosphere
+## Semantic tokens
 
-画廊是资料工具，不是营销页。首屏先回答目录是否可用，再给搜索和筛选入口。资产存在时，缩略图承担视觉重量；目录为空时，不生成演示卡片。
-
-## 2. Color Palette and Roles
-
-| Token | Value | Role |
+| Role | Token | Use |
 | --- | --- | --- |
-| `canvas` | `#FCFCF9` | 全站暖白底色 |
-| `surface` | `#FAF8F5` | 控件与列表表面 |
-| `surface-raised` | `#FFFFFF` | 弹出层和输入表面 |
-| `ink` | `#27251E` | 正文、标题和主要图标 |
-| `muted` | `#6F6A62` | 次级说明和元数据 |
-| `line` | `rgb(39 26 0 / 0.12)` | 细边界线 |
-| `accent` | `#016A71` | 主操作、焦点和选中标记 |
-| `accent-hover` | `#00595F` | 主操作悬停 |
-| `accent-soft` | `#D9ECEC` | 选中分类的轻量底色 |
-| `danger` | `#B42318` | 目录错误状态 |
+| Canvas | `--color-stone-50` | 页面底色 |
+| Surface | `--color-stone-100` | 预览区和次级表面 |
+| Ink | `--color-stone-900` | 正文、标题和图标 |
+| Muted | `--color-stone-600` | 标签和次级事实 |
+| Line | `--color-stone-300` | 0.5 px 边界 |
+| Primary | `--color-teal-800` | 主要动作和焦点文字 |
+| Hover | `--color-teal-900` | 主要动作悬停 |
+| Selected | `--color-teal-100` | 分类和筛选选中底色 |
+| Focus | `--color-teal-700` | 键盘焦点轮廓 |
+| Error | `--color-red-800` | 失败状态文案 |
+| Error surface | `--color-red-50` | 失败状态背景 |
+| Error line | `--color-red-300` | 失败状态边界 |
 
-浅色是唯一主题。不要增加第二套暗色 token。对比度不足时先改字色，不扩大强调色范围。
+所有页面颜色只从上述色阶派生。Fumadocs 复用相同语义 token。
+页面使用浅色主题，不添加独立主题状态。
 
-## 3. Typography Rules
+## Layout and components
 
-使用系统无衬线字体。资产编号、哈希和 JSON 使用系统等宽字体。页面标题不使用展示字体。
+- 桌面目录使用 232 px 筛选栏和流式结果网格。
+- 移动端筛选使用原生 disclosure。
+- 宽度低于 360 px 时资产卡改为单列。
+- 虚拟网格由容器测量高度，不固定视口高度。
+- 资产卡外框 8 px，预览内角为外框半径减 0.5 px。
+- 代码高亮只用 Stone、Teal 语义色；不覆盖资产材质。
+- 详情页只加载当前资产的 GLB。
+- Viewer 提供拖动旋转、缩放、复位、自动旋转和全屏。
+- GLB 失败时只回退同资产预览图。
+- 文档和搜索使用 Fumadocs 布局及静态索引。
+- 文档标题、正文、代码分别使用 20、14、12 px。
 
-| Role | Size | Weight | Line height |
-| --- | --- | --- | --- |
-| 页面标题 | 28 px | 650 | 1.15 |
-| 分区标题 | 18 px | 620 | 1.3 |
-| 正文 | 14 px | 400 | 1.5 |
-| 控件与资产名 | 13 px | 520 | 1.4 |
-| 说明与 ID | 11 px | 450 | 1.45 |
+## Content rules
 
-数字使用等宽字形。分类、许可和字段不使用全大写装饰。
+- 面向查找、预览、下载和检查 3D 资产的用户。
+- 一句只表达一项操作或事实。
+- 不使用中点分隔格式、标签或事实。
+- 不重复页面标题、分类、计数、链接或空态说明。
+- 空态说明目录索引状态，不推断模型已发布或未发布。
+- 错误态保留重试和可展开技术细节。
+- 缺失字段显示本地化的 `Not supplied`。
+- 三角面数区间不是质量评级。
+- 发布元数据不构成质量或权利认证。
+- 只有发布记录含权利确认 URL 和说明时才显示来源输入图。
+- 不自动翻译资产字段，不生成演示记录或伪模型。
 
-## 4. Component Stylings
+## Responsive and accessibility
 
-- **按钮：** Base UI Button primitive。主按钮使用青绿底。次级按钮使用透明底和细边框。焦点使用 2 px 青绿 outline。
-- **输入：** Base UI-compatible native input。高度 38 px，8 px 圆角，焦点只改变边框与 outline。
-- **选择框：** Base UI Checkbox。可见勾选框 16 px，不用颜色单独表达状态。
-- **过滤器：** 分类以原生 disclosure 展开。标签和格式使用复选框。活动筛选显示可见状态和清除入口。
-- **资产卡：** 无阴影。卡片边界为 1 px 细线。预览比 4:3，资产名和 ID 完整换行，不用省略号。
-- **查看器：** 单件页面只挂载一个 `<model-viewer>`。工具条按钮显示当前状态。
-- **空态：** 写明 Dataset 尚无目录指针。隐藏没有数据支撑的分类和格式项。
-
-按钮采用统一 `8 px` 圆角。卡片采用 `12 px` 圆角。弹出层采用 `12 px` 圆角。控件不用 pill 几何。
-
-## 5. Layout Principles
-
-画廊最大宽度为 `1440 px`。桌面主栏由 `244 px` 筛选栏和流式网格组成。工具栏在列表顶部保持可见，不重复建营销 Hero。网格卡片最小宽度为 `180 px`，列数跟随容器宽度。
-
-间距使用 `4 / 8 / 12 / 16 / 24 / 32 / 48 px`。区块只用底线分隔。内容与状态文本优先靠左对齐。
-
-## 6. Depth and Elevation
-
-页面以平面表面和背景色阶区分层级。默认不使用阴影。弹出层使用 `#FFFFFF` 表面和边界线。画廊背景不使用渐变、纹理或玻璃效果。
-
-## 7. Do's and Don'ts
-
-1. 只从已校验目录渲染资产记录。
-2. 缺失字段显示 `Not supplied` 或本地化等价文案。
-3. `Source input image` 必须有明确 URL、权利确认和权利说明。
-4. 低模档位由三角面数阈值派生，不是质量认证。
-5. 只在详情页加载当前 GLB。
-6. 搜索、筛选与排序在浏览器内执行。
-7. 不把部署服务器、用户 Drive 或凭证接入站点。
-8. 不使用静态模型占位图、假记录或自动翻译资产字段。
-9. 不声明未经审核的许可、质量或来源结论。
-
-## 8. Responsive Behavior
-
-视口低于 `720 px` 时，筛选区折叠为原生 disclosure。宽度达到 `360 px` 时网格至少两列；窄屏卡片最小宽度为 `140 px`。低于 `360 px` 时退化为一列。工具栏控件允许换行。详情模型区在元数据前显示。触控目标不低于 `40 px`。
-
-桌面筛选栏保持普通文档流，不吸附在页面顶部。虚拟网格测量内容高度，不用固定窗口高度或假滚动容器。
-
-## 9. Agent Prompt Guide
-
-- **资产卡片：** 使用暖白底 `#FCFCF9`，文字 `#27251E`，边线 `rgb(39 26 0 / 0.12)`，12 px 圆角，无阴影。保留完整资产 ID、名称和真实预览。
-- **主要按钮：** 使用 `#016A71` 背景、白色文字、8 px 圆角，至少 40 px 高，焦点为 2 px outline。悬停变为 `#00595F`。
-- **筛选复选框：** 16 px 方框、8 px 圆角。选中使用 `#016A71`，标签文字保持 `#27251E`。
-- **空目录状态：** 使用平面 `#FAF8F5` 表面、1 px 边线、12 px 圆角。说明 Dataset 指针缺失，不放模型插画或虚构数量。
-- **模型舞台：** 使用 `#FAF8F5` 背景，16 px 圆角。将预览图作为失败回退，不把其他资产用作占位。
+- 主内容最大宽度 1440 px。
+- 移动端保留 16 px 页面边距；320 px 视口不得横向溢出。
+- 详情页在窄屏先显示模型舞台，再显示文件和元数据。
+- 颜色不能单独表达选中、错误或焦点状态。
+- 所有控件具有可见键盘焦点和本地化名称。
+- 文档侧栏、搜索结果和目录共用同一字号与色阶。
 
 ## References
 
-- [NVIDIA SimReady Dataset](https://huggingface.co/datasets/nvidia/simready-assets): 资产预览入口与分类发现。
-- [Scenario 3D Collection](https://huggingface.co/datasets/scenario-labs/3d-collection): 表格字段、预览图、prompt 和许可的并列呈现。
-- [sutto design tokens](https://github.com/daftAI2026/sutto/blob/main/src/index.css): 暖白、青绿、无阴影和间距层级。
-- [sutto Base UI Button](https://github.com/daftAI2026/sutto/blob/main/src/components/ui/button.tsx): Button 状态和 Base UI 组合方式。
-- [TanStack Virtual](https://tanstack.com/virtual/latest/docs/introduction): 由应用拥有 markup 与样式的无头虚拟器。
-- [Google model-viewer](https://modelviewer.dev/docs/index.html): 相机控件、加载事件、错误事件和相机复位方法。
-
-SimReady 页面展示分类入口与资产浏览入口。我们采用分类树和目录视图，不复制宣传页。
-Scenario 表格并列展示预览、模型、Prompt、输入、格式和许可。详情页保留这些字段边界。
-sutto 的 CSS token 和 Base UI Button 提供暖白、青绿、无阴影和交互原语参考。
+- [UI Colors Stone v4](https://uicolors.app/tailwind-colors/stone)
+- [UI Colors Teal v4](https://uicolors.app/tailwind-colors/teal)
+- [UI Colors Red v4](https://uicolors.app/tailwind-colors/red)
+- [UI Colors semantic tokens](https://uicolors.app/tokens)
+- [sutto design tokens](https://github.com/daftAI2026/sutto/blob/main/src/index.css)
+- [sutto Base UI Button](https://github.com/daftAI2026/sutto/blob/main/src/components/ui/button.tsx)
+- [TanStack Virtual](https://tanstack.com/virtual/latest/docs/introduction)
+- [Google model-viewer](https://modelviewer.dev/docs/index.html)
+- [Fumadocs UI translations](https://www.fumadocs.dev/docs/ui/translations)

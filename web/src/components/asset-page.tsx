@@ -1,6 +1,6 @@
 /**
  * [INPUT]: 依赖已验证目录、查询资产编号、本地化路径、静态 href helper 和详情子组件。
- * [OUTPUT]: 导出资产查看器、下载入口、元数据和诚实缺失状态。
+ * [OUTPUT]: 导出资产查看器、模型文件入口、发布元数据和缺失状态。
  * [POS]: 资产详情唯一组合视图；返回链接指向当前语言文件，且只挂载一个查看器。
  * [PROTOCOL]: 变更时更新此头部，然后检查 CLAUDE.md
  */
@@ -40,18 +40,14 @@ export function AssetPage({ id, locale }: { id?: string; locale: Locale }) {
         <a className="back-link" href={galleryUrl}>{t('asset.backGallery')}</a>
         {!id && (
           <section className="detail-empty" role="status">
-            <span className="section-kicker">{t('asset.detailTitle')}</span>
             <h1>{t('asset.chooseTitle')}</h1>
             <p>{t('asset.chooseDescription')}</p>
-            <a className="button-link" href={galleryUrl}>{t('asset.openGallery')}</a>
           </section>
         )}
         {id && !asset && (
           <section className="detail-empty" role="status">
-            <span className="section-kicker">{t('asset.notFoundEyebrow')}</span>
             <h1>{t('asset.notFoundTitle')}</h1>
             <p>{t('asset.notFoundDescription', { id })}</p>
-            <a className="button-link" href={galleryUrl}>{t('asset.returnGallery')}</a>
           </section>
         )}
         {asset && assetName && (
@@ -71,8 +67,7 @@ export function AssetPage({ id, locale }: { id?: string; locale: Locale }) {
                 assetName={assetName}
               />
               <aside className="asset-detail-copy" aria-label={t('asset.detailTitle')}>
-                <span className="section-kicker">{t('asset.metadataKicker')}</span>
-                <p className="detail-category">{asset.category || t('home.uncategorized')}</p>
+                <h2 className="detail-actions-heading">{t('asset.filesTitle')}</h2>
                 <div className="detail-actions">
                   {asset.glb_url && (
                     <a className="button-link button-link-primary" href={asset.glb_url} download>
@@ -88,7 +83,6 @@ export function AssetPage({ id, locale }: { id?: string; locale: Locale }) {
                     <span className="detail-note">{t('asset.filesNotSupplied')}</span>
                   )}
                 </div>
-                <p className="detail-note">{t('asset.fileNote')}</p>
               </aside>
             </div>
 
