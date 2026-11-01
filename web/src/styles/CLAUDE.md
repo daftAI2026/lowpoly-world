@@ -5,7 +5,7 @@
 
 app.css: 导入 Tailwind、Fumadocs 和本地 CSS 分层，不直接承载业务规则。
 tokens.css: 定义 UI Colors 语义色与四档原生文字 token。
-shell.css: 定义首页头部、项目链接、内容宽度和无障碍隐藏文本。
+shell.css: 内容宽度随 Fumadocs token 对齐，提供标题与隐藏文本，不自建导航。
 catalog.css: 定义搜索、分类树、facet、资产卡、虚拟网格和目录状态。
 detail.css: 定义单件查看器、下载按钮、元数据和预览布局。
 responsive.css: 统一维护窄屏断点、筛选折叠和减少动态规则。

@@ -1,5 +1,5 @@
 /**
- * [INPUT]: 依赖 i18next 资源、公开目录状态、URL locale 与静态 href helper。
+ * [INPUT]: 依赖 Fumadocs HomeLayout、共享导航、公开目录和双语资源。
  * [OUTPUT]: 导出紧凑资产库首页，由原生壳承载目录状态与资产浏览。
  * [POS]: 首页内容区；导航归共享配置，资产浏览由 CatalogBrowser 补充。
  * [PROTOCOL]: 变更时更新此头部，然后检查 CLAUDE.md
