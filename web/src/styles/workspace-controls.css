@@ -1,16 +1,29 @@
 /**
  * [INPUT]: 依赖工具栏、选择集和复制动作语义 class。
- * [OUTPUT]: 提供紧凑控制、条件条和下载审阅的响应式样式。
+ * [OUTPUT]: 提供同排上下文与搜索、紧凑控制和下载审阅样式。
  * [POS]: 工作区操作层；不覆盖原生文档、导航或主题值。
  * [PROTOCOL]: 变更时更新此头部，然后检查 CLAUDE.md
  */
+
+.workspace-heading {
+  display: grid;
+  min-width: 0;
+  gap: 8px 24px;
+  align-items: center;
+  margin-bottom: 8px;
+}
+@container (min-width: 900px) {
+  .workspace-heading {
+    grid-template-columns: 232px minmax(0, 1fr);
+  }
+}
 
 .asset-breadcrumb {
   display: flex;
   flex-wrap: wrap;
   align-items: center;
   gap: 8px;
-  margin-bottom: 12px;
+  margin: 0;
   font-size: 14px;
 }
 .asset-breadcrumb > span {
@@ -30,7 +43,7 @@
   flex-wrap: wrap;
   align-items: center;
   gap: 4px 16px;
-  padding-bottom: 12px;
+  padding-bottom: 8px;
   font-size: 12px;
 }
 .density-control {

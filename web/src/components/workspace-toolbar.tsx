@@ -1,6 +1,6 @@
 /**
  * [INPUT]: 依赖 URL 状态、真实分类与官方 shadcn 表单、弹层和导航。
- * [OUTPUT]: 导出搜索、面包屑、可移除条件、视图密度与偏好控制。
+ * [OUTPUT]: 导出同排搜索与分类上下文、条件条及视图控制。
  * [POS]: 工作区工具栏；只发状态变更，不加载目录或模型。
  * [PROTOCOL]: 变更时更新此头部，然后检查 CLAUDE.md
  */
@@ -96,74 +96,78 @@ export function WorkspaceToolbar({
     });
   return (
     <div className="workspace-toolbar">
-      <Breadcrumb className="asset-breadcrumb" aria-label={t('workspace.allAssets')}>
-        <BreadcrumbList>
-          <BreadcrumbItem>
-            <BreadcrumbLink
-              render={
-                <Button variant="link" onClick={() => update({ filters: { ...emptyFilters } })} />
-              }
+      <div className="workspace-heading">
+        <Breadcrumb className="asset-breadcrumb" aria-label={t('workspace.allAssets')}>
+          <BreadcrumbList>
+            <BreadcrumbItem>
+              <BreadcrumbLink
+                render={
+                  <Button variant="link" onClick={() => update({ filters: { ...emptyFilters } })} />
+                }
+              >
+                {t('workspace.allAssets')}
+              </BreadcrumbLink>
+            </BreadcrumbItem>
+            {parts.map((part, index) => (
+              <Fragment key={index}>
+                <BreadcrumbSeparator />
+                <BreadcrumbItem>
+                  {index === parts.length - 1 ? (
+                    <BreadcrumbPage>
+                      {part === 'Uncategorized' ? t('home.uncategorized') : part}
+                    </BreadcrumbPage>
+                  ) : (
+                    <BreadcrumbLink
+                      render={
+                        <Button
+                          variant="link"
+                          onClick={() =>
+                            filter({ categoryPath: parts.slice(0, index + 1).join('/') })
+                          }
+                        />
+                      }
+                    >
+                      {part === 'Uncategorized' ? t('home.uncategorized') : part}
+                    </BreadcrumbLink>
+                  )}
+                </BreadcrumbItem>
+              </Fragment>
+            ))}
+          </BreadcrumbList>
+        </Breadcrumb>
+        <div className="catalog-toolbar">
+          <Label className="catalog-search">
+            <span className="visually-hidden">{t('home.searchLabel')}</span>
+            <Search aria-hidden="true" />
+            <Input
+              type="search"
+              value={f.query}
+              placeholder={t('home.searchPlaceholder')}
+              onChange={(e) => filter({ query: e.currentTarget.value }, true)}
+            />
+          </Label>
+          <Label className="sort-control">
+            <span>{t('home.sortLabel')}</span>
+            <NativeSelect
+              value={s.sort}
+              onChange={(e) => {
+                if (isCatalogSort(e.currentTarget.value)) update({ sort: e.currentTarget.value });
+              }}
             >
-              {t('workspace.allAssets')}
-            </BreadcrumbLink>
-          </BreadcrumbItem>
-          {parts.map((part, index) => (
-            <Fragment key={index}>
-              <BreadcrumbSeparator />
-              <BreadcrumbItem>
-                {index === parts.length - 1 ? (
-                  <BreadcrumbPage>
-                    {part === 'Uncategorized' ? t('home.uncategorized') : part}
-                  </BreadcrumbPage>
-                ) : (
-                  <BreadcrumbLink
-                    render={
-                      <Button
-                        variant="link"
-                        onClick={() =>
-                          filter({ categoryPath: parts.slice(0, index + 1).join('/') })
-                        }
-                      />
-                    }
-                  >
-                    {part === 'Uncategorized' ? t('home.uncategorized') : part}
-                  </BreadcrumbLink>
-                )}
-              </BreadcrumbItem>
-            </Fragment>
-          ))}
-        </BreadcrumbList>
-      </Breadcrumb>
-      <div className="catalog-toolbar">
-        <Label className="catalog-search">
-          <span className="visually-hidden">{t('home.searchLabel')}</span>
-          <Search aria-hidden="true" />
-          <Input
-            type="search"
-            value={f.query}
-            placeholder={t('home.searchPlaceholder')}
-            onChange={(e) => filter({ query: e.currentTarget.value }, true)}
-          />
-        </Label>
-        <Label className="sort-control">
-          <span>{t('home.sortLabel')}</span>
-          <NativeSelect
-            value={s.sort}
-            onChange={(e) => {
-              if (isCatalogSort(e.currentTarget.value)) update({ sort: e.currentTarget.value });
-            }}
-          >
-            <NativeSelectOption value="id-asc">{t('home.sortId')}</NativeSelectOption>
-            <NativeSelectOption value="name-asc">{t('home.sortName')}</NativeSelectOption>
-            <NativeSelectOption value="triangles-asc">{t('home.sortTriangles')}</NativeSelectOption>
-            <NativeSelectOption value="triangles-desc">
-              {t('home.sortTrianglesDesc')}
-            </NativeSelectOption>
-          </NativeSelect>
-        </Label>
-        <p className="catalog-result-count" aria-live="polite">
-          {t('home.resultCount', { visible, total })}
-        </p>
+              <NativeSelectOption value="id-asc">{t('home.sortId')}</NativeSelectOption>
+              <NativeSelectOption value="name-asc">{t('home.sortName')}</NativeSelectOption>
+              <NativeSelectOption value="triangles-asc">
+                {t('home.sortTriangles')}
+              </NativeSelectOption>
+              <NativeSelectOption value="triangles-desc">
+                {t('home.sortTrianglesDesc')}
+              </NativeSelectOption>
+            </NativeSelect>
+          </Label>
+          <p className="catalog-result-count" aria-live="polite">
+            {t('home.resultCount', { visible, total })}
+          </p>
+        </div>
       </div>
       <div className="workspace-controls">
         <ToggleGroup

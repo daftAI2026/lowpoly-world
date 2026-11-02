@@ -4,7 +4,7 @@
 
 ## 成员清单
 
-workspace-toolbar.tsx: URL 搜索、面包屑、条件条、视图密度与偏好，不加载模型。
+workspace-toolbar.tsx: 同排 URL 搜索与分类上下文、条件条和视图偏好，不加载模型。
 download-selection.tsx: 独立下载选择集与固定版本文件、清单和命令，不追踪磁盘落盘。
 copy-button.tsx: 组合官方 Button 与真实 Clipboard 反馈，不重造按钮。
 
@@ -18,7 +18,7 @@ catalog-state.tsx: 共用双语加载、空目录和目录校验失败视图；�
 docs-shell.tsx: 文档专用 Spacious 阅读布局；展示页不读取文档树。
 asset-details.tsx: 共用模型与事实；紧凑元数据归事实列，独立详情保留整页位置。
 asset-preview.tsx: 结果工作区内部的可关闭预览，支持左右下停靠和应用内展开。
-home-page.tsx: HomeLayout 承载模型浏览；没有文档侧栏或阅读面板。
+home-page.tsx: HomeLayout 承载模型浏览；隐藏重复视觉标题，保留语义标题。
 hugging-face-icon.tsx: 本地 HF 官方彩色 SVG，不改黄颜色与比例。
 model-viewer-panel.tsx: 当前选中资产唯一 3D viewer；加载失败时回退同资产预览。
 mdx.tsx: 合并 Fumadocs 默认组件与文档覆盖组件。

@@ -38,9 +38,3 @@
   width: min(calc(var(--fd-layout-width, 1400px) - 32px), calc(100% - 32px));
   margin-inline: auto;
 }
-.gallery-title {
-  margin: 24px 0 0;
-  font-size: 28px;
-  font-weight: 600;
-  line-height: 1.25;
-}

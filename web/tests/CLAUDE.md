@@ -3,6 +3,8 @@
 
 ## 成员清单
 
+catalog-header.test.mjs: 展厅无重复标题、面包屑与搜索同排及窄屏换行回归。
+
 preview-fit.test.mjs: 下方画布高度、紧凑工具栏与预览元数据事实列回归。
 
 theme-selection.test.mjs: 角落遮挡、复选对比、用户主题与本地字体红绿回归。
