@@ -3,6 +3,8 @@
 
 ## 成员清单
 
+preview-fit.test.mjs: 下方画布高度、紧凑工具栏与预览元数据事实列回归。
+
 theme-selection.test.mjs: 角落遮挡、复选对比、用户主题与本地字体红绿回归。
 
 component-reuse.test.mjs: 官方组件来源、禁止重复基础控件与 FU 主题桥接回归。

@@ -16,7 +16,7 @@ catalog-filters.tsx: 展示分类树与有值筛选项；空标签组隐藏，�
 catalog-grid.tsx: 真实滚动宿主的行虚拟化，支持网格、列表、密度与结果定位。
 catalog-state.tsx: 共用双语加载、空目录和目录校验失败视图；只保留必要重试入口。
 docs-shell.tsx: 文档专用 Spacious 阅读布局；展示页不读取文档树。
-asset-details.tsx: 预览面板与独立详情共用的模型、文件和元数据组合器。
+asset-details.tsx: 共用模型与事实；紧凑元数据归事实列，独立详情保留整页位置。
 asset-preview.tsx: 结果工作区内部的可关闭预览，支持左右下停靠和应用内展开。
 home-page.tsx: HomeLayout 承载模型浏览；没有文档侧栏或阅读面板。
 hugging-face-icon.tsx: 本地 HF 官方彩色 SVG，不改黄颜色与比例。

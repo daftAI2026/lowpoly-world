@@ -12,7 +12,7 @@ tokens.css: 用户黑白 OKLCH 明暗色板、字体栈与业务别名，唯一�
 shell.css: 展示页对齐原生 Home 导航；文档只复用回退提示。
 catalog.css: 定义业务排列、分类层级、资产卡与结果状态，不重造基础控件。
 workspace-controls.css: 工具栏、条件条、选择集与下载会话的低噪声控制样式。
-workspace.css: 官方 Resizable 的停靠顺序与内容布局，不实现拖拽事件。
+workspace.css: 官方分栏停靠与画布余高；下方事实列独立滚动，不实现拖拽事件。
 detail.css: 定义单件查看器、下载按钮、元数据和预览布局。
 responsive.css: 依据内容容器宽度统一维护窄屏断点、筛选折叠和减少动态规则。
 fumadocs.css: 保留无覆盖入口；模板几何、排版与外观全部归上游。

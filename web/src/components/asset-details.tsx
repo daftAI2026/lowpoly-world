@@ -1,7 +1,7 @@
 /**
  * [INPUT]: 依赖已验证资产、唯一查看器、元数据与官方文件动作按钮。
  * [OUTPUT]: 导出面板和独立页面共享的资产内容、下载与事实。
- * [POS]: 资产展示的唯一组合器；不创建导航、筛选或第三方仿真能力。
+ * [POS]: 唯一详情组合器；紧凑元数据归事实列，独立详情保留整页位置。
  * [PROTOCOL]: 变更时更新此头部，然后检查 CLAUDE.md
  */
 import { Button } from '@/components/ui/button';
@@ -22,6 +22,7 @@ export function AssetDetails({
 }) {
   const { t } = useTranslation();
   const assetName = getAssetDisplayName(asset, locale);
+  const metadata = <AssetMetadataPanel asset={asset} />;
   return (
     <>
       {!compact && (
@@ -65,10 +66,11 @@ export function AssetDetails({
               <span className="detail-note">{t('asset.filesNotSupplied')}</span>
             )}
           </div>
+          {compact && metadata}
         </aside>
       </div>
 
-      <AssetMetadataPanel asset={asset} />
+      {!compact && metadata}
     </>
   );
 }

@@ -1,6 +1,6 @@
 /**
  * [INPUT]: 依赖 shadcn 官方 Resizable 分栏和共享资产内容。
- * [OUTPUT]: 仅定义停靠顺序、工作区尺寸与业务内容布局。
+ * [OUTPUT]: 定义停靠尺寸与下方画布余高，元数据独立滚动。
  * [POS]: 交互由官方组件负责，不自写分隔条事件或重造基础控件。
  * [PROTOCOL]: 变更时更新此头部，然后检查 CLAUDE.md
  */
@@ -207,6 +207,62 @@
     height: clamp(240px, calc(100dvh - 390px), 640px);
     min-height: 240px;
     aspect-ratio: auto;
+  }
+  /* ---- 下方画布按面板余高适配，事实列单独滚动 ---- */
+  .catalog-workspace[data-bottom='true'][data-expanded='false'] .preview-panel-header {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) auto auto;
+    align-items: center;
+    gap: 8px 12px;
+  }
+  .catalog-workspace[data-bottom='true'][data-expanded='false'] .preview-panel-actions {
+    grid-column: 3;
+    grid-row: 1;
+  }
+  .catalog-workspace[data-bottom='true'][data-expanded='false'] .preview-more {
+    display: contents;
+  }
+  .catalog-workspace[data-bottom='true'][data-expanded='false']
+    .preview-more
+    > [data-slot='collapsible-trigger'] {
+    grid-column: 2;
+    grid-row: 1;
+  }
+  .catalog-workspace[data-bottom='true'][data-expanded='false']
+    .preview-more
+    > [data-slot='collapsible-content'] {
+    grid-column: 1 / -1;
+  }
+  .catalog-workspace[data-bottom='true'][data-expanded='false'] .preview-panel-body {
+    display: flex;
+    flex: 1;
+    overflow: hidden;
+  }
+  .catalog-workspace[data-bottom='true'][data-expanded='false'] .asset-detail {
+    width: 100%;
+    height: 100%;
+    min-height: 0;
+    grid-template-rows: minmax(0, 1fr);
+    align-items: stretch;
+  }
+  .catalog-workspace[data-bottom='true'][data-expanded='false'] .viewer-panel {
+    display: flex;
+    flex-direction: column;
+    min-height: 0;
+  }
+  .catalog-workspace[data-bottom='true'][data-expanded='false'] .viewer-stage:not(:fullscreen) {
+    flex: 1;
+    min-height: 0;
+    aspect-ratio: auto;
+  }
+  .catalog-workspace[data-bottom='true'][data-expanded='false'] .viewer-controls {
+    flex-shrink: 0;
+  }
+  .catalog-workspace[data-bottom='true'][data-expanded='false'] .asset-detail-copy {
+    height: 100%;
+    min-height: 0;
+    overflow-y: auto;
+    overscroll-behavior: contain;
   }
   .catalog-workspace[data-bottom='true']:not([data-expanded='true'])
     .preview-panel-body
