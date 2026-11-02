@@ -37,3 +37,10 @@ uv run --python 3.12 --with fonttools==4.60.1 --with brotli==1.2.0 python script
 ## HF 标识 SHA256
 
 hugging-face.svg: `942cad1ccda905ac5a659dfd2d78b344fccfb84a8a3ac3721e08f488205638a0`
+
+## 布局与组件
+
+Fumadocs Spacious 直接来自已锁定的官方包。
+LICENSE-fumadocs.txt 保留 Fuma 的原始 MIT 通知。
+shadcn Base Nova 来源与适配摘要见 ../components/ui/registry.sources.json。
+LICENSE-shadcn.txt 随组件副本托管。

@@ -1,6 +1,6 @@
 /**
  * [INPUT]: 依赖展示首页、工作区工具栏与布局样式。
- * [OUTPUT]: 验证无重复大标题、按需分类路径与全宽搜索及窄屏换行边界。
+ * [OUTPUT]: 验证无重复大标题、按需分类路径与唯一模型搜索及窄屏换行边界。
  * [POS]: 展厅纵向空间回归；浏览器另测真实结果区起点。
  * [PROTOCOL]: 变更时更新此头部，然后检查 CLAUDE.md
  */
@@ -36,7 +36,7 @@ describe('Compact catalog header', () => {
     expect(home).toMatch(/<h1 className="visually-hidden">\{t\('home.collectionTitle'\)\}<\/h1>/);
     expect(home).not.toContain('className="gallery-title"');
   });
-  it('shows category navigation only in the active filter row', async () => {
+  it('shows category navigation only in the active filter row and keeps search out of the toolbar', async () => {
     const source = await read('../src/components/workspace-toolbar.tsx');
     expect(source).toMatch(
       /<div className="workspace-heading">\s*<div className="catalog-toolbar">/,
@@ -44,6 +44,10 @@ describe('Compact catalog header', () => {
     expect(source).toMatch(/<div className="filter-chips">\s*\{f.categoryPath && \(\s*<Breadcrumb/);
     expect(source).toContain("parts.slice(0, index + 1).join('/')");
     expect(source).toContain('filters: { ...emptyFilters }');
+    expect(source).not.toContain('type="search"');
+    const shell = await read('../src/components/gallery-shell.tsx');
+    expect(shell).toContain('searchTrigger: catalogSearchSlots');
+    expect(shell).toContain('searchToggle={{ enabled: Boolean(search) }}');
   });
   it('does not reserve a blank sidebar column above the catalog', async () => {
     const controls = await read('../src/styles/workspace-controls.css');

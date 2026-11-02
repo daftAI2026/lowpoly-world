@@ -1,6 +1,14 @@
 /**
  * [INPUT]: 依赖 Fumadocs 官方 preset 与 Spacious 样式。
- * [OUTPUT]: 保留该入口，不附加模板覆盖规则。
- * [POS]: 原生样式边界；禁止改导航、页面、字号、圆角或通用 class。
+ * [OUTPUT]: 统一原生主面板 0.5px 边线，并停用布局过渡。
+ * [POS]: 原生样式边界；布局、导航、字号与圆角仍归上游。
  * [PROTOCOL]: 变更时更新此头部，然后检查 CLAUDE.md
  */
+
+.ui #nd-page-panel {
+  border-width: 0.5px;
+}
+
+.ui #fd-spacious-layout {
+  transition: none;
+}

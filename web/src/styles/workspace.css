@@ -7,8 +7,7 @@
 .browse-main {
   min-width: 0;
 }
-.catalog-results,
-.workspace-filter-rail {
+.catalog-results {
   min-width: 0;
 }
 .catalog-results {
@@ -119,27 +118,30 @@
   inset: -10px;
 }
 
-.asset-grid[data-view='list'] .asset-card {
+.asset-grid[data-view='list'] .asset-card-link {
   display: grid;
   grid-template-columns: 80px minmax(0, 1fr);
   grid-template-rows: auto auto;
   gap: 0 12px;
   padding-right: 12px;
 }
-.asset-grid[data-view='list'] .asset-card > h3 {
+.asset-grid[data-view='list'] .asset-card-heading,
+.asset-grid[data-view='list'] .asset-card-media {
+  display: contents;
+}
+.asset-grid[data-view='list'] [data-slot='card-title'] {
   grid-column: 2;
   grid-row: 1;
-  padding: 8px 0 0;
+  padding-top: 8px;
+}
+.asset-grid[data-view='list'] .asset-card-heading h3 {
   min-height: 0;
 }
-.asset-grid[data-view='list'] .asset-card > p {
+.asset-grid[data-view='list'] [data-slot='card-description'] {
   grid-column: 2;
   grid-row: 2;
-  padding: 0 0 8px;
+  padding-bottom: 8px;
   align-self: end;
-}
-.asset-grid[data-view='list'] .asset-card > div:last-child {
-  display: contents;
 }
 .asset-grid[data-view='list'] .asset-preview {
   grid-column: 1;
@@ -163,16 +165,11 @@
   padding: 0 0 8px;
   font-size: 12px;
 }
-@container (min-width: 900px) {
+@media (min-width: 900px) {
   .catalog-workspace {
     height: var(--workspace-height, calc(100dvh - 280px));
-    min-height: 420px;
+    min-height: 320px;
     align-items: stretch;
-  }
-  .workspace-filter-rail {
-    height: 100%;
-    overflow-y: auto;
-    overscroll-behavior: contain;
   }
   .browse-main {
     min-height: 0;
@@ -186,19 +183,9 @@
     max-height: 100%;
     min-height: 0;
   }
-  .catalog-workspace[data-preview='true'][data-dock='left'][data-bottom='false'] {
-    grid-template-columns: minmax(0, 1fr);
-  }
-  .catalog-workspace[data-preview='true'][data-dock='left'][data-bottom='false']
-    .workspace-filter-rail {
-    display: none;
-  }
   .catalog-workspace[data-expanded='true'] {
     grid-template-columns: minmax(0, 1fr);
     height: calc(100dvh - 150px);
-  }
-  .catalog-workspace[data-expanded='true'] .workspace-filter-rail {
-    display: none;
   }
   .catalog-workspace[data-expanded='true'] .preview-panel-body .asset-detail {
     grid-template-columns: minmax(0, 1fr) 280px;

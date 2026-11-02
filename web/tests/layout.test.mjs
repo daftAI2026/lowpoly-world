@@ -39,16 +39,22 @@ describe('Fumadocs application foundation', () => {
     expect(route).not.toContain("from 'fumadocs-ui/layouts/docs'");
   });
 
-  it('extends native Fumadocs cards only for asset previews', async () => {
+  it('uses official shadcn cards for assets, not a second FU control family', async () => {
     const card = await readSource('../src/components/asset-card.tsx');
-    expect(card).toContain("from 'fumadocs-ui/components/card'");
+    expect(card).toContain("from './ui/card'");
+    expect(card).toContain('<CardHeader');
+    expect(card).not.toContain('fumadocs-ui/components/card');
     expect(card).toContain('<Card');
     expect(card).not.toContain('<canvas');
   });
 
-  it('aligns gallery content with the native shell width token', async () => {
+  it('fills the native Spacious panel without the former 1400px gallery cap', async () => {
     const css = await readSource('../src/styles/shell.css');
-    expect(css).toContain('var(--fd-layout-width, 1400px)');
+    expect(css).not.toContain('1400px');
+    const shell = await readSource('../src/components/gallery-shell.tsx');
+    expect(shell).toContain('layout:[--fd-page-width:100%]');
+    expect(shell).toContain('full');
+    expect(shell).toContain('tableOfContent={{ enabled: false }}');
   });
 
   it('does not replace framework geometry with global class-name interception', async () => {
@@ -75,7 +81,8 @@ describe('Official source fidelity', () => {
     expect(tokens).not.toMatch(/--(?:text-|radius-)/);
     expect(tokens).not.toContain('--color-fd-background:');
     expect(tokens).toContain("'Inter'");
-    expect(css).not.toMatch(/#nd-(?:nav|subnav|page|sidebar)/);
+    expect(css).toMatch(/\.ui #nd-page-panel\s*\{\s*border-width: 0\.5px;\s*\}/);
+    expect(css).not.toMatch(/(?:^|[;{]\s*)(?:width|height|padding|margin|font-size|border-radius)\s*:/);
   });
   it('virtualizes against the real native page scroller, with a window fallback on mobile', async () => {
     const grid = await readSource('../src/components/catalog-grid.tsx');

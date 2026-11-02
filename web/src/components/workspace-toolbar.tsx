@@ -1,6 +1,6 @@
 /**
  * [INPUT]: 依赖 URL 状态、真实分类与官方 shadcn 表单、弹层和导航。
- * [OUTPUT]: 导出全宽搜索、按需分类路径、条件条及视图控制。
+ * [OUTPUT]: 导出排序、结果计数、按需分类路径与视图控制。
  * [POS]: 工作区工具栏；只发状态变更，不加载目录或模型。
  * [PROTOCOL]: 变更时更新此头部，然后检查 CLAUDE.md
  */
@@ -19,12 +19,10 @@ import {
   BreadcrumbPage,
   BreadcrumbSeparator,
 } from '@/components/ui/breadcrumb';
-import { Search } from 'lucide-react';
 import { useTranslation } from 'react-i18next';
 import type { WorkspaceState } from '@/lib/workspace-state';
 import { emptyFilters } from '@/lib/workspace-state';
 import { hasCatalogFilters, isCatalogSort, type CatalogFilters } from '@/lib/catalog-view';
-import { Input } from './ui/input';
 type Props = {
   state: WorkspaceState;
   update: (s: Partial<WorkspaceState>, replace?: boolean) => void;
@@ -103,16 +101,6 @@ export function WorkspaceToolbar({
     <div className="workspace-toolbar">
       <div className="workspace-heading">
         <div className="catalog-toolbar">
-          <Label className="catalog-search">
-            <span className="visually-hidden">{t('home.searchLabel')}</span>
-            <Search aria-hidden="true" />
-            <Input
-              type="search"
-              value={f.query}
-              placeholder={t('home.searchPlaceholder')}
-              onChange={(e) => filter({ query: e.currentTarget.value }, true)}
-            />
-          </Label>
           <Label className="sort-control">
             <span>{t('home.sortLabel')}</span>
             <NativeSelect

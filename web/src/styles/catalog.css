@@ -11,23 +11,30 @@
 
 .catalog-toolbar {
   display: grid;
-  grid-template-columns: minmax(260px, 1fr) auto auto;
+  grid-template-columns: minmax(0, 1fr) auto;
   align-items: center;
   gap: 12px;
 }
 
 .catalog-search {
+  position: relative;
   display: flex;
-  align-items: center;
-  gap: 8px;
+  width: 100%;
   min-width: 0;
+  align-items: center;
   color: var(--lpw-muted);
 }
 
 .catalog-search > svg {
+  position: absolute;
+  inset-inline-start: 10px;
   width: 16px;
   height: 16px;
-  flex: 0 0 auto;
+  pointer-events: none;
+}
+
+.catalog-search input {
+  padding-inline-start: 34px;
 }
 
 .sort-control {
@@ -44,24 +51,27 @@
   color: var(--lpw-muted);
   font-size: 12px;
   font-variant-numeric: tabular-nums;
-  text-align: right;
+  order: -1;
+  text-align: left;
   white-space: nowrap;
 }
 
 .catalog-workspace {
   display: grid;
-  grid-template-columns: 232px minmax(0, 1fr);
+  grid-template-columns: minmax(0, 1fr);
   align-items: start;
   gap: 24px;
 }
 
 .catalog-filters {
   min-width: 0;
-  border-top: 0.5px solid var(--lpw-line);
 }
 
 .filter-panel {
-  padding: 4px 0 14px;
+  padding: 0 0 14px;
+}
+.filter-group:first-child {
+  border-top: 0;
 }
 
 .filter-group {
@@ -167,12 +177,13 @@
   height: 100%;
 }
 
-.asset-card[data-card] {
+.asset-card[data-slot='card'] {
   transition: background-color 250ms ease-out;
   display: flex;
   height: 100%;
   min-width: 0;
   flex-direction: column;
+  gap: 0;
   overflow: hidden;
   padding: 0;
   border-width: 0.5px;
@@ -180,26 +191,39 @@
   background: var(--lpw-raised);
 }
 
-.asset-card > h3 {
+.asset-card-link {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+  min-width: 0;
+  outline-offset: -2px;
+}
+.asset-card-link:focus-visible {
+  outline: 0.5px solid var(--lpw-focus);
+}
+.asset-card-heading {
   order: 2;
-  min-height: calc(2.8em + 12px);
+  display: flex;
+  flex-direction: column;
+  align-items: stretch;
+  gap: 8px;
+  padding: 12px;
+}
+.asset-card-heading h3 {
+  min-height: 2.8em;
   margin: 0;
-  padding: 12px 12px 0;
   color: var(--lpw-ink);
   font-size: 14px;
   line-height: 1.4;
   overflow-wrap: anywhere;
 }
-
-.asset-card > p {
-  order: 3;
-  padding: 4px 12px 12px;
+.asset-card-heading [data-slot='card-description'] {
   font-family: var(--font-mono);
   font-size: 12px;
 }
-
-.asset-card > div:last-child {
+.asset-card-media {
   order: 1;
+  padding: 0;
 }
 
 .asset-preview {

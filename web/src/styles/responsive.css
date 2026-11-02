@@ -1,22 +1,11 @@
 /**
  * [INPUT]: 依赖 shell、目录和详情模块的响应式 class。
- * [OUTPUT]: 按实际内容容器宽度提供布局、筛选 disclosure 与减少动态规则。
+ * [OUTPUT]: 按实际内容容器宽度提供布局与减少动态规则；侧栏抽屉由 Spacious 负责。
  * [POS]: 跨组件断点规则；局部尺寸仍归属各模块样式。
  * [PROTOCOL]: 变更时更新此头部，然后检查 CLAUDE.md
  */
 
-@container (min-width: 720px) {
-  .filter-heading {
-    display: none;
-  }
-}
-
 @container (max-width: 900px) {
-  .catalog-workspace {
-    grid-template-columns: 212px minmax(0, 1fr);
-    gap: 18px;
-  }
-
   .asset-detail {
     grid-template-columns: minmax(0, 1.1fr) minmax(240px, 0.9fr);
     gap: 18px;
@@ -33,16 +22,8 @@
     gap: 8px 12px;
   }
 
-  .catalog-search {
-    grid-column: 1 / -1;
-  }
-
   .sort-control {
     min-width: 0;
-  }
-
-  .catalog-result-count {
-    text-align: right;
   }
 
   .catalog-workspace {

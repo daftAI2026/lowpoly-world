@@ -3,6 +3,8 @@
 
 ## 成员清单
 
+LICENSE-fumadocs.txt: Fuma 原始 MIT 许可，随原生布局一起托管。
+
 fonts.sources.json: 字体 URL、版本、许可与原始摘要，不参与运行。
 
 inter-variable.woff2: 官方 Inter 4.1 可变字体，拉丁与西文。

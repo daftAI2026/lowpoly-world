@@ -19,8 +19,8 @@ AGENTS.md - 指向本文件，统一 Agent 入口
 
 - 两个交付为 HF Dataset 与 HF Static Space 展示应用。
 - 文档是展示应用内页面，不单独算第三个站。
-- 展示使用原生 Home 导航与资产工作区；文档独立使用官网 Spacious。
-- FU 提供布局与资产卡，shadcn Base UI 提供通用控件。
+- 展示与文档共用官网 Spacious 全屏外壳，内容和入口独立。
+- FU 提供原生布局，shadcn Base UI 提供展厅控件与资产卡。
 - 通用控件复用官方源码；业务代码只组合和绑定数据。
 - 用户黑白 token 是唯一色板，FU 使用官方 shadcn 适配。
 - 本地 Inter 与思源 SC 子集优先，系统字体最后回退。

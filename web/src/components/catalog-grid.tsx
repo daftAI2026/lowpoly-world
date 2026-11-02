@@ -1,6 +1,6 @@
 /**
  * [INPUT]: 依赖真实资产、locale、容器宽度、选中编号与实际滚动元素。
- * [OUTPUT]: 导出响应式行虚拟化网格与无匹配结果状态。
+ * [OUTPUT]: 导出按卡片最小宽度排列的虚拟网格与无结果状态。
  * [POS]: 首页唯一资产列表；虚拟化只挂载视窗附近的 AssetCard。
  * [PROTOCOL]: 变更时更新此头部，然后检查 CLAUDE.md
  */
@@ -35,7 +35,7 @@ function columnCountForWidth(width: number, density: string): number {
   if (width <= 0) return 2;
   const minCardWidth =
     density === 'small' ? 120 : density === 'large' ? 260 : width < 600 ? 140 : 180;
-  return Math.max(1, Math.min(6, Math.floor((width + 18) / (minCardWidth + 18))));
+  return Math.max(1, Math.floor((width + 18) / (minCardWidth + 18)));
 }
 
 export function CatalogGrid({

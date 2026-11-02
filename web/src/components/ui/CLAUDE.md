@@ -4,6 +4,7 @@
 
 ## 成员清单
 
+card.tsx: shadcn/ui 官方 Base Nova，资产预览和名称事实区组合，不含链接行为。
 button.tsx: shadcn/ui 官方 Base Nova，通用动作与按钮链接样式。
 input.tsx: shadcn/ui 官方 Base Nova，文本与搜索输入。
 checkbox.tsx: shadcn/ui 官方 Base Nova，独立勾选与筛选布尔值；未选边线读取 muted-foreground。

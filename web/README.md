@@ -85,8 +85,8 @@ URL 独立保存预览和下载选择，支持分享、刷新与历史恢复。
 批量命令固定 Dataset commit；文件直接下载，不占用浏览器批量缓存。
 下载入口只记录已打开链接，不声称文件已保存。
 
-`src/components/ui/` 保存 13 个官方 shadcn Base Nova 源码副本。
-同一类控件只用这一套。FU 保留布局、文档、搜索与资产 Card。
+`src/components/ui/` 保存 14 个官方 shadcn Base Nova 源码副本。
+同一类控件只用这一套。FU 保留布局与文档。展厅复用 shadcn Card 和搜索控件。
 `registry.sources.json` 记录官方 URL、原始摘要与外观适配。
 复用官方 Input、Checkbox、NativeSelect、Popover、Collapsible、ToggleGroup、
 Breadcrumb、Button、Textarea、Label、Badge 与 Resizable，不自写基础交互。
@@ -106,15 +106,15 @@ MIT 许可通过 HTML license 链接随产物托管。
 
 本轮重新生成官方 `create-fumadocs-app@16.2.27` 的 `tanstack-start-spa` 基线。
 保留已锁定的依赖与已验证的数据协议，不引入另一套框架。
-展示使用原生 HomeLayout，文档单独使用官网 Spacious 与配套 Page。
+展示使用原生 Spacious，文档单独使用官网 Spacious 与配套 Page。
 模型库是筛选栏加结果/预览工作区，不是把文档阅读页改成资产列表。
 采用官方 shadcn、spacious 与 preset；语义颜色、圆角和字体读取用户 token。
 导航、搜索、语言菜单和文档分页使用原生组件。HF 与 GitHub 共用右上角入口。
-原生 Card 仅扩展资产图片；筛选、虚拟网格和 3D 查看器属于模板外的必要补充。
+官方 shadcn Card 承载资产图片；筛选、虚拟网格和 3D 查看器属于模板外的必要补充。
 
 ## 验收与发布边界（2026-11-02）
 
-展示与文档采用不同原生壳。完整工作区包含 URL 状态、列表、密度、筛选、
+展示与文档共用官网 Spacious 全屏壳，入口与内容独立。完整工作区包含 URL 状态、列表、密度、筛选、
 独立下载选择、三向停靠与应用内展开。网站不提供 AI 语义搜索或关节仿真。
 
 - 类型与 lint 检查、离线测试、静态构建和浏览器验收分别执行。

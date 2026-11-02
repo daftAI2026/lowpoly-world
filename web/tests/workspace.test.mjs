@@ -10,12 +10,21 @@ import { previewNeighbors, shouldOpenPreview } from '../src/lib/catalog-selectio
 const read = (p) => readFile(new URL(p, import.meta.url), 'utf8');
 
 describe('Separate product surfaces', () => {
-  it('keeps gallery and details outside the documentation shell', async () => {
+  it('shares the official layout without injecting documentation content into the gallery', async () => {
     for (const file of ['home-page.tsx', 'asset-page.tsx']) {
       const t = await read('../src/components/' + file);
-      expect(t).toContain("from 'fumadocs-ui/layouts/home'");
+      expect(t).toContain("from './gallery-shell'");
+      expect(t).not.toContain('source.server');
       expect(t).not.toContain('DocsPage');
     }
+    const shell = await read('../src/components/gallery-shell.tsx');
+    expect(shell).toContain("from 'fumadocs-ui/layouts/spacious'");
+    expect(shell).toContain("on: 'menu'");
+    expect(shell).toContain('children: sidebar');
+    expect(shell).not.toContain('source.server');
+    const browser = await read('../src/components/catalog-browser.tsx');
+    expect(browser).toContain('sidebar={sidebar}');
+    expect(browser).not.toContain('workspace-filter-rail');
     const parent = await read('../src/routes/$lang/route.tsx');
     expect(parent).not.toContain('Shell');
     const docs = await read('../src/routes/$lang/docs/$.tsx');

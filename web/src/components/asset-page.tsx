@@ -1,5 +1,5 @@
 /**
- * [INPUT]: 依赖已验证目录、查询资产编号、本地化路径、HomeLayout 和共享资产内容。
+ * [INPUT]: 依赖已验证目录、查询资产编号、本地化路径、GalleryShell 和共享资产内容。
  * [OUTPUT]: 导出资产查看器、模型文件入口、发布元数据和缺失状态。
  * [POS]: 独立详情页的状态边界；内容复用 AssetDetails，返回链接保留语言和规范浏览条件。
  * [PROTOCOL]: 变更时更新此头部，然后检查 CLAUDE.md
@@ -13,8 +13,7 @@ import { CatalogStateView } from '@/components/catalog-state';
 import { useCatalog } from '@/lib/use-catalog';
 import { getAssetDisplayName, localizedHomePath, type Locale } from '@/lib/locale';
 import { toStaticHref } from '@/lib/static-href';
-import { HomeLayout } from 'fumadocs-ui/layouts/home';
-import { baseOptions } from '@/lib/layout.shared';
+import { GalleryShell } from './gallery-shell';
 
 export function AssetPage({ id, locale }: { id?: string; locale: Locale }) {
   const { t } = useTranslation();
@@ -28,8 +27,8 @@ export function AssetPage({ id, locale }: { id?: string; locale: Locale }) {
 
   if (state.status !== 'ready') {
     return (
-      <HomeLayout {...baseOptions(locale)}>
-        <main id="main-content" className="detail-main">
+      <GalleryShell locale={locale}>
+        <div className="detail-main">
           <Button
             variant="link"
             className="back-link"
@@ -40,8 +39,8 @@ export function AssetPage({ id, locale }: { id?: string; locale: Locale }) {
           </Button>
           <h1 className="detail-heading">{t('asset.detailTitle')}</h1>
           <CatalogStateView state={state} onRetry={retry} />
-        </main>
-      </HomeLayout>
+        </div>
+      </GalleryShell>
     );
   }
 
@@ -49,8 +48,8 @@ export function AssetPage({ id, locale }: { id?: string; locale: Locale }) {
   const assetName = asset ? getAssetDisplayName(asset, locale) : undefined;
 
   return (
-    <HomeLayout {...baseOptions(locale)}>
-      <main id="main-content" className="detail-main">
+    <GalleryShell locale={locale}>
+      <div className="detail-main">
         <Button
           variant="link"
           className="back-link"
@@ -72,7 +71,7 @@ export function AssetPage({ id, locale }: { id?: string; locale: Locale }) {
           </section>
         )}
         {asset && assetName && <AssetDetails asset={asset} locale={locale} />}
-      </main>
-    </HomeLayout>
+      </div>
+    </GalleryShell>
   );
 }

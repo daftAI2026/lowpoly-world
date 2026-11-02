@@ -15,7 +15,7 @@ export function baseOptions(locale: Locale): BaseLayoutProps {
   const labels = messages[locale].navigation;
   return {
     themeSwitch: { enabled: true, mode: 'light-dark' },
-    nav: { title: appName, url: localizedHomePath(locale) },
+    nav: { title: <span className="text-sm">{appName}</span>, url: localizedHomePath(locale) },
     links: [
       { text: labels.assets, url: localizedHomePath(locale), active: 'url' },
       { text: labels.docs, url: localizedPath('/docs', locale), active: 'nested-url' },

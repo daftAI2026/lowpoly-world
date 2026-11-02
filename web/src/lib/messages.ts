@@ -8,8 +8,9 @@ export const messages = {
   en: {
     workspace: {
       allAssets: 'All assets',
-      grid: 'Mosaic',
-      list: 'Index',
+      searchModels: 'Search models',
+      grid: 'Grid',
+      list: 'List',
       density: 'Thumbnail size',
       small: 'Small',
       medium: 'Medium',
@@ -169,6 +170,7 @@ export const messages = {
   zh: {
     workspace: {
       allAssets: '全部资产',
+      searchModels: '搜索模型',
       grid: '网格',
       list: '列表',
       density: '缩略图大小',

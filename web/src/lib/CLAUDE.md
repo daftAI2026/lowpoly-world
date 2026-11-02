@@ -12,7 +12,7 @@ asset-metadata.ts: 校验详情可选 JSON、Prompt 与输入图权利字段；�
 catalog-selection.ts: 普通链接与筛选内前后项；无 DOM 或远端依赖。
 catalog-view.ts: 纯分类/facet、关键词、许可、来源、最长边、格式与面数筛选。
 layout.shared.tsx: 配置原生导航、明暗切换与 GitHub/HF；展厅和文档共用，不替换 header。
-messages.ts: 保存业务英文与简体中文文案，资源键必须成对。
+messages.ts: 保存业务英文与简体中文文案，区分模型搜索与文档搜索，资源键必须成对。
 locale.ts: 定义 URL 语言段、回退规则、静态路径、正文源文件语言和目录首页路径。
 static-pages.ts: 页面唯一注册表；共用文档 slug、双语标题、预渲染路径与 URL 白名单。
 static-href.ts: 将已预渲染路由映射为真实 index.html；query、hash、API 和未知路径保持原样。

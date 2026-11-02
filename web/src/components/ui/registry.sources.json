@@ -103,6 +103,13 @@
       "source_sha256": "d9fb280e266119c4b62a4c518e63152de27b094c68d3e5f8929d05bfb0c1bc6c",
       "upstream_path": "registry/base-nova/ui/badge.tsx",
       "installed_sha256": "f4f7b3c89dcbe9c761bb4da2ef6115b71b9002368a72e29a8f18701bb5807bb5"
+    },
+    "card": {
+      "url": "https://ui.shadcn.com/r/styles/base-nova/card.json",
+      "registry_sha256": "e73e3fe00ab2e14c4db1dccb1ff5c67041a94c0926ac3216c1dc6dd6dee9d7e0",
+      "source_sha256": "645c3d73e387a99f1492220cc619453b0c7f5454134ee3cd548be7a80f7eccde",
+      "upstream_path": "registry/base-nova/ui/card.tsx",
+      "installed_sha256": "76ab4e41ccc1eed3388ed4192dc23611f141f0958c0cdc35fc4913c9950d83ba"
     }
   },
   "repository_head_at_audit": "4aaea19d9cff3e0908e12a8c1d504b8c5ec34610"

@@ -1,7 +1,7 @@
 /**
  * [INPUT]: 依赖目录 facet、当前筛选与官方 shadcn 折叠、动作和表单。
  * [OUTPUT]: 导出分类树、格式、三角面数和标签筛选面板。
- * [POS]: 画廊筛选唯一视图；计数来自已校验目录，不读取外部统计。
+ * [POS]: 原生侧栏与抽屉中的筛选内容；不另建折叠外壳。
  * [PROTOCOL]: 变更时更新此头部，然后检查 CLAUDE.md
  */
 import { Label } from '@/components/ui/label';
@@ -10,7 +10,7 @@ import { Button } from '@/components/ui/button';
 import { Collapsible, CollapsibleTrigger, CollapsibleContent } from '@/components/ui/collapsible';
 import type { CatalogAsset } from '@/lib/catalog';
 import { ChevronDown, ChevronRight } from 'lucide-react';
-import { useEffect, useRef, useState } from 'react';
+import { useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { Checkbox } from '@/components/ui/checkbox';
 import type {
@@ -167,20 +167,6 @@ export function CatalogFilters({
   hasFilters,
 }: CatalogFiltersProps) {
   const { t } = useTranslation();
-  const filtersRef = useRef<HTMLElement>(null);
-  const [isDesktop, setIsDesktop] = useState<boolean | null>(null);
-  const [isExpanded, setIsExpanded] = useState(false);
-  useEffect(() => {
-    const host = filtersRef.current?.closest<HTMLElement>('.site-main');
-    if (!host) return;
-    const syncWidth = () => setIsDesktop(host.clientWidth >= 720);
-    syncWidth();
-    const observer = new ResizeObserver(syncWidth);
-    observer.observe(host);
-    return () => observer.disconnect();
-  }, []);
-
-  const filtersOpen = isDesktop === null || isDesktop || isExpanded;
   const valuesFor = (field: 'license' | 'source') =>
     [...new Set(assets.map((a) => a[field]).filter((v): v is string => Boolean(v)))].sort();
   const selectedFormats = new Set(filters.formats);
@@ -209,158 +195,145 @@ export function CatalogFilters({
   ];
 
   return (
-    <aside ref={filtersRef} className="catalog-filters" aria-label={t('home.filters')}>
-      <Collapsible
-        className="filter-disclosure"
-        open={filtersOpen}
-        onOpenChange={(open) => {
-          if (!isDesktop) setIsExpanded(open);
-        }}
-      >
-        <CollapsibleTrigger
-          render={<Button variant="ghost" className="filter-heading w-full justify-between" />}
+    <aside className="catalog-filters" aria-label={t('home.filters')}>
+      <div className="filter-panel">
+        <section className="filter-group" aria-labelledby="category-filter-heading">
+          <h3 id="category-filter-heading">{t('home.categories')}</h3>
+          <Button
+            variant={filters.categoryPath === null ? 'secondary' : 'ghost'}
+            type="button"
+            className="category-select category-all w-full justify-start"
+            data-selected={filters.categoryPath === null}
+            aria-pressed={filters.categoryPath === null}
+            onClick={() => onCategoryChange(null)}
+          >
+            <span>{t('home.allCategories')}</span>
+          </Button>
+          <CategoryTree
+            nodes={facets.categories}
+            selectedPath={filters.categoryPath}
+            onSelect={onCategoryChange}
+          />
+        </section>
+
+        <section
+          className="filter-group"
+          hidden={hiddenGroups.includes('format')}
+          aria-labelledby="format-filter-heading"
         >
-          {t('home.filters')}
-        </CollapsibleTrigger>
-        <CollapsibleContent className="filter-panel">
-          <section className="filter-group" aria-labelledby="category-filter-heading">
-            <h3 id="category-filter-heading">{t('home.categories')}</h3>
-            <Button
-              variant={filters.categoryPath === null ? 'secondary' : 'ghost'}
-              type="button"
-              className="category-select category-all w-full justify-start"
-              data-selected={filters.categoryPath === null}
-              aria-pressed={filters.categoryPath === null}
-              onClick={() => onCategoryChange(null)}
-            >
-              <span>{t('home.allCategories')}</span>
-            </Button>
-            <CategoryTree
-              nodes={facets.categories}
-              selectedPath={filters.categoryPath}
-              onSelect={onCategoryChange}
-            />
-          </section>
+          <h3 id="format-filter-heading">{t('home.formats')}</h3>
+          {formatOptions
+            .filter((option) => option.count > 0)
+            .map((option) => (
+              <FilterOption
+                key={option.value}
+                id={`format-${option.value}`}
+                label={option.label}
+                count={option.count}
+                checked={selectedFormats.has(option.value)}
+                onChange={(checked) => onFormatChange(option.value, checked)}
+              />
+            ))}
+          {formatOptions.every((option) => option.count === 0) && (
+            <p className="facet-empty">{t('home.noFacetValues')}</p>
+          )}
+        </section>
 
+        <section
+          className="filter-group"
+          hidden={hiddenGroups.includes('triangle')}
+          aria-labelledby="triangle-filter-heading"
+        >
+          <h3 id="triangle-filter-heading" title={t('home.triangleFilterNote')}>
+            {t('home.lowPolyLevel')}
+          </h3>
+          {bandOptions
+            .filter((option) => option.count > 0)
+            .map((option) => (
+              <FilterOption
+                key={option.value}
+                id={`triangles-${option.value}`}
+                label={option.label}
+                count={option.count}
+                checked={selectedBand === option.value}
+                onChange={(checked) => onTriangleBandChange(option.value, checked)}
+              />
+            ))}
+          {bandOptions.every((option) => option.count === 0) && (
+            <p className="facet-empty">{t('home.noFacetValues')}</p>
+          )}
+        </section>
+
+        {facets.tags.length > 0 && (
           <section
             className="filter-group"
-            hidden={hiddenGroups.includes('format')}
-            aria-labelledby="format-filter-heading"
+            hidden={hiddenGroups.includes('tag')}
+            aria-labelledby="tag-filter-heading"
           >
-            <h3 id="format-filter-heading">{t('home.formats')}</h3>
-            {formatOptions
-              .filter((option) => option.count > 0)
-              .map((option) => (
+            <h3 id="tag-filter-heading">{t('home.tags')}</h3>
+            <div className="tag-filter-list">
+              {facets.tags.map((tag) => (
                 <FilterOption
-                  key={option.value}
-                  id={`format-${option.value}`}
-                  label={option.label}
-                  count={option.count}
-                  checked={selectedFormats.has(option.value)}
-                  onChange={(checked) => onFormatChange(option.value, checked)}
+                  key={tag.label}
+                  id={`tag-${encodeURIComponent(tag.label)}`}
+                  label={tag.label}
+                  count={tag.count}
+                  checked={selectedTags.has(tag.label)}
+                  onChange={(checked) => onTagChange(tag.label, checked)}
                 />
               ))}
-            {formatOptions.every((option) => option.count === 0) && (
-              <p className="facet-empty">{t('home.noFacetValues')}</p>
-            )}
+            </div>
           </section>
+        )}
 
-          <section
-            className="filter-group"
-            hidden={hiddenGroups.includes('triangle')}
-            aria-labelledby="triangle-filter-heading"
-          >
-            <h3 id="triangle-filter-heading" title={t('home.triangleFilterNote')}>
-              {t('home.lowPolyLevel')}
-            </h3>
-            {bandOptions
-              .filter((option) => option.count > 0)
-              .map((option) => (
-                <FilterOption
-                  key={option.value}
-                  id={`triangles-${option.value}`}
-                  label={option.label}
-                  count={option.count}
-                  checked={selectedBand === option.value}
-                  onChange={(checked) => onTriangleBandChange(option.value, checked)}
-                />
-              ))}
-            {bandOptions.every((option) => option.count === 0) && (
-              <p className="facet-empty">{t('home.noFacetValues')}</p>
-            )}
-          </section>
-
-          {facets.tags.length > 0 && (
-            <section
-              className="filter-group"
-              hidden={hiddenGroups.includes('tag')}
-              aria-labelledby="tag-filter-heading"
+        {(['license', 'source'] as const).map(
+          (field) =>
+            valuesFor(field).length > 0 &&
+            !hiddenGroups.includes(field) && (
+              <Label className="filter-group extra-filter" key={field}>
+                <span>{t(`workspace.${field}`)}</span>
+                <NativeSelect
+                  value={filters[field] ?? ''}
+                  onChange={(e) => onExtraChange({ [field]: e.currentTarget.value || null })}
+                >
+                  <NativeSelectOption value="">{t('workspace.any')}</NativeSelectOption>
+                  {valuesFor(field).map((v) => (
+                    <NativeSelectOption key={v} value={v}>
+                      {v} ({assets.filter((a) => a[field] === v).length})
+                    </NativeSelectOption>
+                  ))}
+                </NativeSelect>
+              </Label>
+            ),
+        )}
+        {assets.some((a) => a.dimensions_m) && !hiddenGroups.includes('dimension') && (
+          <Label className="filter-group extra-filter">
+            <span>{t('workspace.dimension')}</span>
+            <NativeSelect
+              value={filters.dimension ?? ''}
+              onChange={(e) =>
+                onExtraChange({
+                  dimension:
+                    e.currentTarget.value === 'under-1m'
+                      ? 'under-1m'
+                      : e.currentTarget.value === '1m-plus'
+                        ? '1m-plus'
+                        : null,
+                })
+              }
             >
-              <h3 id="tag-filter-heading">{t('home.tags')}</h3>
-              <div className="tag-filter-list">
-                {facets.tags.map((tag) => (
-                  <FilterOption
-                    key={tag.label}
-                    id={`tag-${encodeURIComponent(tag.label)}`}
-                    label={tag.label}
-                    count={tag.count}
-                    checked={selectedTags.has(tag.label)}
-                    onChange={(checked) => onTagChange(tag.label, checked)}
-                  />
-                ))}
-              </div>
-            </section>
-          )}
-
-          {(['license', 'source'] as const).map(
-            (field) =>
-              valuesFor(field).length > 0 &&
-              !hiddenGroups.includes(field) && (
-                <Label className="filter-group extra-filter" key={field}>
-                  <span>{t(`workspace.${field}`)}</span>
-                  <NativeSelect
-                    value={filters[field] ?? ''}
-                    onChange={(e) => onExtraChange({ [field]: e.currentTarget.value || null })}
-                  >
-                    <NativeSelectOption value="">{t('workspace.any')}</NativeSelectOption>
-                    {valuesFor(field).map((v) => (
-                      <NativeSelectOption key={v} value={v}>
-                        {v} ({assets.filter((a) => a[field] === v).length})
-                      </NativeSelectOption>
-                    ))}
-                  </NativeSelect>
-                </Label>
-              ),
-          )}
-          {assets.some((a) => a.dimensions_m) && !hiddenGroups.includes('dimension') && (
-            <Label className="filter-group extra-filter">
-              <span>{t('workspace.dimension')}</span>
-              <NativeSelect
-                value={filters.dimension ?? ''}
-                onChange={(e) =>
-                  onExtraChange({
-                    dimension:
-                      e.currentTarget.value === 'under-1m'
-                        ? 'under-1m'
-                        : e.currentTarget.value === '1m-plus'
-                          ? '1m-plus'
-                          : null,
-                  })
-                }
-              >
-                <NativeSelectOption value="">{t('workspace.any')}</NativeSelectOption>
-                <NativeSelectOption value="under-1m">{t('workspace.under1m')}</NativeSelectOption>
-                <NativeSelectOption value="1m-plus">{t('workspace.over1m')}</NativeSelectOption>
-              </NativeSelect>
-            </Label>
-          )}
-          {hasFilters && (
-            <Button variant="ghost" className="clear-filters" type="button" onClick={onClear}>
-              {t('home.clearFilters')}
-            </Button>
-          )}
-        </CollapsibleContent>
-      </Collapsible>
+              <NativeSelectOption value="">{t('workspace.any')}</NativeSelectOption>
+              <NativeSelectOption value="under-1m">{t('workspace.under1m')}</NativeSelectOption>
+              <NativeSelectOption value="1m-plus">{t('workspace.over1m')}</NativeSelectOption>
+            </NativeSelect>
+          </Label>
+        )}
+        {hasFilters && (
+          <Button variant="ghost" className="clear-filters" type="button" onClick={onClear}>
+            {t('home.clearFilters')}
+          </Button>
+        )}
+      </div>
     </aside>
   );
 }

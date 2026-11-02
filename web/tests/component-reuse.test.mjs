@@ -17,6 +17,7 @@ describe('Official component reuse', () => {
     for (const name of [
       'badge',
       'button',
+      'card',
       'checkbox',
       'input',
       'native-select',
