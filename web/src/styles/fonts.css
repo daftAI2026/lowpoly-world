@@ -1,0 +1,28 @@
+/**
+ * [INPUT]: 依赖本地 Inter、改名思源 SC 子集和 Geist Mono WOFF2。
+ * [OUTPUT]: 提供变体字体；拉丁优先 Inter，中文命中 SC，系统字体最后回退。
+ * [POS]: 字体声明唯一入口；不向第三方发起运行时字体请求。
+ * [PROTOCOL]: 变更时更新此头部，然后检查 CLAUDE.md
+ */
+@font-face {
+  font-family: 'Inter';
+  font-style: normal;
+  font-weight: 100 900;
+  font-display: swap;
+  src: url('../assets/inter-variable.woff2') format('woff2');
+}
+@font-face {
+  font-family: 'LPW Han Sans SC';
+  font-style: normal;
+  font-weight: 250 900;
+  font-display: swap;
+  src: url('../assets/han-sans-sc-subset.woff2') format('woff2');
+  unicode-range: U+2000-9FFF, U+F900-FAFF, U+FE10-FFEF, U+20000-2FA1F;
+}
+@font-face {
+  font-family: 'Geist Mono';
+  font-style: normal;
+  font-weight: 100 900;
+  font-display: swap;
+  src: url('../assets/geist-mono-latin.woff2') format('woff2');
+}

@@ -5,9 +5,10 @@
  * [PROTOCOL]: 变更时更新此头部，然后检查 CLAUDE.md
  */
 @import 'tailwindcss';
-@import 'fumadocs-ui/css/neutral.css';
+@import 'fumadocs-ui/css/shadcn.css';
 @import 'fumadocs-ui/css/generated/spacious.css';
 @import 'fumadocs-ui/css/preset.css';
+@import './fonts.css';
 @import './tokens.css';
 @import './shadcn.css';
 @import './shell.css';
@@ -17,3 +18,5 @@
 @import './workspace-controls.css';
 @import './responsive.css';
 @import './fumadocs.css';
+
+@custom-variant dark (&:is(.dark *));

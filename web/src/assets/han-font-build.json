@@ -1,0 +1,17 @@
+{
+  "source_sha256": "085cc88c530b9c434165ab926f81608a55b24e60e05719f3d41340ac45d9c62f",
+  "output_sha256": "aa7f6b86e7c261b6517fb257171558ed1d698f0f1a59a0cc13ecae0bfe19a23d",
+  "output_bytes": 3129876,
+  "glyph_codepoints": 7296,
+  "coverage": "GB2312 non-Latin plus current public website characters",
+  "family": "LPW Han Sans SC",
+  "original_family": "Source Han Sans SC",
+  "reserved_name_renamed": true,
+  "axes": {
+    "wght": [
+      250.0,
+      900.0
+    ]
+  },
+  "source_url": "https://raw.githubusercontent.com/adobe-fonts/source-han-sans/a4f7cf94edfb9d7ffbdfc4841de276358bd7e0f2/Variable/WOFF2/OTF/SourceHanSansSC-VF.otf.woff2"
+}

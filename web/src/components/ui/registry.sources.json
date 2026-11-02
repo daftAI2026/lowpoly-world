@@ -7,8 +7,9 @@
     "Resolve official registry cn/import/icon templates to local aliases and Lucide",
     "Keep official composition and interaction code",
     "Use 0.5px borders, 40px controls, 12/14px typography and no decorative motion/shadows",
-    "Map shadcn theme tokens to the existing FU palette; do not override FU layouts",
-    "Run the project formatter; preserve component signatures and upstream event behavior"
+    "FU official shadcn adapter and gallery controls read one user-supplied palette; do not override FU layouts",
+    "Run the project formatter; preserve component signatures and upstream event behavior",
+    "Checkbox unchecked borders use muted-foreground for visible contrast; upstream selection behavior is unchanged"
   ],
   "components": {
     "button": {
@@ -30,7 +31,7 @@
       "registry_sha256": "e6df7b595f25a7ee97c3fb94e0ddc35998f74c98b990d3030e485905ec677178",
       "source_sha256": "0cc30ddee3fa93818799f48ad47a58a30652c956ce940373c3feb3559167f0af",
       "upstream_path": "registry/base-nova/ui/checkbox.tsx",
-      "installed_sha256": "6608b07960d632f76b74c74cccbe110544ac5049b5d28d952afa78ab53365438"
+      "installed_sha256": "72df2890edc6d9907fc866526d4fc28fdf2427cf7b4f9abefe6531fce7b92427"
     },
     "native-select": {
       "url": "https://ui.shadcn.com/r/styles/base-nova/native-select.json",

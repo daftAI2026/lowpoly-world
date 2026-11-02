@@ -74,7 +74,7 @@ describe('Official source fidelity', () => {
     expect(app).toContain('fumadocs-ui/css/generated/spacious.css');
     expect(tokens).not.toMatch(/--(?:text-|radius-)/);
     expect(tokens).not.toContain('--color-fd-background:');
-    expect(tokens).toContain("'Geist'");
+    expect(tokens).toContain("'Inter'");
     expect(css).not.toMatch(/#nd-(?:nav|subnav|page|sidebar)/);
   });
   it('virtualizes against the real native page scroller, with a window fallback on mobile', async () => {

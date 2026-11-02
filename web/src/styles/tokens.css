@@ -1,58 +1,124 @@
 /**
- * [INPUT]: 依赖 Fumadocs neutral 主题与官网使用的 Geist 字体。
- * [OUTPUT]: 将资产区语义色映射到原生主题，不反向覆盖模板颜色、字号或圆角。
- * [POS]: 业务视觉适配；官网布局保持上游样式，HF 品牌 SVG 独立保色。
+ * [INPUT]: 依赖用户确认的 OKLCH 主题与本地字体声明。
+ * [OUTPUT]: 提供唯一明暗语义 token、字体栈、圆角与阴影配置。
+ * [POS]: 全站主题唯一来源；FU 与 shadcn 直接读取本文件，不另造色板。
  * [PROTOCOL]: 变更时更新此头部，然后检查 CLAUDE.md
  */
-@font-face {
-  font-family: 'Geist';
-  font-style: normal;
-  font-weight: 100 900;
-  font-display: swap;
-  src: url('../assets/geist-latin.woff2') format('woff2');
-}
-
-@font-face {
-  font-family: 'JetBrains Mono';
-  font-style: normal;
-  font-weight: 400 700;
-  font-display: swap;
-  src: url('../assets/jetbrains-mono-latin.woff2') format('woff2');
-}
-
-@theme {
-  --font-sans: 'Geist', 'PingFang SC', 'Microsoft YaHei', sans-serif;
-  --font-mono: 'JetBrains Mono', ui-monospace, monospace;
-}
-
 :root {
   color-scheme: light;
-  --lpw-canvas: var(--color-fd-background);
-  --lpw-surface: var(--color-fd-card);
-  --lpw-raised: var(--color-fd-background);
-  --lpw-ink: var(--color-fd-foreground);
-  --lpw-muted: var(--color-fd-muted-foreground);
-  --lpw-line: var(--color-fd-border);
-  --lpw-accent: var(--color-fd-primary);
-  --lpw-accent-hover: var(--color-fd-primary);
-  --lpw-accent-soft: var(--color-fd-accent);
-  --lpw-focus: var(--color-fd-ring);
-  --lpw-danger: var(--color-red-800);
-  --lpw-danger-soft: var(--color-red-50);
-  --lpw-danger-line: var(--color-red-300);
+  --background: oklch(0.99 0 0);
+  --foreground: oklch(0 0 0);
+  --card: oklch(1 0 0);
+  --card-foreground: oklch(0 0 0);
+  --popover: oklch(0.99 0 0);
+  --popover-foreground: oklch(0 0 0);
+  --primary: oklch(0 0 0);
+  --primary-foreground: oklch(1 0 0);
+  --secondary: oklch(0.94 0 0);
+  --secondary-foreground: oklch(0 0 0);
+  --muted: oklch(0.97 0 0);
+  --muted-foreground: oklch(0.44 0 0);
+  --accent: oklch(0.94 0 0);
+  --accent-foreground: oklch(0 0 0);
+  --destructive: oklch(0.63 0.19 23.03);
+  --destructive-foreground: oklch(1 0 0);
+  --border: oklch(0.92 0 0);
+  --input: oklch(0.94 0 0);
+  --ring: oklch(0 0 0);
+  --chart-1: oklch(0.81 0.17 75.35);
+  --chart-2: oklch(0.55 0.22 264.53);
+  --chart-3: oklch(0.72 0 0);
+  --chart-4: oklch(0.92 0 0);
+  --chart-5: oklch(0.56 0 0);
+  --sidebar: oklch(0.99 0 0);
+  --sidebar-foreground: oklch(0 0 0);
+  --sidebar-primary: oklch(0 0 0);
+  --sidebar-primary-foreground: oklch(1 0 0);
+  --sidebar-accent: oklch(0.94 0 0);
+  --sidebar-accent-foreground: oklch(0 0 0);
+  --sidebar-border: oklch(0.94 0 0);
+  --sidebar-ring: oklch(0 0 0);
+  --font-sans:
+    'Inter', 'LPW Han Sans SC', system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI',
+    'PingFang SC', 'Microsoft YaHei', sans-serif;
+  --font-serif: Georgia, 'LPW Han Sans SC', serif;
+  --font-mono: 'Geist Mono', 'LPW Han Sans SC', ui-monospace, monospace;
+  --radius: 0.5rem;
+  --shadow-x: 0px;
+  --shadow-y: 1px;
+  --shadow-blur: 2px;
+  --shadow-spread: 0px;
+  --shadow-opacity: 0.18;
+  --shadow-color: hsl(0 0% 0%);
+  --shadow-2xs: 0px 1px 2px 0px hsl(0 0% 0% / 0.09);
+  --shadow-xs: 0px 1px 2px 0px hsl(0 0% 0% / 0.09);
+  --shadow-sm: 0px 1px 2px 0px hsl(0 0% 0% / 0.18), 0px 1px 2px -1px hsl(0 0% 0% / 0.18);
+  --shadow: 0px 1px 2px 0px hsl(0 0% 0% / 0.18), 0px 1px 2px -1px hsl(0 0% 0% / 0.18);
+  --shadow-md: 0px 1px 2px 0px hsl(0 0% 0% / 0.18), 0px 2px 4px -1px hsl(0 0% 0% / 0.18);
+  --shadow-lg: 0px 1px 2px 0px hsl(0 0% 0% / 0.18), 0px 4px 6px -1px hsl(0 0% 0% / 0.18);
+  --shadow-xl: 0px 1px 2px 0px hsl(0 0% 0% / 0.18), 0px 8px 10px -1px hsl(0 0% 0% / 0.18);
+  --shadow-2xl: 0px 1px 2px 0px hsl(0 0% 0% / 0.45);
+  --tracking-normal: 0em;
+  --spacing: 0.25rem;
 }
 
-/* ---- 官网 UI 文档分区的主色；只取这一项，不复制演示功能 ---- */
-.ui {
-  --color-fd-primary: hsl(217 100% 58%);
+.dark {
+  color-scheme: dark;
+  --background: oklch(0 0 0);
+  --foreground: oklch(1 0 0);
+  --card: oklch(0.14 0 0);
+  --card-foreground: oklch(1 0 0);
+  --popover: oklch(0.18 0 0);
+  --popover-foreground: oklch(1 0 0);
+  --primary: oklch(1 0 0);
+  --primary-foreground: oklch(0 0 0);
+  --secondary: oklch(0.25 0 0);
+  --secondary-foreground: oklch(1 0 0);
+  --muted: oklch(0.23 0 0);
+  --muted-foreground: oklch(0.72 0 0);
+  --accent: oklch(0.32 0 0);
+  --accent-foreground: oklch(1 0 0);
+  --destructive: oklch(0.69 0.2 23.91);
+  --destructive-foreground: oklch(0 0 0);
+  --border: oklch(0.26 0 0);
+  --input: oklch(0.32 0 0);
+  --ring: oklch(0.72 0 0);
+  --chart-1: oklch(0.81 0.17 75.35);
+  --chart-2: oklch(0.58 0.21 260.84);
+  --chart-3: oklch(0.56 0 0);
+  --chart-4: oklch(0.44 0 0);
+  --chart-5: oklch(0.92 0 0);
+  --sidebar: oklch(0.18 0 0);
+  --sidebar-foreground: oklch(1 0 0);
+  --sidebar-primary: oklch(1 0 0);
+  --sidebar-primary-foreground: oklch(0 0 0);
+  --sidebar-accent: oklch(0.32 0 0);
+  --sidebar-accent-foreground: oklch(1 0 0);
+  --sidebar-border: oklch(0.32 0 0);
+  --sidebar-ring: oklch(0.72 0 0);
 }
 
+/* ---- 业务别名只引用同一组 token ---- */
+:root {
+  --lpw-canvas: var(--background);
+  --lpw-surface: var(--muted);
+  --lpw-raised: var(--card);
+  --lpw-ink: var(--foreground);
+  --lpw-muted: var(--muted-foreground);
+  --lpw-line: var(--border);
+  --lpw-accent: var(--primary);
+  --lpw-accent-hover: var(--primary);
+  --lpw-accent-soft: var(--accent);
+  --lpw-focus: var(--ring);
+  --lpw-danger: var(--destructive);
+  --lpw-danger-soft: color-mix(in oklch, var(--destructive) 8%, var(--background));
+  --lpw-danger-line: color-mix(in oklch, var(--destructive) 40%, var(--background));
+}
 html {
   min-width: 320px;
   scrollbar-gutter: stable;
 }
-
 body {
-  background-color: var(--color-fd-background);
   font-family: var(--font-sans);
+  font-synthesis: none;
 }

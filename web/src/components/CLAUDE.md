@@ -8,7 +8,7 @@ workspace-toolbar.tsx: URL 搜索、面包屑、条件条、视图密度与偏�
 download-selection.tsx: 独立下载选择集与固定版本文件、清单和命令，不追踪磁盘落盘。
 copy-button.tsx: 组合官方 Button 与真实 Clipboard 反馈，不重造按钮。
 
-asset-card.tsx: 扩展 Fumadocs Card 展示正方形完整预览、名称和编号；原生链接适配静态路径。
+asset-card.tsx: 扩展 Fumadocs Card 展示正方形完整预览、名称和编号；原生链接适配静态路径。角落勾选内移，40px 透明点击区不遮图。
 asset-metadata-panel.tsx: 按需呈现发布元数据；缺字段不推断许可、质量或权利。
 asset-page.tsx: 组合模型文件入口、查看器与 metadata；返回链接指向当前语言 index.html。
 catalog-browser.tsx: 组合 URL、筛选与官方 Resizable 分栏，不重造拖拽交互。

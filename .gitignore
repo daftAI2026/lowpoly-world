@@ -5,6 +5,8 @@
 /.pipeline-private/
 *.ipynb
 *.py
+# 网站字体生成器不属于私人模型流水线
+!web/scripts/subset-han-font.py
 .env
 .env.*
 !.env.example

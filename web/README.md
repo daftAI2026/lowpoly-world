@@ -91,7 +91,10 @@ URL 独立保存预览和下载选择，支持分享、刷新与历史恢复。
 复用官方 Input、Checkbox、NativeSelect、Popover、Collapsible、ToggleGroup、
 Breadcrumb、Button、Textarea、Label、Badge 与 Resizable，不自写基础交互。
 `react-resizable-panels@4.16.1` 由官方 Resizable 使用。
-控件语义色引用 FU 主题；不覆盖 FU 布局，不引入 Radix。
+用户黑白 OKLCH token 统一驱动 FU 与 shadcn。
+FU 使用官方 shadcn 适配，不覆盖布局，不引入 Radix。
+原生明暗切换跨页面保存。英文 Inter，中文思源 SC 子集。
+字体本地托管，系统字体最后回退；生成步骤见 assets/README.md。
 MIT 许可通过 HTML license 链接随产物托管。
 网站不依赖 shadcn CLI 运行。
 `components.json` 保留组件生成配置。CLI 不在默认依赖中。
@@ -105,7 +108,7 @@ MIT 许可通过 HTML license 链接随产物托管。
 保留已锁定的依赖与已验证的数据协议，不引入另一套框架。
 展示使用原生 HomeLayout，文档单独使用官网 Spacious 与配套 Page。
 模型库是筛选栏加结果/预览工作区，不是把文档阅读页改成资产列表。
-直接采用官方 neutral、spacious、preset 和官网字体，撤销旧字号、圆角和主题覆盖。
+采用官方 shadcn、spacious 与 preset；语义颜色、圆角和字体读取用户 token。
 导航、搜索、语言菜单和文档分页使用原生组件。HF 与 GitHub 共用右上角入口。
 原生 Card 仅扩展资产图片；筛选、虚拟网格和 3D 查看器属于模板外的必要补充。
 

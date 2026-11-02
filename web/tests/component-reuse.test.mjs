@@ -52,10 +52,10 @@ describe('Official component reuse', () => {
     expect(browser).toContain('ResizableHandle');
     expect(browser).not.toContain('setPointerCapture');
   });
-  it('bridges shadcn tokens to FU without overriding FU or adding a second palette', async () => {
+  it('maps shadcn utilities to the shared user palette without overriding FU layouts', async () => {
     const css = await read('../src/styles/shadcn.css');
-    expect(css).toContain('--color-background: var(--color-fd-background)');
-    expect(css).toContain('--color-primary: var(--color-fd-primary)');
+    expect(css).toContain('--color-background: var(--background)');
+    expect(css).toContain('--color-primary: var(--primary)');
     expect(css).not.toMatch(/--color-fd-[\w-]+\s*:/);
     expect(css).not.toMatch(/#[\da-f]{3,8}\b/i);
   });

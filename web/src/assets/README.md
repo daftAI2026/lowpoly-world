@@ -1,5 +1,5 @@
 <!--
-[INPUT]: 依赖 HF 官方品牌页和 Google Fonts 的 OFL 字体。
+[INPUT]: 依赖 HF 品牌页、Inter、Adobe 与 Fontsource 的 OFL 字体。
 [OUTPUT]: 记录静态品牌与字体的来源、摘要和使用边界。
 [POS]: 原生官网样式的素材来源，不将第三方商标纳入网站 MIT 许可。
 [PROTOCOL]: 变更时更新此头部，然后检查 CLAUDE.md
@@ -12,16 +12,28 @@ HF 标识来自 https://huggingface.co/brand 。
 标识仅链接项目 Dataset，不表示 HF 背书。
 Hugging Face 商标归其权利人所有，不纳入本项目 MIT 授权。
 
-Geist 与 JetBrains Mono 与 Fumadocs 官网字体一致。
-字体文件来自 https://fonts.google.com/ ，仅包含拉丁字形。
-中文使用系统字体回退；不下载整套中文字库。
-OFL 原文来自 Google Fonts 的对应字体目录。
-原始文件采用各自 OFL，不以网站 MIT 重新许可。
+## 字体
 
-## SHA256
+英文采用 Inter 4.1，字体与许可取自官方 rsms.me/inter。
+中文采用 Adobe 官方 Source Han Sans SC 2.005 的网页子集。
+覆盖 GB2312 非拉丁字符和当前公开网站字符。
+修改后的家族名为 LPW Han Sans SC，避免使用 OFL 保留名 Source。
+罕见的未覆盖字符最后回退到系统字体，不宣称全 Unicode 覆盖。
+子集约 3 MB，原始 SC VF 约 14 MB；保留 250 至 900 可变字重。
+代码和编号使用 Geist Mono 5.3.0 的 Fontsource 可变拉丁文件。
+所有字体本地托管，使用 font-display: swap。
+字体采用各自 OFL，不纳入网站 MIT 再许可。
+来源与 SHA256 见 fonts.sources.json 与 han-font-build.json。
+
+## 子集复现
+
+```bash
+uv run --python 3.12 --with fonttools==4.60.1 --with brotli==1.2.0 python scripts/subset-han-font.py /path/to/official-sc-vf.woff2
+```
+
+参数使用 han-font-build.json 中 source_url 的原件。
+常规 npm 构建不运行字体工具，不依赖私人文档。
+
+## HF 标识 SHA256
 
 hugging-face.svg: `942cad1ccda905ac5a659dfd2d78b344fccfb84a8a3ac3721e08f488205638a0`
-
-jetbrains-mono-latin.woff2: `2c32b9b3ee358c119e210f6f5195f9bd34894d78a785ff2e95d60e718e400af4`
-
-geist-latin.woff2: `9b6f5ff45b278c744b5f379a2c4ecbaf858a842b8eaf82ac8d21b699ca16c608`

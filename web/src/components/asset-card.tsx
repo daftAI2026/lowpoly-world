@@ -51,6 +51,7 @@ export function AssetCard({
       {onCheck && (
         <Label className="asset-selection-toggle">
           <Checkbox
+            className="asset-selection-checkbox size-5"
             checked={checked}
             onCheckedChange={(checked) => onCheck(asset.id, checked === true)}
             aria-label={t('workspace.selectAsset', { id: asset.id })}

@@ -3,10 +3,12 @@
 
 ## 成员清单
 
-shadcn.css: 官方控件语义色单向引用 FU token，不建立第二套主题。
+fonts.css: Inter、改名思源 SC 子集与 Geist Mono 的本地变体声明。
+
+shadcn.css: Tailwind 语义色、字体、圆角和阴影映射到用户 token。
 
 app.css: 导入 Tailwind、Fumadocs 和本地 CSS 分层，不直接承载业务规则。
-tokens.css: 本地官网字体与资产色别名；不覆盖原生字号、圆角和主题底色。
+tokens.css: 用户黑白 OKLCH 明暗色板、字体栈与业务别名，唯一主题源。
 shell.css: 展示页对齐原生 Home 导航；文档只复用回退提示。
 catalog.css: 定义业务排列、分类层级、资产卡与结果状态，不重造基础控件。
 workspace-controls.css: 工具栏、条件条、选择集与下载会话的低噪声控制样式。

@@ -16,7 +16,7 @@ src/: 双语路由、资产库、模型查看器、数据边界和分层样式�
 content/: Fumadocs 编译期文档源。
 hf-space/: 预构建静态产物的 Space 元数据模板，禁用需额度的远端构建。
 tests/: Vite+ Vitest 离线测试；只用测试内合成 fixture。
-scripts/: 路由生成、静态路由清单和静态输出 smoke 断言。
+scripts/: 路由生成、静态输出验证与本地字体子集生成。
 
 Dataset 发布器不读写 Space。Space 只托管构建输出，不运行 Node 服务。
 

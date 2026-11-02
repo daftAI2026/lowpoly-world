@@ -1,6 +1,6 @@
 /**
  * [INPUT]: 依赖 Fumadocs 原生 links、URL locale、站点身份和 HF 图标。
- * [OUTPUT]: 导出展厅与文档共用的主导航及 GitHub、HF 外链。
+ * [OUTPUT]: 导出共享主导航、原生明暗切换与 GitHub、HF 外链。
  * [POS]: 展示应用唯一导航配置；不替换模板 header 或菜单。
  * [PROTOCOL]: 变更时更新此头部，然后检查 CLAUDE.md
  */
@@ -14,7 +14,7 @@ import { appName, gitConfig } from './shared';
 export function baseOptions(locale: Locale): BaseLayoutProps {
   const labels = messages[locale].navigation;
   return {
-    themeSwitch: { enabled: false },
+    themeSwitch: { enabled: true, mode: 'light-dark' },
     nav: { title: appName, url: localizedHomePath(locale) },
     links: [
       { text: labels.assets, url: localizedHomePath(locale), active: 'url' },

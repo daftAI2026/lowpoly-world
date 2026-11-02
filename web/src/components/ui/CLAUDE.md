@@ -6,7 +6,7 @@
 
 button.tsx: shadcn/ui 官方 Base Nova，通用动作与按钮链接样式。
 input.tsx: shadcn/ui 官方 Base Nova，文本与搜索输入。
-checkbox.tsx: shadcn/ui 官方 Base Nova，独立勾选与筛选布尔值。
+checkbox.tsx: shadcn/ui 官方 Base Nova，独立勾选与筛选布尔值；未选边线读取 muted-foreground。
 native-select.tsx: shadcn/ui 官方 Base Nova，原生下拉选择与选项。
 textarea.tsx: shadcn/ui 官方 Base Nova，只读下载命令文本。
 popover.tsx: shadcn/ui 官方 Base Nova，带焦点返回的偏好面板。

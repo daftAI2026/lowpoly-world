@@ -3,6 +3,8 @@
 
 ## 成员清单
 
+subset-han-font.py: 从官方 SC 可变字体生成改名子集，GB2312 加公开网站字符。
+
 generate-route-tree.mjs: 在 tsc 前加载 Vite 配置并生成 `src/routeTree.gen.ts`。
 static-routes.mjs: 从 static-pages.ts 派生预渲染路径，再加入静态搜索端点。
 verify-static-output.mjs: 检查 client SPA、资源、所有静态路由、双语文档标题、正文语言、lang、搜索索引、导航真实文件和地图隔离。

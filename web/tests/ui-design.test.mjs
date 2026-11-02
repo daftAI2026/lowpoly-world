@@ -68,11 +68,11 @@ describe('UI design constraints', () => {
     expect(styles).not.toContain('--text-base:');
   });
 
-  it('maps semantic colors to the UI Colors palette and avoids custom colors', async () => {
+  it('maps semantic colors to the user palette without extra colors', async () => {
     const styles = await readStyles();
-    expect(styles).toContain('--lpw-canvas: var(--color-fd-background)');
-    expect(styles).toContain('--lpw-accent: var(--color-fd-primary)');
-    expect(styles).toContain('--lpw-danger: var(--color-red-800)');
+    expect(styles).toContain('--lpw-canvas: var(--background)');
+    expect(styles).toContain('--lpw-accent: var(--primary)');
+    expect(styles).toContain('--lpw-danger: var(--destructive)');
     expect(styles).toContain('--progress-bar-color: var(--lpw-focus)');
     expect(styles).not.toMatch(/#[\da-f]{3,8}\b/i);
   });
@@ -92,7 +92,8 @@ describe('UI design constraints', () => {
 
   it('uses a small nested radius scale and only color feedback motion', async () => {
     const styles = await readStyles();
-    expect(styles).not.toMatch(/--radius-(?:sm|md|lg):/);
+    expect(styles).toContain('--radius-sm: calc(var(--radius) - 4px)');
+    expect(styles).toContain('--radius-lg: var(--radius)');
     expect(styles).toContain('250ms ease-out');
     expect(styles).toContain('prefers-reduced-motion: reduce');
     expect(styles).toContain('border-radius: calc(var(--radius-lg) - 0.5px)');

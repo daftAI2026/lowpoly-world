@@ -1,26 +1,63 @@
 /**
- * [INPUT]: 依赖 FU neutral 主题与 shadcn 官方语义色 token。
- * [OUTPUT]: 将展厅控件颜色映射到唯一 FU 主题，不覆盖 FU 几何。
- * [POS]: 两家组件的单向主题桥；组件交互保持各自官方实现。
+ * [INPUT]: 依赖用户主题 token 与 FU 官方 shadcn 适配层。
+ * [OUTPUT]: 注册 Tailwind 语义色、字体、圆角与阴影，不反向覆盖主题。
+ * [POS]: 全站唯一工具类映射；FU 的颜色桥由上游官方适配层提供。
  * [PROTOCOL]: 变更时更新此头部，然后检查 CLAUDE.md
  */
 @theme inline {
-  --color-background: var(--color-fd-background);
-  --color-foreground: var(--color-fd-foreground);
-  --color-card: var(--color-fd-card);
-  --color-card-foreground: var(--color-fd-card-foreground);
-  --color-popover: var(--color-fd-popover);
-  --color-popover-foreground: var(--color-fd-popover-foreground);
-  --color-primary: var(--color-fd-primary);
-  --color-primary-foreground: var(--color-fd-primary-foreground);
-  --color-secondary: var(--color-fd-secondary);
-  --color-secondary-foreground: var(--color-fd-secondary-foreground);
-  --color-muted: var(--color-fd-muted);
-  --color-muted-foreground: var(--color-fd-muted-foreground);
-  --color-accent: var(--color-fd-accent);
-  --color-accent-foreground: var(--color-fd-accent-foreground);
-  --color-border: var(--color-fd-border);
-  --color-input: var(--color-fd-border);
-  --color-ring: var(--color-fd-ring);
-  --color-destructive: var(--color-red-800);
+  --color-background: var(--background);
+  --color-foreground: var(--foreground);
+  --color-card: var(--card);
+  --color-card-foreground: var(--card-foreground);
+  --color-popover: var(--popover);
+  --color-popover-foreground: var(--popover-foreground);
+  --color-primary: var(--primary);
+  --color-primary-foreground: var(--primary-foreground);
+  --color-secondary: var(--secondary);
+  --color-secondary-foreground: var(--secondary-foreground);
+  --color-muted: var(--muted);
+  --color-muted-foreground: var(--muted-foreground);
+  --color-accent: var(--accent);
+  --color-accent-foreground: var(--accent-foreground);
+  --color-destructive: var(--destructive);
+  --color-destructive-foreground: var(--destructive-foreground);
+  --color-border: var(--border);
+  --color-input: var(--input);
+  --color-ring: var(--ring);
+  --color-chart-1: var(--chart-1);
+  --color-chart-2: var(--chart-2);
+  --color-chart-3: var(--chart-3);
+  --color-chart-4: var(--chart-4);
+  --color-chart-5: var(--chart-5);
+  --color-sidebar: var(--sidebar);
+  --color-sidebar-foreground: var(--sidebar-foreground);
+  --color-sidebar-primary: var(--sidebar-primary);
+  --color-sidebar-primary-foreground: var(--sidebar-primary-foreground);
+  --color-sidebar-accent: var(--sidebar-accent);
+  --color-sidebar-accent-foreground: var(--sidebar-accent-foreground);
+  --color-sidebar-border: var(--sidebar-border);
+  --color-sidebar-ring: var(--sidebar-ring);
+  --font-sans: var(--font-sans);
+  --font-mono: var(--font-mono);
+  --font-serif: var(--font-serif);
+  --radius-sm: calc(var(--radius) - 4px);
+  --radius-md: calc(var(--radius) - 2px);
+  --radius-lg: var(--radius);
+  --radius-xl: calc(var(--radius) + 4px);
+  --shadow-2xs: var(--shadow-2xs);
+  --shadow-xs: var(--shadow-xs);
+  --shadow-sm: var(--shadow-sm);
+  --shadow: var(--shadow);
+  --shadow-md: var(--shadow-md);
+  --shadow-lg: var(--shadow-lg);
+  --shadow-xl: var(--shadow-xl);
+  --shadow-2xl: var(--shadow-2xl);
+}
+@layer base {
+  * {
+    @apply border-border outline-ring/50;
+  }
+  body {
+    @apply bg-background text-foreground;
+  }
 }
