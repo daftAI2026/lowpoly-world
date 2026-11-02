@@ -19,6 +19,7 @@ label.tsx: shadcn/ui 官方 Base Nova，表单控件的可见标签。
 badge.tsx: shadcn/ui 官方 Base Nova，非交互文件格式标签。
 registry.sources.json: 官方 URL、快照摘要与本地外观适配清单，不参与运行。
 
+边线使用同源可见控件角色，不改填充和状态逻辑。
 本目录只复用官方组件。业务模块不得重新定义基础交互。
 只使用 Base UI 版本，不引入 Radix 或第二套主题。
 文档和导航继续使用 FU 原生组件。

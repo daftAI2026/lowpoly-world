@@ -1,6 +1,6 @@
 /**
  * [INPUT]: 依赖工具栏、选择集和复制动作语义 class。
- * [OUTPUT]: 提供同排上下文与搜索、紧凑控制和下载审阅样式。
+ * [OUTPUT]: 提供全宽搜索、条件区分类路径和紧凑控制样式。
  * [POS]: 工作区操作层；不覆盖原生文档、导航或主题值。
  * [PROTOCOL]: 变更时更新此头部，然后检查 CLAUDE.md
  */
@@ -8,14 +8,8 @@
 .workspace-heading {
   display: grid;
   min-width: 0;
-  gap: 8px 24px;
   align-items: center;
   margin-bottom: 8px;
-}
-@container (min-width: 900px) {
-  .workspace-heading {
-    grid-template-columns: 232px minmax(0, 1fr);
-  }
 }
 
 .asset-breadcrumb {

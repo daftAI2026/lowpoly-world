@@ -1,7 +1,7 @@
 /**
  * [INPUT]: 依赖 shadcn/ui 官方源码、Base UI Toggle 与官方变体。
  * [OUTPUT]: 导出互斥视图的切换外观的官方组件组合接口。
- * [POS]: 受控上游源码副本；来源与外观差异见 registry.sources.json，不包含业务状态。
+ * [POS]: 受控上游源码副本；来源与外观差异见 registry.sources.json，不包含业务状态；边线读取可见控件角色。
  * [PROTOCOL]: 变更时更新此头部，然后检查 CLAUDE.md
  */
 'use client';
@@ -16,7 +16,7 @@ const toggleVariants = cva(
     variants: {
       variant: {
         default: 'bg-transparent',
-        outline: 'border-[0.5px] border-input bg-transparent hover:bg-muted',
+        outline: 'border-[0.5px] border-control-border bg-transparent hover:bg-muted',
       },
       size: {
         default:

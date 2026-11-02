@@ -1,6 +1,6 @@
 /**
  * [INPUT]: 依赖 URL 状态、真实分类与官方 shadcn 表单、弹层和导航。
- * [OUTPUT]: 导出同排搜索与分类上下文、条件条及视图控制。
+ * [OUTPUT]: 导出全宽搜索、按需分类路径、条件条及视图控制。
  * [POS]: 工作区工具栏；只发状态变更，不加载目录或模型。
  * [PROTOCOL]: 变更时更新此头部，然后检查 CLAUDE.md
  */
@@ -55,7 +55,12 @@ export function WorkspaceToolbar({
     update({ filters: { ...f, ...patch } }, replace);
   const parts = f.categoryPath?.split('/') ?? [];
   const chips: { key: string; label: string; clear: () => void }[] = [];
-  if (f.query) chips.push({ key: 'q', label: f.query, clear: () => filter({ query: '' }) });
+  if (f.query)
+    chips.push({
+      key: 'q',
+      label: f.query,
+      clear: () => filter({ query: '' }),
+    });
   for (const format of f.formats)
     chips.push({
       key: format,
@@ -97,44 +102,6 @@ export function WorkspaceToolbar({
   return (
     <div className="workspace-toolbar">
       <div className="workspace-heading">
-        <Breadcrumb className="asset-breadcrumb" aria-label={t('workspace.allAssets')}>
-          <BreadcrumbList>
-            <BreadcrumbItem>
-              <BreadcrumbLink
-                render={
-                  <Button variant="link" onClick={() => update({ filters: { ...emptyFilters } })} />
-                }
-              >
-                {t('workspace.allAssets')}
-              </BreadcrumbLink>
-            </BreadcrumbItem>
-            {parts.map((part, index) => (
-              <Fragment key={index}>
-                <BreadcrumbSeparator />
-                <BreadcrumbItem>
-                  {index === parts.length - 1 ? (
-                    <BreadcrumbPage>
-                      {part === 'Uncategorized' ? t('home.uncategorized') : part}
-                    </BreadcrumbPage>
-                  ) : (
-                    <BreadcrumbLink
-                      render={
-                        <Button
-                          variant="link"
-                          onClick={() =>
-                            filter({ categoryPath: parts.slice(0, index + 1).join('/') })
-                          }
-                        />
-                      }
-                    >
-                      {part === 'Uncategorized' ? t('home.uncategorized') : part}
-                    </BreadcrumbLink>
-                  )}
-                </BreadcrumbItem>
-              </Fragment>
-            ))}
-          </BreadcrumbList>
-        </Breadcrumb>
         <div className="catalog-toolbar">
           <Label className="catalog-search">
             <span className="visually-hidden">{t('home.searchLabel')}</span>
@@ -193,7 +160,9 @@ export function WorkspaceToolbar({
             value={s.density}
             disabled={s.view === 'list'}
             onChange={(e) =>
-              update({ density: e.currentTarget.value as WorkspaceState['density'] })
+              update({
+                density: e.currentTarget.value as WorkspaceState['density'],
+              })
             }
           >
             {(['small', 'medium', 'large'] as const).map((d) => (
@@ -259,6 +228,51 @@ export function WorkspaceToolbar({
       </div>
       {(chips.length > 0 || f.categoryPath) && (
         <div className="filter-chips">
+          {f.categoryPath && (
+            <Breadcrumb className="asset-breadcrumb" aria-label={t('workspace.allAssets')}>
+              <BreadcrumbList>
+                <BreadcrumbItem>
+                  <BreadcrumbLink
+                    render={
+                      <Button
+                        variant="link"
+                        onClick={() => update({ filters: { ...emptyFilters } })}
+                      />
+                    }
+                  >
+                    {t('workspace.allAssets')}
+                  </BreadcrumbLink>
+                </BreadcrumbItem>
+                {parts.map((part, index) => (
+                  <Fragment key={index}>
+                    <BreadcrumbSeparator />
+                    <BreadcrumbItem>
+                      {index === parts.length - 1 ? (
+                        <BreadcrumbPage>
+                          {part === 'Uncategorized' ? t('home.uncategorized') : part}
+                        </BreadcrumbPage>
+                      ) : (
+                        <BreadcrumbLink
+                          render={
+                            <Button
+                              variant="link"
+                              onClick={() =>
+                                filter({
+                                  categoryPath: parts.slice(0, index + 1).join('/'),
+                                })
+                              }
+                            />
+                          }
+                        >
+                          {part === 'Uncategorized' ? t('home.uncategorized') : part}
+                        </BreadcrumbLink>
+                      )}
+                    </BreadcrumbItem>
+                  </Fragment>
+                ))}
+              </BreadcrumbList>
+            </Breadcrumb>
+          )}
           {chips.map((chip) => (
             <Button
               variant="ghost"

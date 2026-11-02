@@ -4,7 +4,7 @@
 
 ## 成员清单
 
-workspace-toolbar.tsx: 同排 URL 搜索与分类上下文、条件条和视图偏好，不加载模型。
+workspace-toolbar.tsx: 全宽 URL 搜索与按需分类路径、条件条和视图偏好，不加载模型。
 download-selection.tsx: 独立下载选择集与固定版本文件、清单和命令，不追踪磁盘落盘。
 copy-button.tsx: 组合官方 Button 与真实 Clipboard 反馈，不重造按钮。
 

@@ -77,6 +77,25 @@ describe('UI design constraints', () => {
     expect(styles).not.toMatch(/#[\da-f]{3,8}\b/i);
   });
 
+  it('separates visible outlines from pale input fills in both themes', async () => {
+    const tokens = await readFile(`${stylesRoot}/tokens.css`, 'utf8');
+    const adapter = await readFile(`${stylesRoot}/shadcn.css`, 'utf8');
+    expect(tokens).toMatch(/--lpw-line:\s*color-mix\(\s*in oklch,\s*var\(--muted-foreground\) 75%,\s*var\(--background\)\s*\)/);
+    expect(tokens).toContain('--lpw-control-line: var(--muted-foreground)');
+    expect(adapter).toContain('--color-border: var(--lpw-line)');
+    expect(adapter).toContain('--color-control-border: var(--lpw-control-line)');
+    expect(adapter).toContain('--color-input: var(--input)');
+    for (const name of ['input', 'native-select', 'textarea', 'toggle', 'button']) {
+      const source = await readFile(new URL(`../src/components/ui/${name}.tsx`, import.meta.url), 'utf8');
+      expect(source, name).toContain('border-control-border');
+      expect(source, name).not.toMatch(/(?:^|\s|:)border-input(?:\s|$)/);
+    }
+    const input = await readFile(new URL('../src/components/ui/input.tsx', import.meta.url), 'utf8');
+    expect(input).toContain('dark:bg-input/30');
+    expect(input).toContain('focus-visible:outline-ring');
+    expect(input).toContain('aria-invalid:border-destructive');
+  });
+
   it('keeps visible borders at a half pixel and suppresses shadows', async () => {
     const styles = await readStyles();
     const borderWidths = [...styles.matchAll(/\bborder(?:-(?:top|right|bottom|left))?\s*:\s*([\d.]+)px\b/g)]

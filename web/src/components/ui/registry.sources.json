@@ -9,7 +9,8 @@
     "Use 0.5px borders, 40px controls, 12/14px typography and no decorative motion/shadows",
     "FU official shadcn adapter and gallery controls read one user-supplied palette; do not override FU layouts",
     "Run the project formatter; preserve component signatures and upstream event behavior",
-    "Checkbox unchecked borders use muted-foreground for visible contrast; upstream selection behavior is unchanged"
+    "Checkbox unchecked borders use muted-foreground for visible contrast; upstream selection behavior is unchanged",
+    "Control border colors use the shared control-border role; input fills, focus rings, validation and interaction behavior are unchanged"
   ],
   "components": {
     "button": {
@@ -17,35 +18,35 @@
       "registry_sha256": "9ba7e870178813f0552b818a913a2792fb500c779e36395740b4973e3025d427",
       "source_sha256": "313353436d0fcc8e44ab470adb614b9fd013d28626f624328ea0d66d41a6c81b",
       "upstream_path": "registry/base-nova/ui/button.tsx",
-      "installed_sha256": "23859c205308bddfa1fdf94a805b6aa3ad3e4712689a9d8af708d1a4eb4088d3"
+      "installed_sha256": "520d23c293930289e777570af881186ddb26c9bdbaf82c285d1e91f9f68a1f4f"
     },
     "input": {
       "url": "https://ui.shadcn.com/r/styles/base-nova/input.json",
       "registry_sha256": "bbad1bba130ac9750a61844eeb8f043e8a710846e07689fa85398b80a46c2741",
       "source_sha256": "dab990dfefa0ba78854ab6602ad074270dba9d7d1262184d9bfbb62bd990903b",
       "upstream_path": "registry/base-nova/ui/input.tsx",
-      "installed_sha256": "c166b2c4054e725c30bdfe8548ddcfa5d85ae18fc7c4cb83cab00cf3495d2a61"
+      "installed_sha256": "861a36998cd998304c39e16bcd347131b34f0dcc92f16e0be0343846464d04c3"
     },
     "checkbox": {
       "url": "https://ui.shadcn.com/r/styles/base-nova/checkbox.json",
       "registry_sha256": "e6df7b595f25a7ee97c3fb94e0ddc35998f74c98b990d3030e485905ec677178",
       "source_sha256": "0cc30ddee3fa93818799f48ad47a58a30652c956ce940373c3feb3559167f0af",
       "upstream_path": "registry/base-nova/ui/checkbox.tsx",
-      "installed_sha256": "72df2890edc6d9907fc866526d4fc28fdf2427cf7b4f9abefe6531fce7b92427"
+      "installed_sha256": "8fc4965602b0809199bca4c24920249801b250963314c757996354f900117c60"
     },
     "native-select": {
       "url": "https://ui.shadcn.com/r/styles/base-nova/native-select.json",
       "registry_sha256": "743d128b09f67c1921e3c302e778834639e5be92c454205cabfb61eed34b4ff1",
       "source_sha256": "17552c2df3b8f5ee44675979c3c29a02f48454e9204f2a02b64f4b7f28bdfc2c",
       "upstream_path": "registry/base-nova/ui/native-select.tsx",
-      "installed_sha256": "00d3a658cd87c967e2afb32800208ac6d246b0f0e7dc954a8f758b917fc0a8bc"
+      "installed_sha256": "4b778a532135fb1ee645afb8641a6e2720e4f857c232d9421aeabc799cc2cc99"
     },
     "textarea": {
       "url": "https://ui.shadcn.com/r/styles/base-nova/textarea.json",
       "registry_sha256": "8f01f6bc4ee556263bae7644e8b527022fa77ff203f33a258bb47142ef7d9c81",
       "source_sha256": "82601c91ffc6c727d924162c78d7cb853114bcced4e2eb922a68ca12d4239c0f",
       "upstream_path": "registry/base-nova/ui/textarea.tsx",
-      "installed_sha256": "da733cf07da746364746955d57f6368a78732424c3297d097e9d9c3af535dc95"
+      "installed_sha256": "aadbf0c7245564dc1268f4e6107d10031745576f280f986d99eb8b5d46010eb1"
     },
     "popover": {
       "url": "https://ui.shadcn.com/r/styles/base-nova/popover.json",
@@ -66,7 +67,7 @@
       "registry_sha256": "f06447a03bcc1e510f3a50d5e7735bd82bdc17bc77849596709727c215bcc20e",
       "source_sha256": "48ab6456afc25c4cf79537252cb9512c5c2846d2b1796170eab8aca91ebf7ddf",
       "upstream_path": "registry/base-nova/ui/toggle.tsx",
-      "installed_sha256": "5d74834362cadfaf78a07785354cc7946860056dfe2605b14cc22baf043dd08c"
+      "installed_sha256": "68616734eb121df89ccd13a245bd2e6d9b1bd535555e61a433a3976c38a66d2d"
     },
     "toggle-group": {
       "url": "https://ui.shadcn.com/r/styles/base-nova/toggle-group.json",

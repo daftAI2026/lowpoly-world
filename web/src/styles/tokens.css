@@ -1,6 +1,6 @@
 /**
  * [INPUT]: 依赖用户确认的 OKLCH 主题与本地字体声明。
- * [OUTPUT]: 提供唯一明暗语义 token、字体栈、圆角与阴影配置。
+ * [OUTPUT]: 提供原始明暗色板、可见边线别名与字体配置。
  * [POS]: 全站主题唯一来源；FU 与 shadcn 直接读取本文件，不另造色板。
  * [PROTOCOL]: 变更时更新此头部，然后检查 CLAUDE.md
  */
@@ -105,7 +105,8 @@
   --lpw-raised: var(--card);
   --lpw-ink: var(--foreground);
   --lpw-muted: var(--muted-foreground);
-  --lpw-line: var(--border);
+  --lpw-line: color-mix(in oklch, var(--muted-foreground) 75%, var(--background));
+  --lpw-control-line: var(--muted-foreground);
   --lpw-accent: var(--primary);
   --lpw-accent-hover: var(--primary);
   --lpw-accent-soft: var(--accent);

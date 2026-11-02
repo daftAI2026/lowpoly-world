@@ -1,7 +1,7 @@
 /**
  * [INPUT]: 依赖 shadcn/ui 官方源码、Base UI Button 与 class-variance-authority。
  * [OUTPUT]: 导出通用动作与按钮链接样式的官方组件组合接口。
- * [POS]: 受控上游源码副本；来源与外观差异见 registry.sources.json，不包含业务状态。
+ * [POS]: 受控上游源码副本；来源与外观差异见 registry.sources.json，不包含业务状态；边线读取可见控件角色。
  * [PROTOCOL]: 变更时更新此头部，然后检查 CLAUDE.md
  */
 import { Button as ButtonPrimitive } from '@base-ui/react/button';
@@ -15,7 +15,7 @@ const buttonVariants = cva(
       variant: {
         default: 'bg-primary text-primary-foreground hover:bg-primary/80',
         outline:
-          'border-border bg-background hover:bg-muted hover:text-foreground aria-expanded:bg-muted aria-expanded:text-foreground dark:border-input dark:bg-input/30 dark:hover:bg-input/50',
+          'border-control-border bg-background hover:bg-muted hover:text-foreground aria-expanded:bg-muted aria-expanded:text-foreground dark:border-control-border dark:bg-input/30 dark:hover:bg-input/50',
         secondary:
           'bg-secondary text-secondary-foreground hover:bg-[color-mix(in_oklch,var(--secondary),var(--foreground)_5%)] aria-expanded:bg-secondary aria-expanded:text-secondary-foreground',
         ghost:
