@@ -1,16 +1,9 @@
 /**
  * [INPUT]: 依赖工具栏、选择集和复制动作语义 class。
- * [OUTPUT]: 提供全宽搜索、条件区分类路径和紧凑控制样式。
+ * [OUTPUT]: 对齐单排结果工具、图标分组、条件条和下载审阅。
  * [POS]: 工作区操作层；不覆盖原生文档、导航或主题值。
  * [PROTOCOL]: 变更时更新此头部，然后检查 CLAUDE.md
  */
-
-.workspace-heading {
-  display: grid;
-  min-width: 0;
-  align-items: center;
-  margin-bottom: 8px;
-}
 
 .asset-breadcrumb {
   display: flex;
@@ -36,14 +29,42 @@
   display: flex;
   flex-wrap: wrap;
   align-items: center;
-  gap: 4px 16px;
-  padding-bottom: 8px;
+  justify-content: space-between;
+  gap: 8px 16px;
+  margin-bottom: 8px;
   font-size: 12px;
 }
-.density-control {
-  display: inline-flex;
+.workspace-summary,
+.workspace-view-actions {
+  display: flex;
+  flex-wrap: wrap;
   align-items: center;
   gap: 8px;
+  min-width: 0;
+}
+.workspace-summary {
+  gap: 12px;
+}
+.workspace-view-actions {
+  margin-inline-start: auto;
+}
+.view-options {
+  display: inline-flex;
+  flex-shrink: 0;
+  align-items: center;
+  gap: 4px;
+  padding: 2px;
+  border: 0.5px solid var(--lpw-line);
+  border-radius: var(--radius-lg);
+}
+.density-controls {
+  padding-inline-start: 4px;
+  border-inline-start: 0.5px solid var(--lpw-line);
+  border-radius: 0;
+}
+.view-options [aria-pressed='true'] {
+  background: var(--accent);
+  color: var(--accent-foreground);
 }
 .extra-filter {
   align-items: stretch;

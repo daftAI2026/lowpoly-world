@@ -17,11 +17,6 @@
     padding: 12px 0 16px;
   }
 
-  .catalog-toolbar {
-    grid-template-columns: minmax(0, 1fr) auto;
-    gap: 8px 12px;
-  }
-
   .sort-control {
     min-width: 0;
   }
@@ -47,10 +42,6 @@
 }
 
 @container (max-width: 359px) {
-  .catalog-toolbar {
-    grid-template-columns: minmax(0, 1fr);
-  }
-
   .sort-control {
     justify-content: space-between;
   }

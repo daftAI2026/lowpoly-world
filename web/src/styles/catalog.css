@@ -9,13 +9,6 @@
   padding: 12px 0 16px;
 }
 
-.catalog-toolbar {
-  display: grid;
-  grid-template-columns: minmax(0, 1fr) auto;
-  align-items: center;
-  gap: 12px;
-}
-
 .catalog-search {
   position: relative;
   display: flex;
@@ -51,7 +44,6 @@
   color: var(--lpw-muted);
   font-size: 12px;
   font-variant-numeric: tabular-nums;
-  order: -1;
   text-align: left;
   white-space: nowrap;
 }

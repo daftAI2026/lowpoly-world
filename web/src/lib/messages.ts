@@ -9,6 +9,7 @@ export const messages = {
     workspace: {
       allAssets: 'All assets',
       searchModels: 'Search models',
+      view: 'View',
       grid: 'Grid',
       list: 'List',
       density: 'Thumbnail size',
@@ -171,6 +172,7 @@ export const messages = {
     workspace: {
       allAssets: '全部资产',
       searchModels: '搜索模型',
+      view: '视图',
       grid: '网格',
       list: '列表',
       density: '缩略图大小',

@@ -5,7 +5,7 @@
 
 gallery-shell.test.mjs: 全屏原生壳、唯一模型搜索、无章节列和静态详情链接回归。
 
-catalog-header.test.mjs: 展厅无重复标题、按需分类路径与唯一模型搜索回归。
+catalog-header.test.mjs: 展厅单行工具栏、图标密度组、按需分类路径与唯一模型搜索回归。
 
 preview-fit.test.mjs: 下方画布高度、紧凑工具栏与预览元数据事实列回归。
 
@@ -22,7 +22,7 @@ i18n.test.mjs: 验证 locale、路径、正文语言、回退、双语键对齐�
 static-href.test.mjs: 验证语义路由与 index.html 双向映射、静态路径清单、query/hash、API 与未知路径边界。
 content-boundary.test.mjs: 验证 MDX 集合排除地图、合法注释、免费静态部署边界、完整中文译稿、代码与 URL 一致性、MIT 托管通知与静态路由完整性。
 workspace.test.mjs: 共用壳下的展示/文档内容分离、就地预览、普通链接、邻项与宽度边界。
-layout.test.mjs: 验证官网 Spacious 壳、彩色标识、真实滚动宿主、双语主导航、HF/GitHub 入口与资产卡扩展边界。
+layout.test.mjs: 验证官网 Spacious 壳、彩色标识、真实滚动宿主、双语右上角互链、HF/GitHub 入口与资产卡扩展边界。
 ui-design.test.mjs: 验证资产字号、原生主题色别名、明暗对比边线、独立填充与焦点、圆角、动效和双语文案。
 
 Vite+ Vitest 运行全部测试。测试替换 fetch，不访问 HF 网络或仓库资源。

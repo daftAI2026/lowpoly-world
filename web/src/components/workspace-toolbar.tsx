@@ -1,6 +1,6 @@
 /**
  * [INPUT]: 依赖 URL 状态、真实分类与官方 shadcn 表单、弹层和导航。
- * [OUTPUT]: 导出排序、结果计数、按需分类路径与视图控制。
+ * [OUTPUT]: 导出单行结果工具栏、图标视图与三档密度选择。
  * [POS]: 工作区工具栏；只发状态变更，不加载目录或模型。
  * [PROTOCOL]: 变更时更新此头部，然后检查 CLAUDE.md
  */
@@ -19,6 +19,7 @@ import {
   BreadcrumbPage,
   BreadcrumbSeparator,
 } from '@/components/ui/breadcrumb';
+import { Grid2X2, List, Square, Settings2, Download } from 'lucide-react';
 import { useTranslation } from 'react-i18next';
 import type { WorkspaceState } from '@/lib/workspace-state';
 import { emptyFilters } from '@/lib/workspace-state';
@@ -99,8 +100,136 @@ export function WorkspaceToolbar({
     });
   return (
     <div className="workspace-toolbar">
-      <div className="workspace-heading">
-        <div className="catalog-toolbar">
+      <div className="workspace-controls">
+        <div className="workspace-summary">
+          <p className="catalog-result-count" aria-live="polite">
+            {t('home.resultCount', { visible, total })}
+          </p>
+          <Button type="button" variant="link" disabled={!visible} onClick={onSelectResults}>
+            {t('workspace.selectResults', { count: visible })}
+          </Button>
+        </div>
+        <div className="workspace-view-actions">
+          <Button
+            type="button"
+            variant="ghost"
+            onClick={onReview}
+            aria-label={`${t('workspace.reviewSelection')} (${selectedCount})`}
+            title={`${t('workspace.reviewSelection')} (${selectedCount})`}
+          >
+            <Download aria-hidden="true" />
+            {selectedCount}
+          </Button>
+          <div className="view-options">
+            <ToggleGroup
+              className="view-controls"
+              variant="default"
+              spacing={1}
+              value={[s.view]}
+              onValueChange={(values) => {
+                const view = values[0];
+                if (view === 'grid' || view === 'list') update({ view });
+              }}
+              aria-label={t('workspace.view')}
+            >
+              {(['grid', 'list'] as const).map((view) => (
+                <ToggleGroupItem
+                  key={view}
+                  value={view}
+                  className="size-10 rounded-md p-0"
+                  aria-label={t(`workspace.${view}`)}
+                  title={t(`workspace.${view}`)}
+                >
+                  {view === 'grid' ? <Grid2X2 aria-hidden="true" /> : <List aria-hidden="true" />}
+                </ToggleGroupItem>
+              ))}
+            </ToggleGroup>
+            <ToggleGroup
+              className="density-controls"
+              variant="default"
+              spacing={1}
+              disabled={s.view === 'list'}
+              value={[s.density]}
+              onValueChange={(values) => {
+                const density = values[0];
+                if (density === 'small' || density === 'medium' || density === 'large')
+                  update({ density });
+              }}
+              aria-label={t('workspace.density')}
+            >
+              {(['small', 'medium', 'large'] as const).map((density) => (
+                <ToggleGroupItem
+                  key={density}
+                  value={density}
+                  className="size-10 rounded-md p-0"
+                  aria-label={t(`workspace.${density}`)}
+                  title={`${t('workspace.density')}: ${t(`workspace.${density}`)}`}
+                >
+                  <Square
+                    aria-hidden="true"
+                    className={
+                      density === 'small'
+                        ? 'size-2.5'
+                        : density === 'medium'
+                          ? 'size-3.5'
+                          : 'size-4.5'
+                    }
+                  />
+                </ToggleGroupItem>
+              ))}
+            </ToggleGroup>
+          </div>
+          <Popover>
+            <PopoverTrigger
+              render={
+                <Button
+                  variant="ghost"
+                  size="icon"
+                  aria-label={t('workspace.preferences')}
+                  title={t('workspace.preferences')}
+                />
+              }
+            >
+              <Settings2 aria-hidden="true" />
+            </PopoverTrigger>
+            <PopoverContent align="start" className="workspace-preferences-content">
+              <Label>
+                <Checkbox
+                  checked={Boolean(f.withPreview)}
+                  onCheckedChange={(checked) => filter({ withPreview: checked === true })}
+                />
+                {t('workspace.onlyPreviews')}
+              </Label>
+              <fieldset>
+                <legend>{t('workspace.filterGroups')}</legend>
+                {(['format', 'triangle', 'tag', 'license', 'source', 'dimension'] as const).map(
+                  (group) => (
+                    <Label key={group}>
+                      <Checkbox
+                        checked={!hiddenGroups.includes(group)}
+                        onCheckedChange={(checked) =>
+                          onHiddenGroups(
+                            checked === true
+                              ? hiddenGroups.filter((g) => g !== group)
+                              : [...hiddenGroups, group],
+                          )
+                        }
+                      />
+                      {t(
+                        group === 'format'
+                          ? 'home.formats'
+                          : group === 'triangle'
+                            ? 'home.lowPolyLevel'
+                            : group === 'tag'
+                              ? 'home.tags'
+                              : `workspace.${group}`,
+                      )}
+                    </Label>
+                  ),
+                )}
+              </fieldset>
+            </PopoverContent>
+          </Popover>
           <Label className="sort-control">
             <span>{t('home.sortLabel')}</span>
             <NativeSelect
@@ -119,100 +248,12 @@ export function WorkspaceToolbar({
               </NativeSelectOption>
             </NativeSelect>
           </Label>
-          <p className="catalog-result-count" aria-live="polite">
-            {t('home.resultCount', { visible, total })}
-          </p>
+          {onReopen && (
+            <Button type="button" variant="link" onClick={onReopen}>
+              {t('workspace.reopenPreview')}
+            </Button>
+          )}
         </div>
-      </div>
-      <div className="workspace-controls">
-        <ToggleGroup
-          className="view-controls"
-          variant="outline"
-          spacing={0}
-          value={[s.view]}
-          onValueChange={(values) => {
-            const view = values[0];
-            if (view === 'grid' || view === 'list') update({ view });
-          }}
-          aria-label={t('home.assetResults')}
-        >
-          {(['grid', 'list'] as const).map((view) => (
-            <ToggleGroupItem key={view} value={view}>
-              {t(`workspace.${view}`)}
-            </ToggleGroupItem>
-          ))}
-        </ToggleGroup>
-        <Label className="density-control">
-          {t('workspace.density')}
-          <NativeSelect
-            value={s.density}
-            disabled={s.view === 'list'}
-            onChange={(e) =>
-              update({
-                density: e.currentTarget.value as WorkspaceState['density'],
-              })
-            }
-          >
-            {(['small', 'medium', 'large'] as const).map((d) => (
-              <NativeSelectOption value={d} key={d}>
-                {t(`workspace.${d}`)}
-              </NativeSelectOption>
-            ))}
-          </NativeSelect>
-        </Label>
-        <Popover>
-          <PopoverTrigger render={<Button variant="outline" />}>
-            {t('workspace.preferences')}
-          </PopoverTrigger>
-          <PopoverContent align="start" className="workspace-preferences-content">
-            <Label>
-              <Checkbox
-                checked={Boolean(f.withPreview)}
-                onCheckedChange={(checked) => filter({ withPreview: checked === true })}
-              />
-              {t('workspace.onlyPreviews')}
-            </Label>
-            <fieldset>
-              <legend>{t('workspace.filterGroups')}</legend>
-              {(['format', 'triangle', 'tag', 'license', 'source', 'dimension'] as const).map(
-                (group) => (
-                  <Label key={group}>
-                    <Checkbox
-                      checked={!hiddenGroups.includes(group)}
-                      onCheckedChange={(checked) =>
-                        onHiddenGroups(
-                          checked === true
-                            ? hiddenGroups.filter((g) => g !== group)
-                            : [...hiddenGroups, group],
-                        )
-                      }
-                    />
-                    {t(
-                      group === 'format'
-                        ? 'home.formats'
-                        : group === 'triangle'
-                          ? 'home.lowPolyLevel'
-                          : group === 'tag'
-                            ? 'home.tags'
-                            : `workspace.${group}`,
-                    )}
-                  </Label>
-                ),
-              )}
-            </fieldset>
-          </PopoverContent>
-        </Popover>
-        <Button type="button" variant="link" disabled={!visible} onClick={onSelectResults}>
-          {t('workspace.selectResults', { count: visible })}
-        </Button>
-        <Button type="button" variant="link" onClick={onReview}>
-          {t('workspace.reviewSelection')} ({selectedCount})
-        </Button>
-        {onReopen && (
-          <Button type="button" variant="link" onClick={onReopen}>
-            {t('workspace.reopenPreview')}
-          </Button>
-        )}
       </div>
       {(chips.length > 0 || f.categoryPath) && (
         <div className="filter-chips">

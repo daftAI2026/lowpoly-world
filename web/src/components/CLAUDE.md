@@ -8,7 +8,7 @@ catalog-search.tsx: 原生搜索插槽组合 shadcn 输入和移动弹层，共�
 
 gallery-shell.tsx: 官网 Spacious 全屏壳，原生侧栏接收筛选内容，主区禁用章节目录。
 
-workspace-toolbar.tsx: 排序、结果计数与按需分类路径、条件条和视图偏好，不加载模型。
+workspace-toolbar.tsx: 单排结果工具、图标视图、三档密度与条件条，不加载模型。
 download-selection.tsx: 独立下载选择集与固定版本文件、清单和命令，不追踪磁盘落盘。
 copy-button.tsx: 组合官方 Button 与真实 Clipboard 反馈，不重造按钮。
 
@@ -19,7 +19,7 @@ catalog-browser.tsx: 原生侧栏承载筛选，主区组合 URL 与官方 Resiz
 catalog-filters.tsx: 展示分类树与有值筛选项；空标签组隐藏，宽窄屏开关由原生侧栏与抽屉负责。
 catalog-grid.tsx: 真实滚动宿主的行虚拟化，支持网格、列表、密度与结果定位。
 catalog-state.tsx: 共用双语加载、空目录和目录校验失败视图；只保留必要重试入口。
-docs-shell.tsx: 文档专用 Spacious 阅读布局；展示页不读取文档树。
+docs-shell.tsx: 文档侧栏只放正文树；右上角提供返回模型页入口。
 asset-details.tsx: 共用模型与事实；紧凑元数据归事实列，独立详情保留整页位置。
 asset-preview.tsx: 结果工作区内部的可关闭预览，支持左右下停靠和应用内展开。
 home-page.tsx: GalleryShell 承载模型浏览和加载状态；隐藏重复视觉标题，保留语义标题。
