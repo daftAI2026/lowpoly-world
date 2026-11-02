@@ -1,7 +1,7 @@
 /**
  * [INPUT]: 依赖官网同款 Spacious、静态页面树与共享品牌外链。
- * [OUTPUT]: 导出全应用唯一的 AppShell，保留原生侧栏、右上操作和移动菜单。
- * [POS]: 模型库、详情与文档的共同布局；业务视图只填充 DocsPage。
+ * [OUTPUT]: 导出文档专用的 DocsShell，保留原生侧栏、右上操作和移动菜单。
+ * [POS]: 仅供文档路由使用；展示工作区不进入该阅读布局。
  * [PROTOCOL]: 变更时更新此头部，然后检查 CLAUDE.md
  */
 import type { Root } from 'fumadocs-core/page-tree';
@@ -11,7 +11,7 @@ import { baseOptions } from '@/lib/layout.shared';
 import { localizedHomePath, type Locale } from '@/lib/locale';
 import { messages } from '@/lib/messages';
 
-export function AppShell({ locale, tree, children }: { locale: Locale; tree: Root; children: ReactNode }) {
+export function DocsShell({ locale, tree, children }: { locale: Locale; tree: Root; children: ReactNode }) {
   const options = baseOptions(locale);
   const labels = messages[locale].navigation;
   const navigation: Root = {

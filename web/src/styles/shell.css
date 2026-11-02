@@ -1,6 +1,6 @@
 /**
- * [INPUT]: 依赖 Spacious Page 的内容宽度与应用内容 class。
- * [OUTPUT]: 提供内容容器、回退提示和无障碍隐藏文本。
+ * [INPUT]: 依赖 Home 导航宽度 token 与应用内容 class。
+ * [OUTPUT]: 提供独立展示页的原生导航对齐与文档回退提示。
  * [POS]: 应用内容样式；原生壳负责导航几何，兄弟文件负责资产区域。
  * [PROTOCOL]: 变更时更新此头部，然后检查 CLAUDE.md
  */
@@ -30,4 +30,17 @@
   clip: rect(0, 0, 0, 0);
   white-space: nowrap;
   clip-path: inset(50%);
+}
+
+/* ---- 展示页对齐原生导航，不侵入文档阅读布局 ---- */
+.gallery-main,
+.detail-main {
+  width: min(calc(var(--fd-layout-width, 1400px) - 32px), calc(100% - 32px));
+  margin-inline: auto;
+}
+.gallery-title {
+  margin: 24px 0 0;
+  font-size: 28px;
+  font-weight: 600;
+  line-height: 1.25;
 }

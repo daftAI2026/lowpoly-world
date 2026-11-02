@@ -1,5 +1,5 @@
 /**
- * [INPUT]: 依赖 Spacious Page、父路由原生壳与编译后的 MDX。
+ * [INPUT]: 依赖 Spacious Page、文档专用原生壳与编译后的 MDX。
  * [OUTPUT]: 导出 `/en/docs/*`、`/zh/docs/*` 页面；读取对应译稿，缺译时标明英文回退。
  * [POS]: 应用内的使用文档；原生顶部导航与侧栏不另造壳。
  * [PROTOCOL]: 变更时更新此头部，然后检查 CLAUDE.md
@@ -15,6 +15,7 @@ import { useMDXComponents } from '@/components/mdx';
 import { documentLocaleFromPath, resolveLocale, type Locale } from '@/lib/locale';
 import browserCollections from '../../../../.source/browser';
 import { source } from '@/lib/source.server';
+import { DocsShell } from '@/components/docs-shell';
 
 const clientDocs = browserCollections.docs.createClientLoader<{ contentLocale: Locale; fallbackNotice: string | null }>({
   component({ frontmatter, toc, default: MDX }, { contentLocale, fallbackNotice }) {
@@ -61,6 +62,7 @@ const staticDocLoader = createServerFn({ method: 'GET' })
       contentLocale: documentLocaleFromPath(page.path),
       title: page.data.title,
       description: page.data.description,
+      pageTree: await source.serializePageTree(source.getPageTree(locale)),
     };
   });
 
@@ -78,8 +80,8 @@ function Page() {
   const locale = resolveLocale(data.locale);
 
   return (
-    <Suspense>
-      <Content path={data.path} locale={locale} />
-    </Suspense>
+    <DocsShell locale={locale} tree={data.pageTree}>
+      <Suspense><Content path={data.path} locale={locale} /></Suspense>
+    </DocsShell>
   );
 }

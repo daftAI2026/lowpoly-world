@@ -1,5 +1,5 @@
 /**
- * [INPUT]: 依赖真实资产、locale、容器宽度与原生页面滚动元素。
+ * [INPUT]: 依赖真实资产、locale、容器宽度、选中编号与实际滚动元素。
  * [OUTPUT]: 导出响应式行虚拟化网格与无匹配结果状态。
  * [POS]: 首页唯一资产列表；虚拟化只挂载视窗附近的 AssetCard。
  * [PROTOCOL]: 变更时更新此头部，然后检查 CLAUDE.md
@@ -20,25 +20,49 @@ type CatalogGridProps = {
   locale: Locale;
   onClearFilters: () => void;
   hasFilters: boolean;
+  selectedId?: string | null;
+  onSelectAsset?: (id: string) => void;
+  checkedIds?: readonly string[];
+  onCheck?: (id: string, checked: boolean) => void;
+  view?: 'grid' | 'list';
+  density?: 'small' | 'medium' | 'large';
+  browsingSearch?: string;
+  find?: { id: string; request: number } | null;
 };
 
-function columnCountForWidth(width: number): number {
+function columnCountForWidth(width: number, density: string): number {
   if (width <= 0) return 2;
-  const minCardWidth = width < 360 ? 280 : width < 600 ? 140 : 180;
+  const minCardWidth =
+    density === 'small' ? 120 : density === 'large' ? 260 : width < 600 ? 140 : 180;
   return Math.max(1, Math.min(6, Math.floor((width + 18) / (minCardWidth + 18))));
 }
 
-export function CatalogGrid({ assets, locale, onClearFilters, hasFilters }: CatalogGridProps) {
+export function CatalogGrid({
+  assets,
+  locale,
+  onClearFilters,
+  hasFilters,
+  selectedId,
+  onSelectAsset,
+  checkedIds = [],
+  onCheck,
+  view = 'grid',
+  density = 'medium',
+  browsingSearch,
+  find,
+}: CatalogGridProps) {
   const { t } = useTranslation();
   const gridRef = useRef<HTMLDivElement>(null);
+  const lastFind = useRef(0);
   const [containerWidth, setContainerWidth] = useState(0);
   const [scrollMargin, setScrollMargin] = useState(0);
   const [scrollElement, setScrollElement] = useState<HTMLElement | null>(null);
-  const columns = columnCountForWidth(containerWidth);
+  const columns = view === 'list' ? 1 : columnCountForWidth(containerWidth, density);
   const rows = useMemo(() => groupIntoRows(assets, columns), [assets, columns]);
   const options = {
     count: rows.length,
     estimateSize: () => {
+      if (view === 'list') return 100;
       const cardWidth = Math.max(150, containerWidth / columns - 18);
       return Math.ceil(cardWidth + CARD_DETAILS_ESTIMATE);
     },
@@ -66,9 +90,13 @@ export function CatalogGrid({ assets, locale, onClearFilters, hasFilters }: Cata
       }
       setScrollElement(ancestor);
       // ---- 记录滚动宿主偏移，不改变模板的 overflow 几何 ----
-      setScrollMargin(ancestor
-        ? element.getBoundingClientRect().top - ancestor.getBoundingClientRect().top + ancestor.scrollTop
-        : element.getBoundingClientRect().top + window.scrollY);
+      setScrollMargin(
+        ancestor
+          ? element.getBoundingClientRect().top -
+              ancestor.getBoundingClientRect().top +
+              ancestor.scrollTop
+          : element.getBoundingClientRect().top + window.scrollY,
+      );
     };
     updateMeasurements();
     const observer = new ResizeObserver(updateMeasurements);
@@ -83,6 +111,23 @@ export function CatalogGrid({ assets, locale, onClearFilters, hasFilters }: Cata
   useEffect(() => {
     virtualizer.measure();
   }, [columns, virtualizer]);
+
+  useEffect(() => {
+    if (!find || lastFind.current === find.request) return;
+    const index = assets.findIndex((asset) => asset.id === find.id);
+    if (index < 0) return;
+    virtualizer.scrollToIndex(Math.floor(index / columns), { align: 'center' });
+    const timer = setTimeout(() => {
+      const target = gridRef.current?.querySelector<HTMLAnchorElement>(
+        `[data-asset-id="${find.id}"] a`,
+      );
+      if (target) {
+        target.focus({ preventScroll: true });
+        lastFind.current = find.request;
+      }
+    }, 120);
+    return () => clearTimeout(timer);
+  }, [find, assets, columns, virtualizer]);
 
   if (assets.length === 0) {
     return (
@@ -99,7 +144,14 @@ export function CatalogGrid({ assets, locale, onClearFilters, hasFilters }: Cata
   }
 
   return (
-    <div ref={gridRef} className="asset-grid" role="list" aria-label={t('home.assetResults')}>
+    <div
+      ref={gridRef}
+      className="asset-grid"
+      data-view={view}
+      data-density={density}
+      role="list"
+      aria-label={t('home.assetResults')}
+    >
       <div className="virtual-grid-space" style={{ height: `${virtualizer.getTotalSize()}px` }}>
         {virtualizer.getVirtualItems().map((virtualRow) => (
           <div
@@ -114,7 +166,17 @@ export function CatalogGrid({ assets, locale, onClearFilters, hasFilters }: Cata
             }}
           >
             {rows[virtualRow.index].map((asset) => (
-              <AssetCard key={asset.id} asset={asset} locale={locale} />
+              <AssetCard
+                key={asset.id}
+                asset={asset}
+                locale={locale}
+                selected={asset.id === selectedId}
+                onSelect={onSelectAsset}
+                checked={checkedIds.includes(asset.id)}
+                onCheck={onCheck}
+                view={view}
+                browsingSearch={browsingSearch}
+              />
             ))}
           </div>
         ))}

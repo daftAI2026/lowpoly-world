@@ -44,6 +44,7 @@ function renderFilters(facets) {
     I18nextProvider,
     { i18n: createBusinessI18n('en') },
     createElement(CatalogFilters, {
+      assets: [], hiddenGroups: [], onExtraChange: () => {},
       facets,
       filters: emptyFilters,
       onCategoryChange: noop,

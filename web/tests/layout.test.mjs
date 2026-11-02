@@ -32,7 +32,7 @@ describe('Fumadocs application foundation', () => {
 
   it('uses the official website Spacious layout and matching page components', async () => {
     const route = await readSource('../src/routes/$lang/docs/$.tsx');
-    const shell = await readSource('../src/components/app-shell.tsx');
+    const shell = await readSource('../src/components/docs-shell.tsx');
     expect(shell).toContain("from 'fumadocs-ui/layouts/spacious'");
     expect(route).toContain("from 'fumadocs-ui/layouts/spacious/page'");
     expect(route).not.toContain('<DocsLayout');
@@ -48,8 +48,7 @@ describe('Fumadocs application foundation', () => {
 
   it('aligns gallery content with the native shell width token', async () => {
     const css = await readSource('../src/styles/shell.css');
-    expect(css).not.toContain('--fd-layout-width');
-    expect(css).not.toContain('1400px');
+    expect(css).toContain('var(--fd-layout-width, 1400px)');
   });
 
   it('does not replace framework geometry with global class-name interception', async () => {

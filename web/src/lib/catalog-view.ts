@@ -12,7 +12,12 @@ export type TriangleBand = 'under-5k' | '5k-to-25k' | '25k-plus';
 export type CatalogSort = 'id-asc' | 'name-asc' | 'triangles-asc' | 'triangles-desc';
 
 export function isCatalogSort(value: string): value is CatalogSort {
-  return value === 'id-asc' || value === 'name-asc' || value === 'triangles-asc' || value === 'triangles-desc';
+  return (
+    value === 'id-asc' ||
+    value === 'name-asc' ||
+    value === 'triangles-asc' ||
+    value === 'triangles-desc'
+  );
 }
 
 export type CatalogFilters = {
@@ -21,6 +26,10 @@ export type CatalogFilters = {
   formats: readonly CatalogFormat[];
   tags: readonly string[];
   triangleBand: TriangleBand | null;
+  license?: string | null;
+  source?: string | null;
+  dimension?: 'under-1m' | '1m-plus' | null;
+  withPreview?: boolean;
 };
 
 export type CategoryNode = {
@@ -114,7 +123,8 @@ export function buildCatalogFacets(assets: readonly CatalogAsset[]): CatalogFace
   return {
     categories: buildCategoryTree(assets),
     formats,
-    tags: [...tags].map(([label, count]) => ({ label, count }))
+    tags: [...tags]
+      .map(([label, count]) => ({ label, count }))
       .sort((left, right) => left.label.localeCompare(right.label)),
     triangleBands,
   };
@@ -155,13 +165,9 @@ export function filterAndSortAssets(
 
   const result = assets.filter((asset) => {
     if (query) {
-      const searchTarget = normalizedSearchText([
-        asset.id,
-        asset.name_en,
-        asset.name_zh,
-        asset.category ?? '',
-        ...asset.tags,
-      ].join(' '));
+      const searchTarget = normalizedSearchText(
+        [asset.id, asset.name_en, asset.name_zh, asset.category ?? '', ...asset.tags].join(' '),
+      );
       if (!searchTarget.includes(query)) return false;
     }
     if (!matchesCategory(asset, filters.categoryPath)) return false;
@@ -169,9 +175,18 @@ export function filterAndSortAssets(
     if (
       selectedFormats.size > 0 &&
       ![...selectedFormats].some((format) => assetHasFormat(asset, format))
-    ) return false;
+    )
+      return false;
     if (filters.triangleBand && triangleBandFor(asset.triangles) !== filters.triangleBand) {
       return false;
+    }
+    if (filters.license && asset.license !== filters.license) return false;
+    if (filters.source && asset.source !== filters.source) return false;
+    if (filters.withPreview && !asset.preview_url && !asset.glb_url) return false;
+    if (filters.dimension) {
+      if (!asset.dimensions_m) return false;
+      const longest = Math.max(...asset.dimensions_m);
+      if (filters.dimension === 'under-1m' ? longest >= 1 : longest < 1) return false;
     }
     return true;
   });
@@ -179,16 +194,24 @@ export function filterAndSortAssets(
   result.sort((left, right) => {
     if (sort === 'name-asc') {
       const collatorLocale = locale === 'zh' ? 'zh-CN' : 'en';
-      return displayName(left, locale).localeCompare(displayName(right, locale), collatorLocale) ||
-        left.id.localeCompare(right.id, undefined, { numeric: true });
+      return (
+        displayName(left, locale).localeCompare(displayName(right, locale), collatorLocale) ||
+        left.id.localeCompare(right.id, undefined, { numeric: true })
+      );
     }
     if (sort === 'triangles-asc') {
-      return compareNullableNumbers(left.triangles, right.triangles) ||
-        left.id.localeCompare(right.id, undefined, { numeric: true });
+      return (
+        compareNullableNumbers(left.triangles, right.triangles) ||
+        left.id.localeCompare(right.id, undefined, { numeric: true })
+      );
     }
     if (sort === 'triangles-desc') {
-      return compareNullableNumbers(right.triangles, left.triangles) ||
-        left.id.localeCompare(right.id, undefined, { numeric: true });
+      return (
+        (left.triangles === null || right.triangles === null
+          ? compareNullableNumbers(left.triangles, right.triangles)
+          : right.triangles - left.triangles) ||
+        left.id.localeCompare(right.id, undefined, { numeric: true })
+      );
     }
     return left.id.localeCompare(right.id, undefined, { numeric: true });
   });
@@ -214,6 +237,10 @@ export function hasCatalogFilters(filters: CatalogFilters): boolean {
     filters.categoryPath ||
     filters.formats.length ||
     filters.tags.length ||
-    filters.triangleBand,
+    filters.triangleBand ||
+    filters.license ||
+    filters.source ||
+    filters.dimension ||
+    filters.withPreview,
   );
 }

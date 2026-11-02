@@ -1,0 +1,247 @@
+/**
+ * [INPUT]: 依赖工具栏、选择集和复制动作语义 class。
+ * [OUTPUT]: 提供紧凑控制、条件条和下载审阅的响应式样式。
+ * [POS]: 工作区操作层；不覆盖原生文档、导航或主题值。
+ * [PROTOCOL]: 变更时更新此头部，然后检查 CLAUDE.md
+ */
+.asset-breadcrumb {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 8px;
+  margin-bottom: 12px;
+  font-size: 14px;
+}
+.asset-breadcrumb > span {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+}
+.asset-breadcrumb button {
+  min-height: 32px;
+  color: var(--lpw-muted);
+}
+.asset-breadcrumb [aria-current] {
+  color: var(--lpw-ink);
+}
+.workspace-controls {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 4px 16px;
+  padding-bottom: 12px;
+  font-size: 12px;
+}
+.workspace-controls .text-button {
+  font-size: 12px;
+}
+.view-controls {
+  display: inline-flex;
+  border: 0.5px solid var(--lpw-line);
+  border-radius: var(--radius-sm);
+}
+.view-controls button {
+  min-height: 40px;
+  padding: 0 12px;
+}
+.view-controls [aria-pressed='true'] {
+  background: var(--lpw-accent-soft);
+  color: var(--lpw-accent);
+}
+.density-control {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+}
+.density-control select,
+.extra-filter select {
+  height: 40px;
+  max-width: 100%;
+  padding: 0 8px;
+  border: 0.5px solid var(--lpw-line);
+  border-radius: var(--radius-sm);
+  background: var(--lpw-canvas);
+  color: var(--lpw-ink);
+}
+.extra-filter {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  font-size: 12px;
+}
+.extra-filter[hidden],
+.filter-group[hidden] {
+  display: none;
+}
+.workspace-preferences {
+  position: relative;
+}
+.workspace-preferences summary {
+  min-height: 40px;
+  display: flex;
+  align-items: center;
+  cursor: pointer;
+  text-decoration: underline;
+  text-underline-offset: 3px;
+}
+.workspace-preferences > div {
+  position: absolute;
+  z-index: 5;
+  top: 100%;
+  left: 0;
+  width: 240px;
+  padding: 12px;
+  border: 0.5px solid var(--lpw-line);
+  border-radius: var(--radius-md);
+  background: var(--lpw-canvas);
+}
+.workspace-preferences label {
+  display: flex;
+  gap: 8px;
+  align-items: center;
+  min-height: 40px;
+}
+.workspace-preferences fieldset {
+  margin-top: 8px;
+  border-top: 0.5px solid var(--lpw-line);
+  padding-top: 8px;
+}
+.workspace-preferences legend {
+  color: var(--lpw-muted);
+}
+.filter-chips {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 8px;
+  margin: 0 0 12px;
+  font-size: 12px;
+}
+.filter-chips > button:not(.text-button) {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 0 8px;
+  min-height: 32px;
+  max-width: 100%;
+  overflow-wrap: anywhere;
+  background: var(--lpw-accent-soft);
+  border: 0.5px solid var(--lpw-line);
+  border-radius: var(--radius-sm);
+}
+.download-selection {
+  margin-bottom: 20px;
+  padding: 16px;
+  border: 0.5px solid var(--lpw-line);
+  border-radius: var(--radius-lg);
+}
+.download-selection header {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+  align-items: center;
+  gap: 8px;
+}
+.download-selection h2 {
+  font-size: 20px;
+  font-weight: 600;
+}
+.selection-actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px 20px;
+}
+.selection-items {
+  margin: 12px 0;
+  max-height: 320px;
+  overflow-y: auto;
+  list-style: none;
+  padding: 0;
+}
+.selection-items li {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+  align-items: center;
+  gap: 8px;
+  padding: 8px 0;
+  border-top: 0.5px solid var(--lpw-line);
+}
+.selection-name {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 4px 12px;
+  text-align: left;
+  font-size: 14px;
+}
+.selection-name span {
+  font-size: 12px;
+  color: var(--lpw-muted);
+  font-family: var(--font-mono);
+}
+.selection-items li > div {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 16px;
+  font-size: 12px;
+}
+.selection-items a {
+  display: inline-flex;
+  align-items: center;
+  min-height: 40px;
+  color: var(--lpw-accent);
+  text-decoration: underline;
+}
+.download-commands {
+  margin-top: 12px;
+  font-size: 14px;
+}
+.download-commands summary {
+  min-height: 40px;
+  cursor: pointer;
+}
+.download-commands textarea {
+  display: block;
+  width: 100%;
+  margin-top: 12px;
+  padding: 12px;
+  font-size: 12px;
+  font-family: var(--font-mono);
+  border: 0.5px solid var(--lpw-line);
+  border-radius: var(--radius-sm);
+  background: var(--lpw-surface);
+}
+.copy-control {
+  display: inline-flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 8px;
+  font-size: 12px;
+}
+.copy-control [role='status'] {
+  color: var(--lpw-muted);
+}
+.download-status,
+.download-revision {
+  margin-top: 8px;
+  color: var(--lpw-muted);
+  font-size: 12px;
+  overflow-wrap: anywhere;
+}
+@container (max-width: 719px) {
+  .workspace-controls {
+    gap: 4px 12px;
+  }
+  .workspace-preferences > div {
+    left: auto;
+    right: 0;
+    width: min(240px, 80vw);
+  }
+  .selection-items li > div {
+    width: 100%;
+  }
+  .download-selection {
+    padding: 12px;
+  }
+}

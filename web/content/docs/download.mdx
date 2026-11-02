@@ -6,17 +6,25 @@ icon: Download
 
 {/*
 [INPUT]: 依赖目录中的 GLB、BLEND 和公开文件 URL。
-[OUTPUT]: 说明下载入口、缺失文件行为和站点数据边界。
+[OUTPUT]: 说明单件、选择集、固定版本命令与保存状态边界。
 [POS]: Download 文档；只引用已校验记录中的文件地址。
 [PROTOCOL]: 变更时更新此头部，然后检查 CLAUDE.md
 */}
 
-Open an asset detail page from a verified gallery record. Use **Download GLB** or **Download
-BLEND** when the corresponding URL is present in that record.
 
-The links point to files in the public Dataset. The website does not proxy, rewrite, upload, or
-bundle those files. A missing file URL is shown as **Not supplied**. A preview image is not a
-downloadable source model.
+## Single files
 
-If the Dataset file cannot be opened, use the detail page's source links and retry later. A failed
-download does not change the published catalog record.
+Open an asset from the verified catalog. Use **Download GLB** or **Download BLEND** when the corresponding file is published. Files come directly from the public Dataset, not a website proxy.
+
+## Multiple assets
+
+1. Check the assets you need. Opening a preview does not select it for download.
+2. Use **Select filtered results** to add the current results, not unpublished assets.
+3. Open **Review selection** to inspect or remove items.
+4. Export the manifest, copy file URLs, or open **Download with HF CLI** and run the commands.
+
+The manifest and commands pin files to a Dataset commit. This is not the source ZIP hash or the asset's version label. Install the [official Hugging Face CLI](https://huggingface.co/docs/huggingface_hub/guides/cli) before running commands. The website does not run them for you.
+
+File links hand saving to your browser. The page cannot confirm that a file was saved. Large selections are not assembled into a ZIP or loaded into browser memory.
+
+If the Dataset commit cannot be read, fixed-version downloads remain unavailable until you retry. Missing files are never invented. A preview image is not a source model.

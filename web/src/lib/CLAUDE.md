@@ -3,10 +3,14 @@
 
 ## 成员清单
 
+workspace-state.ts: 浏览状态白名单与规范 URL；预览和下载选择独立。
+use-workspace.ts: TanStack URL 是浏览状态唯一来源，保留历史和滚动。
+asset-downloads.ts: 固定 Dataset commit 的文件 URL、命令和版本读取，不下载模型。
+
 catalog.ts: 读取 V2 指针与快照，校验 SHA256、字段和唯一 ID。
 asset-metadata.ts: 校验详情可选 JSON、Prompt 与输入图权利字段；资源失败彼此隔离。
-catalog-view.ts: 纯函数构造分类/facet，执行搜索、筛选、排序和网格分行。
-navigation.ts: 静态函数序列化双语文档树；根入口与语言父路由共享。
+catalog-selection.ts: 普通链接、筛选内前后项与面板宽度边界；无 DOM 或远端依赖。
+catalog-view.ts: 纯分类/facet、关键词、许可、来源、最长边、格式与面数筛选。
 layout.shared.tsx: 配置原生模板主导航与 GitHub/HF 图标；展厅和文档共用，不替换 header。
 messages.ts: 保存业务英文与简体中文文案，资源键必须成对。
 locale.ts: 定义 URL 语言段、回退规则、静态路径、正文源文件语言和目录首页路径。

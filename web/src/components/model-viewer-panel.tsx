@@ -1,7 +1,7 @@
 /**
  * [INPUT]: 依赖 Dataset GLB/预览 URL、@google/model-viewer 和本地双语文案。
  * [OUTPUT]: 导出单资产 3D 舞台，提供旋转、缩放、复位、自动旋转和全屏。
- * [POS]: 详情页唯一模型查看器；失败时保留同一资产的预览图或诚实空态。
+ * [POS]: 资产展示唯一模型查看器；独立详情与就地预览共用，失败保留预览图。
  * [PROTOCOL]: 变更时更新此头部，然后检查 CLAUDE.md
  */
 import type { ModelViewerElement } from '@google/model-viewer';

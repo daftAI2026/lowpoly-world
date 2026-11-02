@@ -1,7 +1,7 @@
 <!--
 [INPUT]: 依赖 Fumadocs 官网源码、实测截图与 HF 官方品牌页。
-[OUTPUT]: 固定官网 Spacious 基线与资产区扩展边界。
-[POS]: 当前展示层设计地图；取代此前 Home/Notebook 和自定义主题。
+[OUTPUT]: 固定 Home 展示、Spacious 文档与资产区交互边界。
+[POS]: 当前展示层设计地图；展示与文档各用对应原生壳，不自建全站主题。
 [PROTOCOL]: 变更时更新此头部，然后检查 CLAUDE.md
 -->
 # Lowpoly World Design System
@@ -9,84 +9,108 @@
 ## 1. 产品与视觉方向
 
 只有 HF Dataset 与 Static Space 应用两个交付。
-使用文档位于应用内，不建第三个站。
-视觉直接复用 Fumadocs 当前文档站，而非泛指使用组件库。
-用户已拒绝此前 Notebook 与自定义主题组合。
-本轮以官网 Spacious 左侧导航、阅读面板和右上操作为准。
+同一应用内，展示与文档是两个独立入口和布局。
+展示以查找和预览模型为主，不混入文档树。
+文档直接使用 Fumadocs 官网 Spacious 与配套 Page。
+展示导航用 Fumadocs HomeLayout，不自建 header。
 
-官网源码锁定 `ef5911245865c04140e3dae7ff51e7ef6260ef68`。
-入口为 `apps/docs/app/docs/layout.tsx`。
-它转到 `components/layouts/spacious/`，使用官方 Spacious。
-运行依赖沿用 Fumadocs Base UI 16.17.9，不另建框架。
+交互参考 NVIDIA SimReady Central 的实际工作区。
+实测其预览可停靠右侧、左侧或结果下方，并可展开。
+不能把它概括成固定三栏，也不照搬英伟达品牌外观。
 
 ## 2. 颜色
 
-直接导入官方 neutral、generated/spacious 与 preset。
-采用官网 UI 分区主色 `hsl(217 100% 58%)`。
-资产语义色单向引用 `--color-fd-*`，不反向覆盖模板。
-撤销旧 Stone/Teal 全局重映射。
-HF 标识使用官方彩色 SVG，保留黄色和比例。
-品牌原件不套用 UI 调色板，模型材质同样不染色。
+保留当前原生 neutral 与官网 UI 分区主色。
+资产语义色引用 --color-fd-*，不反向改文档主题。
+HF 使用官方黄色 SVG，模型材质与源预览不染色。
+不引入 NVIDIA 黑黄主题、标识或专有字体。
 
 ## 3. 字体与排版
 
-Geist 与 JetBrains Mono 与官网一致。
-字体本地托管，保留 OFL 原文，中文回退系统字体。
-不改模板 `--text-*`、标题、正文和代码字号。
-资产信息保持最多四档字号，最小 12px。
-当前直接复用官网的要求优先于旧模板覆盖规则。
+共用本地 Geist、JetBrains Mono 和系统中文回退。
+文档保留官方排版；资产自有文字为 12、14、20、28px。
+资产名称换行，不靠截断掩盖狭窄面板。
+保留各字体 OFL 原文，运行期不请求 Google 字体。
 
 ## 4. 原生组件
 
-AppShell 只调用官方 Spacious DocsLayout。
-模型库、详情和文档全部使用匹配的 Spacious DocsPage。
-侧栏、搜索、语言、外链、目录和分页均由官方组件生成。
-桌面右上显示 HF 与 GitHub，窄屏沿用原生菜单。
-资产按钮复用 Fumadocs buttonVariants，不以 shadcn 构造壳。
-资产输入和复选框只负责筛选，不参与导航布局。
+文档仅在 DocsShell 内调用官方 Spacious。
+展示首页与独立资产详情使用官方 HomeLayout。
+导航、外链、语言和文档搜索复用原生组件。
+资产卡扩展原生 Card，按钮复用 buttonVariants。
+就地预览复用 AssetDetails，不另写一套 viewer 或元数据。
 
-## 5. 布局与内容
+## 5. 布局与功能
 
-父路由静态读取双语树，全应用只有一个壳。
-模型库与详情使用 full 页面，文档使用标准阅读宽度。
-模型网格与筛选是资产专属扩展，不模仿文档功能。
-业务响应式断点依据内容容器，不误用整个窗口宽度。
-桌面虚拟列表监听原生阅读容器，移动端监听窗口。
-3D 查看器只挂载当前资产，数据协议与发布器不变。
+展示结构为筛选栏加浏览工作区。
+浏览工作区包含结果与可关闭的预览，不是固定三等分。
+宽屏支持右侧、左侧或下方预览。
+左侧预览替换筛选栏，不增加第四栏。
+指针和方向键调整侧栏宽度或下方高度。
+展开在应用内放大同一 viewer，返回恢复原结果。
+展开舞台按可用高度缩放，视角控件保持可达。
+网格与列表共用行虚拟化，网格提供三档缩略图。
+分类面包屑回到全库，不伪造供应商品牌。
+筛选包含实际有值的许可、来源、最长边和预览能力。
+筛选条件逐项移除；偏好仅控制筛选项可见性。
+URL 保存查询、筛选、视图、密度、预览与下载选择。
+历史与语言切换从同一 URL 契约恢复状态。
+下载勾选独立于当前检查资产。
+全选明确指向筛选结果，不包括待审资产。
+选择审阅提供移除、清空、文件链接、清单与 CLI 命令。
+批量下载使用真实 Dataset commit，不使用源文件 SHA。
+浏览器保存文件不可观测，不显示虚假的完成进度。
+关闭预览保留筛选、排序和结果位置，并归还焦点。
+前后项采用当前筛选顺序，边界不循环。
+被筛掉的选中资产仍可检查，但不伪装为结果内项目。
+
+卡片保留独立详情 URL，修改键和窄屏不拦截链接。
+手机使用独立详情页，不把筛选、结果与预览挤成三栏。
+预览停靠不重挂载当前 viewer，切资产才更新载荷。
+同一页面只挂载选中模型，列表不批量创建 WebGL。
 
 ## 6. 边界与深度
 
-不覆盖模板圆角、阴影、边框和原生交互几何。
-原生页面面板保留官网自身的边框、圆角和层次。
-仅资产自有区域声明 0.5px 边框，不拦截通用 class。
-不自造装饰动画；保留原生 reduced-motion 支持。
-不复制官网 AI 服务、赞助和反馈功能来冒充可用能力。
+不修改 Fumadocs 文档几何、圆角、阴影和通用 class。
+资产区边线为 0.5px，圆角取现有 token。
+不添加装饰动画，选择即时反馈。
+GLB 在访问者浏览器中渲染，静态 Space 不申请 GPU。
+没有关节、运动或仿真素材，不展示对应按钮。
+不把普通模型旋转称作 RTX 渲染或物理认证。
 
-## 7. 文案与禁止项
+## 7. 文案与许可
 
-不使用中点分隔符，不重复解释，不制造资产数量。
-不把页面变成工程审核控制台。
-不将第三方单色图标当作官方彩色标识。
-不把测试通过写成用户已经认可视觉。
-不复制 Fumadocs 品牌与内容冒充本站身份。
+保持中英键对齐，不使用中点分隔符或冗余解释。
+NVIDIA 仅提供结构和交互参考，本轮未复制其源码。
+不将线上压缩 bundle 引入网站。
+未新增 Chakra、推理服务、搜索数据库或 GPU 依赖。
+未来复用具体源文件须单独保留对应许可和版权。
+模型、私人报告与生产工具不进入网站 Git。
 
 ## 8. 响应式与访问性
 
-验证 320、390、768、1024 与桌面宽度。
-验证原生侧栏和 Options 菜单、静态直链与语言切换。
-验证文档搜索、资产滚动、过滤和真实模型旋转。
-确认 HF 彩色标识在桌面与移动菜单均未染色。
+验证 320、390、768、1024、1440px。
+宽屏开关预览只改变对应 URL 状态，不丢失搜索。
+窄屏卡片应进入同语言独立详情页。
+修改键保留新标签行为；预览宽度可用方向键调整。
+验证关闭后焦点、前后项和一个已载入 viewer。
+文档侧栏仅出现在文档页，两个入口均保留 HF/GitHub。
 
 ## 9. 后续修改契约
 
-先对照官网固定源码，再查已安装版本的原生选项。
-新增功能不得重新创建导航、排版主题或菜单壳。
-数据与模型不进网站 Git，仍由 Dataset 单独发布。
+上述适用浏览能力构成完整验收范围。
+AI 检索、RTX 媒体与仿真不属于当前数据能力。
+每次发布须验证构建、直链与实际 HF 托管。
+
+先复用现有能力，再扩展业务工作区。
+不能以套文档壳代替设计模型展示。
+新增媒体功能以真实目录字段和载荷为前提。
+Dataset 发布和网站部署继续独立。
 
 ## References
 
-- [官网布局入口](https://github.com/fuma-nama/fumadocs/blob/ef5911245865c04140e3dae7ff51e7ef6260ef68/apps/docs/app/docs/layout.tsx)
-- [官网 Spacious 实现](https://github.com/fuma-nama/fumadocs/tree/ef5911245865c04140e3dae7ff51e7ef6260ef68/apps/docs/components/layouts/spacious)
-- [官网样式与 UI 主色](https://github.com/fuma-nama/fumadocs/blob/ef5911245865c04140e3dae7ff51e7ef6260ef68/apps/docs/app/global.css)
-- [官网字体](https://github.com/fuma-nama/fumadocs/blob/ef5911245865c04140e3dae7ff51e7ef6260ef68/apps/docs/app/layout.tsx)
-- [HF 官方品牌资源](https://huggingface.co/brand)
+- [Fumadocs 官网 Spacious](https://github.com/fuma-nama/fumadocs/tree/ef5911245865c04140e3dae7ff51e7ef6260ef68/apps/docs/components/layouts/spacious)
+- [NVIDIA SimReady Central](https://huggingface.co/spaces/nvidia/simready-central)
+- [Space 部署与成本边界](https://huggingface.co/spaces/nvidia/simready-central/blob/15a2ab916b355627dee6a841c1ae622230cf1ba5/README.md)
+- [HF Static Spaces](https://huggingface.co/docs/hub/spaces-sdks-static)
+- [HF 官方品牌](https://huggingface.co/brand)

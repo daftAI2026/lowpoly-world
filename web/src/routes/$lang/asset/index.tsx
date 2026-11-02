@@ -1,5 +1,5 @@
 /**
- * [INPUT]: 依赖 URL locale、validated search ID 与共享资产详情视图。
+ * [INPUT]: 依赖 URL locale、validated search ID 与规范浏览返回参数 与共享资产详情视图。
  * [OUTPUT]: 导出 `/en/asset/`、`/zh/asset/` 查询详情路由。
  * [POS]: URL 参数适配层；查询 ID 不生成额外静态 HTML 路径。
  * [PROTOCOL]: 变更时更新此头部，然后检查 CLAUDE.md
@@ -10,6 +10,7 @@ import { resolveLocale } from '@/lib/locale';
 
 export const Route = createFileRoute('/$lang/asset/')({
   validateSearch: (search: Record<string, unknown>) => ({
+    catalog: typeof search.catalog === 'string' ? search.catalog : undefined,
     id: typeof search.id === 'string' && search.id.trim() ? search.id.trim() : undefined,
   }),
   component: AssetPageRoute,

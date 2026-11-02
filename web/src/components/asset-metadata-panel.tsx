@@ -1,7 +1,7 @@
 /**
  * [INPUT]: 依赖已验证目录字段和详情页按需读取的公开 metadata 资源。
  * [OUTPUT]: 展示资产事实、Prompt、recipe、质量信息、预览和权利确认输入图。
- * [POS]: AssetPage 的元数据子视图；发布范围说明可展开，不推断缺失值或认证质量状态。
+ * [POS]: 共享 AssetDetails 的元数据视图；缺字段与质量状态不推断。
  * [PROTOCOL]: 变更时更新此头部，然后检查 CLAUDE.md
  */
 import { useMemo } from 'react';

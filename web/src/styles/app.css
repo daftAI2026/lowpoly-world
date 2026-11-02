@@ -12,5 +12,7 @@
 @import './shell.css';
 @import './catalog.css';
 @import './detail.css';
+@import './workspace.css';
+@import './workspace-controls.css';
 @import './responsive.css';
 @import './fumadocs.css';
