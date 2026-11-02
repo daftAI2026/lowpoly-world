@@ -170,7 +170,6 @@
 }
 
 .asset-card[data-slot='card'] {
-  transition: background-color 250ms ease-out;
   display: flex;
   height: 100%;
   min-width: 0;
@@ -328,4 +327,24 @@
 }
 .extra-filter [data-slot='native-select-wrapper'] {
   width: 100%;
+}
+
+/* ---- 分类与筛选共用官方折叠动作，内容按需展开 ---- */
+.facet-heading {
+  min-height: 40px;
+  color: var(--lpw-muted);
+  font-size: 12px;
+}
+.facet-heading > svg {
+  transform: rotate(0deg);
+}
+.facet-heading[aria-expanded='true'] > svg {
+  transform: rotate(180deg);
+}
+.facet-content {
+  padding-block: 2px 6px;
+}
+.asset-tile[data-checked='true'] .asset-card {
+  border-color: var(--primary);
+  background: var(--accent);
 }

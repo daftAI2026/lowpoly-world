@@ -1,6 +1,6 @@
 /**
- * [INPUT]: 依赖公开 metadata 资源与官方 shadcn 折叠和重试按钮。
- * [OUTPUT]: 展示资产事实、Prompt、recipe、质量信息、预览和权利确认输入图。
+ * [INPUT]: 依赖公开 metadata、统一分类与官方 shadcn 控件。
+ * [OUTPUT]: 展示本地化分类与资产事实；许可保留，存储来源不进入界面。
  * [POS]: 共享 AssetDetails 的元数据视图；缺字段与质量状态不推断。
  * [PROTOCOL]: 变更时更新此头部，然后检查 CLAUDE.md
  */
@@ -9,6 +9,7 @@ import { Button } from '@/components/ui/button';
 import { useMemo } from 'react';
 import { useTranslation } from 'react-i18next';
 import type { CatalogAsset } from '@/lib/catalog';
+import { classifyCategory, categoryDisplayPath } from '@/lib/category-taxonomy.ts';
 import { assetHasFormat } from '@/lib/catalog-view';
 import type { JsonValue, ReleaseMetadata } from '@/lib/asset-metadata';
 import { useAssetDetails } from '@/lib/use-asset-details';
@@ -98,7 +99,7 @@ function PreviewGallery({
 }
 
 export function AssetMetadataPanel({ asset }: AssetMetadataPanelProps) {
-  const { t } = useTranslation();
+  const { t, i18n } = useTranslation();
   const { state, retry } = useAssetDetails(asset);
   const release =
     state.status === 'ready' && state.details.release.status === 'available'
@@ -154,7 +155,12 @@ export function AssetMetadataPanel({ asset }: AssetMetadataPanelProps) {
       <dl className="asset-facts">
         <div>
           <dt>{t('asset.category')}</dt>
-          <dd>{displayValue(asset.category, notSupplied)}</dd>
+          <dd>
+            {categoryDisplayPath(
+              classifyCategory(asset).path,
+              i18n.resolvedLanguage === 'zh' ? 'zh' : 'en',
+            )}
+          </dd>
         </div>
         <div>
           <dt>{t('asset.triangles')}</dt>
@@ -190,10 +196,6 @@ export function AssetMetadataPanel({ asset }: AssetMetadataPanelProps) {
         <div>
           <dt>{t('asset.license')}</dt>
           <dd>{displayValue(asset.license, notSupplied)}</dd>
-        </div>
-        <div>
-          <dt>{t('asset.source')}</dt>
-          <dd>{displayValue(release?.source ?? asset.source, notSupplied)}</dd>
         </div>
         <div>
           <dt>{t('asset.revision')}</dt>

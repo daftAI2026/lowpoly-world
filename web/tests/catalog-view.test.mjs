@@ -80,11 +80,11 @@ const emptyFilters = {
 
 describe('catalog view algorithms', () => {
   it('builds normalized category paths and ancestor counts', () => {
-    expect(categoryPathFor('Environment > Rocks')).toBe('Environment/Rocks');
+    expect(categoryPathFor('Environment > Rocks')).toBe('nature/rocks');
     const facets = buildCatalogFacets(assets);
-    const environment = facets.categories.find((node) => node.label === 'Environment');
+    const environment = facets.categories.find((node) => node.label === 'nature');
     expect(environment?.count).toBe(2);
-    expect(environment?.children.map((node) => node.label)).toEqual(['Plants', 'Rocks']);
+    expect(environment?.children.map((node) => node.label)).toEqual(['plants', 'rocks']);
   });
 
   it('counts formats, tags and triangle bands from published records', () => {
@@ -100,17 +100,27 @@ describe('catalog view algorithms', () => {
   });
 
   it('combines category prefix, format OR, and tag AND filters', () => {
-    const result = filterAndSortAssets(assets, {
-      ...emptyFilters,
-      categoryPath: 'Environment',
-      formats: ['glb', 'blend'],
-      tags: ['outdoor'],
-    }, 'id-asc', 'en');
+    const result = filterAndSortAssets(
+      assets,
+      {
+        ...emptyFilters,
+        categoryPath: 'Environment',
+        formats: ['glb', 'blend'],
+        tags: ['outdoor'],
+      },
+      'id-asc',
+      'en',
+    );
     expect(result.map((item) => item.id)).toEqual(['LPW-00001', 'LPW-00003']);
   });
 
   it('searches names, ids, categories and tags without case sensitivity', () => {
-    const result = filterAndSortAssets(assets, { ...emptyFilters, query: 'OUTDOOR' }, 'id-asc', 'en');
+    const result = filterAndSortAssets(
+      assets,
+      { ...emptyFilters, query: 'OUTDOOR' },
+      'id-asc',
+      'en',
+    );
     expect(result.map((item) => item.id)).toEqual(['LPW-00001', 'LPW-00003']);
   });
 
@@ -129,8 +139,9 @@ describe('catalog view algorithms', () => {
   });
 
   it('keeps ID sort deterministic and validates select values', () => {
-    expect(filterAndSortAssets(assets, emptyFilters, 'id-asc', 'en').map((item) => item.id))
-      .toEqual(['LPW-00001', 'LPW-00002', 'LPW-00003']);
+    expect(
+      filterAndSortAssets(assets, emptyFilters, 'id-asc', 'en').map((item) => item.id),
+    ).toEqual(['LPW-00001', 'LPW-00002', 'LPW-00003']);
     expect(isCatalogSort('triangles-desc')).toBe(true);
     expect(isCatalogSort('unexpected')).toBe(false);
   });

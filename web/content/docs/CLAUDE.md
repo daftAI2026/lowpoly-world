@@ -8,7 +8,7 @@ meta.zh.json: 复用导航顺序，提供中文搜索分组名称。
 
 index.mdx: Getting Started；说明独立入口、完整工作区、预览和复用。
 index.zh.mdx: 快速开始；对应英文页面的完整简体中文译稿。
-download.mdx: 单件下载、独立选择集、固定提交清单与 CLI，不伪报保存。
+download.mdx: 单件下载、目录流式保存、固定提交清单与 CLI，区分完成证据。
 download.zh.mdx: 下载；对应英文页面的完整简体中文译稿。
 license.mdx: 说明网站 MIT 与逐件审核模型 CC BY 4.0，排除第三方参考图。
 license.zh.mdx: 许可协议；对应英文页面的完整简体中文译稿。
@@ -18,7 +18,7 @@ blender.mdx: 说明在 Blender 打开公开 BLEND 文件的步骤。
 blender.zh.mdx: 在 Blender 中使用；对应英文页面的完整简体中文译稿。
 threejs.mdx: 给出从目录记录读取 GLB 并加载官方 GLTFLoader 的示例。
 threejs.zh.mdx: 在 Three.js 中使用；对应英文页面的完整简体中文译稿。
-dataset-schema.mdx: 记录版本 2 指针、category 层级、triangle bands 和 URL/权利边界。
+dataset-schema.mdx: 记录版本 2 指针、分类显示归并、triangle bands 和 URL/权利边界。
 dataset-schema.zh.mdx: 数据集结构；对应英文页面的完整简体中文译稿。
 contributing.mdx: 说明网站贡献范围和人工资产发布门槛。
 contributing.zh.mdx: 参与贡献；对应英文页面的完整简体中文译稿。

@@ -9,14 +9,14 @@ catalog-search.tsx: 原生搜索插槽组合 shadcn 输入和移动弹层，共�
 gallery-shell.tsx: 官网 Spacious 全屏壳，原生侧栏接收筛选内容，主区禁用章节目录。
 
 workspace-toolbar.tsx: 单排结果工具、图标视图、三档密度与条件条，不加载模型。
-download-selection.tsx: 独立下载选择集与固定版本文件、清单和命令，不追踪磁盘落盘。
+download-selection.tsx: 独立选择集与固定版本文件、清单和命令；用户选目录后流式保存。
 copy-button.tsx: 组合官方 Button 与真实 Clipboard 反馈，不重造按钮。
 
-asset-card.tsx: 组合 shadcn Card 展示正方形完整预览、名称和编号；原生链接适配静态路径。角落勾选内移，40px 透明点击区不遮图。
+asset-card.tsx: 组合 shadcn Card 展示正方形完整预览、名称和编号；原生链接适配静态路径。角落勾选内移；紫色下载勾选区别于预览当前项。
 asset-metadata-panel.tsx: 按需呈现发布元数据；缺字段不推断许可、质量或权利。
 asset-page.tsx: 组合模型文件入口、查看器与 metadata；返回链接指向当前语言 index.html。
 catalog-browser.tsx: 原生侧栏承载筛选，主区组合 URL 与官方 Resizable 分栏，不重造拖拽交互。
-catalog-filters.tsx: 展示分类树与有值筛选项；空标签组隐藏，宽窄屏开关由原生侧栏与抽屉负责。
+catalog-filters.tsx: 展示分类树与有值筛选项；统一双语分类和折叠选项；不提供固定许可与存储来源选择。
 catalog-grid.tsx: 真实滚动宿主的行虚拟化，支持网格、列表、密度与结果定位。
 catalog-state.tsx: 共用双语加载、空目录和目录校验失败视图；只保留必要重试入口。
 docs-shell.tsx: 文档侧栏只放正文树；右上角提供返回模型页入口。

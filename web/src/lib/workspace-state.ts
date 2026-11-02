@@ -1,9 +1,10 @@
 /**
- * [INPUT]: 依赖 URLSearchParams 与目录筛选类型。
+ * [INPUT]: 依赖 URLSearchParams、统一分类路径与目录筛选类型。
  * [OUTPUT]: 导出浏览状态的白名单解析、规范序列化与默认值。
  * [POS]: 分享、历史与语言切换共用的状态契约；不保存模型或凭据。
  * [PROTOCOL]: 变更时更新此头部，然后检查 CLAUDE.md
  */
+import { normalizeCategoryPath } from './category-taxonomy.ts';
 import { isCatalogSort, type CatalogFilters, type CatalogSort } from './catalog-view';
 export type PreviewDock = 'right' | 'left' | 'bottom';
 export type WorkspaceState = {
@@ -98,7 +99,7 @@ export function parseWorkspace(search: string): WorkspaceState {
   const band = get('triangles');
   s.filters = {
     query: (get('q') ?? '').slice(0, 500),
-    categoryPath: get('category')?.slice(0, 300) || null,
+    categoryPath: normalizeCategoryPath(get('category')?.slice(0, 300)),
     formats: unique(list('format'))
       .filter((f): f is 'glb' | 'blend' => f === 'glb' || f === 'blend')
       .sort(),

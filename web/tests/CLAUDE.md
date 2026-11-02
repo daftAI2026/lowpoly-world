@@ -3,6 +3,10 @@
 
 ## 成员清单
 
+directory-download.test.mjs: 内存流回归固定版本、关闭写入、失败隔离、取消与路径拒绝。
+
+category-taxonomy.test.mjs: 分类别名归并、中英标签、保守名称推导与冲突回退回归。
+
 gallery-shell.test.mjs: 全屏原生壳、唯一模型搜索、无章节列和静态详情链接回归。
 
 catalog-header.test.mjs: 展厅单行工具栏、图标密度组、按需分类路径与唯一模型搜索回归。

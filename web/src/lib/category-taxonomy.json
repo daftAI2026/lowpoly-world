@@ -1,0 +1,333 @@
+{
+  "_contract": {
+    "INPUT": "现有分类别名与明确的模型名称词",
+    "OUTPUT": "固定ID、中英名称和保守归类词表",
+    "POS": "网站分类唯一数据源，不包含质量或权利判断",
+    "PROTOCOL": "[PROTOCOL]: 变更时更新此头部，然后检查 CLAUDE.md"
+  },
+  "version": 1,
+  "categories": [
+    {
+      "id": "furniture",
+      "zh": "家具",
+      "en": "Furniture",
+      "aliases": ["家具", "furniture", "Props/Furniture"],
+      "terms": ["furniture"],
+      "phrases": []
+    },
+    {
+      "id": "furniture/seating",
+      "zh": "座椅与沙发",
+      "en": "Seating",
+      "aliases": ["Furniture/Seating", "家具/座椅"],
+      "terms": [
+        "chair",
+        "armchair",
+        "sofa",
+        "couch",
+        "stool",
+        "bench",
+        "footstool",
+        "椅",
+        "沙发",
+        "凳"
+      ],
+      "phrases": []
+    },
+    {
+      "id": "furniture/tables",
+      "zh": "桌台",
+      "en": "Tables",
+      "aliases": ["家具/桌台"],
+      "terms": ["table", "desk", "桌"],
+      "phrases": ["dining table", "coffee table"]
+    },
+    {
+      "id": "furniture/storage",
+      "zh": "收纳家具",
+      "en": "Storage furniture",
+      "aliases": ["家具/收纳"],
+      "terms": [
+        "cabinet",
+        "cupboard",
+        "wardrobe",
+        "bookshelf",
+        "shelf",
+        "bookcase",
+        "sideboard",
+        "shelving",
+        "柜",
+        "书架",
+        "置物架"
+      ],
+      "phrases": ["shoe rack", "hat rack", "shoe cabinet", "衣帽架"]
+    },
+    {
+      "id": "furniture/beds",
+      "zh": "床具",
+      "en": "Beds",
+      "aliases": ["家具/床具"],
+      "terms": ["bed", "床"],
+      "phrases": []
+    },
+    {
+      "id": "household",
+      "zh": "家居用品",
+      "en": "Household",
+      "aliases": ["家居", "household"],
+      "terms": [],
+      "phrases": []
+    },
+    {
+      "id": "household/lighting",
+      "zh": "灯具",
+      "en": "Lighting",
+      "aliases": ["家居/灯具"],
+      "terms": [
+        "lamp",
+        "lantern",
+        "chandelier",
+        "台灯",
+        "吊灯",
+        "壁灯",
+        "落地灯"
+      ],
+      "phrases": ["table lamp", "desk lamp", "floor lamp"]
+    },
+    {
+      "id": "household/kitchen",
+      "zh": "厨房用品",
+      "en": "Kitchenware",
+      "aliases": ["家居/厨房"],
+      "terms": [
+        "sink",
+        "steamer",
+        "colander",
+        "grater",
+        "厨房",
+        "水槽",
+        "蒸锅"
+      ],
+      "phrases": []
+    },
+    {
+      "id": "household/cookware",
+      "zh": "烹饪器具",
+      "en": "Cookware",
+      "aliases": ["家居/烹饪器具"],
+      "terms": [
+        "frying pan",
+        "wok",
+        "griddle",
+        "saucepan",
+        "skillet",
+        "cookware",
+        "平底锅",
+        "炒锅",
+        "煎锅"
+      ],
+      "phrases": []
+    },
+    {
+      "id": "household/tableware",
+      "zh": "餐饮器皿",
+      "en": "Tableware",
+      "aliases": ["家居/餐饮器皿"],
+      "terms": [
+        "bowl",
+        "plate",
+        "mug",
+        "cup",
+        "goblet",
+        "tumbler",
+        "teapot",
+        "碗",
+        "餐盘",
+        "茶杯",
+        "茶壶"
+      ],
+      "phrases": ["wine glass"]
+    },
+    {
+      "id": "household/decor",
+      "zh": "家居装饰",
+      "en": "Decor",
+      "aliases": ["家居/装饰"],
+      "terms": ["vase", "花瓶"],
+      "phrases": ["picture frame", "相框"]
+    },
+    {
+      "id": "architecture",
+      "zh": "建筑",
+      "en": "Architecture",
+      "aliases": ["建筑", "architecture", "buildings"],
+      "terms": [
+        "building",
+        "pavilion",
+        "church",
+        "cathedral",
+        "mosque",
+        "temple",
+        "pagoda",
+        "bridge",
+        "archway",
+        "建筑",
+        "亭",
+        "教堂",
+        "寺庙",
+        "牌坊"
+      ],
+      "phrases": []
+    },
+    {
+      "id": "architecture/public-commercial",
+      "zh": "公共与商业建筑",
+      "en": "Public and commercial",
+      "aliases": ["建筑/公共与商业"],
+      "terms": [],
+      "phrases": []
+    },
+    {
+      "id": "architecture/religious-historic",
+      "zh": "宗教与历史建筑",
+      "en": "Religious and historic",
+      "aliases": ["建筑/宗教与历史"],
+      "terms": [],
+      "phrases": []
+    },
+    {
+      "id": "architecture/roof-parts",
+      "zh": "屋顶构件",
+      "en": "Roof components",
+      "aliases": ["建筑/屋顶构件"],
+      "terms": ["roof", "屋顶", "屋盖", "檐", "屋脊"],
+      "phrases": []
+    },
+    {
+      "id": "clothing",
+      "zh": "服饰与配件",
+      "en": "Clothing and accessories",
+      "aliases": ["服饰", "服饰/配件", "clothing"],
+      "terms": [
+        "shirt",
+        "jacket",
+        "coat",
+        "dress",
+        "skirt",
+        "trousers",
+        "belt",
+        "scarf",
+        "sunglasses",
+        "eyeglasses",
+        "手套",
+        "衬衫",
+        "外套",
+        "围巾",
+        "眼镜"
+      ],
+      "phrases": []
+    },
+    {
+      "id": "clothing/headwear",
+      "zh": "帽饰",
+      "en": "Headwear",
+      "aliases": ["服饰/帽饰"],
+      "terms": [
+        "hat",
+        "beret",
+        "fedora",
+        "beanie",
+        "sunhat",
+        "棒球帽",
+        "贝雷帽",
+        "礼帽"
+      ],
+      "phrases": ["baseball cap", "bucket hat"]
+    },
+    {
+      "id": "clothing/footwear",
+      "zh": "鞋靴",
+      "en": "Footwear",
+      "aliases": ["服饰/鞋靴"],
+      "terms": ["shoe", "boot", "sneaker", "slipper", "sandal", "鞋", "靴"],
+      "phrases": []
+    },
+    {
+      "id": "tools",
+      "zh": "工具与设备",
+      "en": "Tools and equipment",
+      "aliases": ["工具", "设备", "tools", "equipment"],
+      "terms": [
+        "hammer",
+        "screwdriver",
+        "wrench",
+        "pliers",
+        "drill",
+        "camera",
+        "microphone",
+        "headphones",
+        "锤",
+        "扳手",
+        "螺丝刀",
+        "相机",
+        "麦克风"
+      ],
+      "phrases": ["bench vise"]
+    },
+    {
+      "id": "transport",
+      "zh": "交通工具",
+      "en": "Vehicles",
+      "aliases": ["交通", "vehicles"],
+      "terms": [
+        "bicycle",
+        "motorcycle",
+        "truck",
+        "car",
+        "bus",
+        "airplane",
+        "helicopter",
+        "boat",
+        "汽车",
+        "卡车",
+        "自行车",
+        "摩托车",
+        "飞机",
+        "轮船"
+      ],
+      "phrases": []
+    },
+    {
+      "id": "nature",
+      "zh": "自然物",
+      "en": "Nature",
+      "aliases": ["自然", "environment", "Environment"],
+      "terms": ["tree", "flower", "rock", "boulder", "树", "岩石"],
+      "phrases": []
+    },
+    {
+      "id": "nature/plants",
+      "zh": "植物",
+      "en": "Plants",
+      "aliases": ["Environment/Plants", "自然/植物"],
+      "terms": ["pine", "fern", "植物"],
+      "phrases": []
+    },
+    {
+      "id": "nature/rocks",
+      "zh": "岩石",
+      "en": "Rocks",
+      "aliases": ["Environment/Rocks", "自然/岩石"],
+      "terms": ["rock", "boulder", "cairn", "岩石", "石堆"],
+      "phrases": []
+    },
+    {
+      "id": "uncategorized",
+      "zh": "未分类",
+      "en": "Uncategorized",
+      "aliases": ["Uncategorized", "未分类"],
+      "terms": [],
+      "phrases": []
+    }
+  ]
+}

@@ -1,7 +1,7 @@
 /**
  * [INPUT]: 依赖用户主题 token 与 FU 官方 shadcn 适配层。
- * [OUTPUT]: 注册语义色与边线角色，不改原始色板与控件填充。
- * [POS]: 全站唯一工具类映射；FU 复用官方颜色桥，仅边线读取同源对比别名。
+ * [OUTPUT]: 注册语义色与边线角色，不改原始色板；暗色动作区校正文字对比。
+ * [POS]: 全站唯一工具类映射；FU 复用官方颜色桥，边线与动作文字读取同源对比别名。
  * [PROTOCOL]: 变更时更新此头部，然后检查 CLAUDE.md
  */
 @theme inline {
@@ -67,4 +67,15 @@
 :root,
 .dark {
   --color-fd-border: var(--lpw-line);
+}
+
+/* ---- 深色原始 primary 适合图标，细文字与白字按钮另取同源角色 ---- */
+.dark {
+  --color-fd-primary: var(--lpw-action-ink);
+}
+.dark [data-slot='button'].text-primary {
+  color: var(--lpw-action-ink);
+}
+.dark [data-slot='button'].bg-primary {
+  background-color: var(--lpw-action-fill);
 }

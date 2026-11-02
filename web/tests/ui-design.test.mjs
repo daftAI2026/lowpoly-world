@@ -31,7 +31,7 @@ function allStrings(value) {
   );
 }
 
-function renderFilters(facets) {
+function renderFilters(facets, filters = {}) {
   const emptyFilters = {
     query: '',
     categoryPath: null,
@@ -46,7 +46,7 @@ function renderFilters(facets) {
     createElement(CatalogFilters, {
       assets: [], hiddenGroups: [], onExtraChange: () => {},
       facets,
-      filters: emptyFilters,
+      filters: { ...emptyFilters, ...filters },
       onCategoryChange: noop,
       onFormatChange: noop,
       onTagChange: noop,
@@ -131,7 +131,7 @@ describe('UI design constraints', () => {
       triangles: 120,
       glb_url: 'https://huggingface.co/datasets/daftAI2026/3d-assets/resolve/main/assets/LPW-TEST-001/model.glb',
       blend_url: null,
-    }]));
+    }]), { tags: ['low-poly'] });
     expect(withTags).toContain('tag-filter-heading');
     expect(withTags).toContain('low-poly');
   });

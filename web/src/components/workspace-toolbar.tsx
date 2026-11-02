@@ -19,6 +19,7 @@ import {
   BreadcrumbPage,
   BreadcrumbSeparator,
 } from '@/components/ui/breadcrumb';
+import { normalizeCategoryPath, categoryLabel } from '@/lib/category-taxonomy.ts';
 import { Grid2X2, List, Square, Settings2, Download } from 'lucide-react';
 import { useTranslation } from 'react-i18next';
 import type { WorkspaceState } from '@/lib/workspace-state';
@@ -48,11 +49,12 @@ export function WorkspaceToolbar({
   onHiddenGroups,
   onReopen,
 }: Props) {
-  const { t } = useTranslation();
+  const { t, i18n } = useTranslation();
+  const locale = i18n.resolvedLanguage === 'zh' ? 'zh' : 'en';
   const f = s.filters;
   const filter = (patch: Partial<CatalogFilters>, replace = false) =>
     update({ filters: { ...f, ...patch } }, replace);
-  const parts = f.categoryPath?.split('/') ?? [];
+  const parts = normalizeCategoryPath(f.categoryPath)?.split('/') ?? [];
   const chips: { key: string; label: string; clear: () => void }[] = [];
   if (f.query)
     chips.push({
@@ -202,31 +204,29 @@ export function WorkspaceToolbar({
               </Label>
               <fieldset>
                 <legend>{t('workspace.filterGroups')}</legend>
-                {(['format', 'triangle', 'tag', 'license', 'source', 'dimension'] as const).map(
-                  (group) => (
-                    <Label key={group}>
-                      <Checkbox
-                        checked={!hiddenGroups.includes(group)}
-                        onCheckedChange={(checked) =>
-                          onHiddenGroups(
-                            checked === true
-                              ? hiddenGroups.filter((g) => g !== group)
-                              : [...hiddenGroups, group],
-                          )
-                        }
-                      />
-                      {t(
-                        group === 'format'
-                          ? 'home.formats'
-                          : group === 'triangle'
-                            ? 'home.lowPolyLevel'
-                            : group === 'tag'
-                              ? 'home.tags'
-                              : `workspace.${group}`,
-                      )}
-                    </Label>
-                  ),
-                )}
+                {(['format', 'triangle', 'tag', 'dimension'] as const).map((group) => (
+                  <Label key={group}>
+                    <Checkbox
+                      checked={!hiddenGroups.includes(group)}
+                      onCheckedChange={(checked) =>
+                        onHiddenGroups(
+                          checked === true
+                            ? hiddenGroups.filter((g) => g !== group)
+                            : [...hiddenGroups, group],
+                        )
+                      }
+                    />
+                    {t(
+                      group === 'format'
+                        ? 'home.formats'
+                        : group === 'triangle'
+                          ? 'home.lowPolyLevel'
+                          : group === 'tag'
+                            ? 'home.tags'
+                            : `workspace.${group}`,
+                    )}
+                  </Label>
+                ))}
               </fieldset>
             </PopoverContent>
           </Popover>
@@ -278,7 +278,7 @@ export function WorkspaceToolbar({
                     <BreadcrumbItem>
                       {index === parts.length - 1 ? (
                         <BreadcrumbPage>
-                          {part === 'Uncategorized' ? t('home.uncategorized') : part}
+                          {categoryLabel(parts.slice(0, index + 1).join('/'), locale)}
                         </BreadcrumbPage>
                       ) : (
                         <BreadcrumbLink
@@ -293,7 +293,7 @@ export function WorkspaceToolbar({
                             />
                           }
                         >
-                          {part === 'Uncategorized' ? t('home.uncategorized') : part}
+                          {categoryLabel(parts.slice(0, index + 1).join('/'), locale)}
                         </BreadcrumbLink>
                       )}
                     </BreadcrumbItem>

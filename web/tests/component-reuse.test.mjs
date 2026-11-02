@@ -58,7 +58,8 @@ describe('Official component reuse', () => {
     const css = await read('../src/styles/shadcn.css');
     expect(css).toContain('--color-background: var(--background)');
     expect(css).toContain('--color-primary: var(--primary)');
-    expect([...css.matchAll(/--color-fd-([\w-]+)\s*:/g)].map((m) => m[1])).toEqual(['border']);
+    expect([...css.matchAll(/--color-fd-([\w-]+)\s*:/g)].map((m) => m[1])).toEqual(['border', 'primary']);
+    expect(css).toContain('--color-fd-primary: var(--lpw-action-ink)');
     expect(css).toContain('--color-fd-border: var(--lpw-line)');
     expect(css).not.toMatch(/#[\da-f]{3,8}\b/i);
   });

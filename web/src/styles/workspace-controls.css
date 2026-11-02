@@ -1,6 +1,6 @@
 /**
- * [INPUT]: 依赖工具栏、选择集和复制动作语义 class。
- * [OUTPUT]: 对齐单排结果工具、图标分组、条件条和下载审阅。
+ * [INPUT]: 依赖工具栏、选择集、复制动作与输入方式标记。
+ * [OUTPUT]: 对齐结果工具、条件条和下载审阅；指针面板缓动 250ms。
  * [POS]: 工作区操作层；不覆盖原生文档、导航或主题值。
  * [PROTOCOL]: 变更时更新此头部，然后检查 CLAUDE.md
  */
@@ -187,4 +187,38 @@
 .workspace-preferences-content legend {
   font-size: 12px;
   color: var(--lpw-muted);
+}
+
+/* ---- 只缓动低频面板，不缓动布局尺寸与勾选 ---- */
+@keyframes workspace-surface-in {
+  from {
+    opacity: 0;
+    transform: translateY(4px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+@media (prefers-reduced-motion: no-preference) {
+  :root[data-workspace-input='pointer']
+    :is(
+      .facet-content[data-open],
+      .download-selection,
+      .asset-preview-panel,
+      [data-slot='popover-content']
+    ) {
+    animation: workspace-surface-in 250ms ease-out;
+  }
+  :root[data-workspace-input='pointer'] .facet-heading > svg {
+    transition: transform 250ms ease-out;
+  }
+}
+
+.download-failures {
+  max-height: 120px;
+  overflow: auto;
+  color: var(--lpw-danger);
+  font-size: 12px;
+  overflow-wrap: anywhere;
 }

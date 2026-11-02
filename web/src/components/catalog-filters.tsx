@@ -1,14 +1,14 @@
 /**
  * [INPUT]: 依赖目录 facet、当前筛选与官方 shadcn 折叠、动作和表单。
- * [OUTPUT]: 导出分类树、格式、三角面数和标签筛选面板。
+ * [OUTPUT]: 导出本地化分类树和折叠选项筛选，不提供固定许可或存储来源选择。
  * [POS]: 原生侧栏与抽屉中的筛选内容；不另建折叠外壳。
  * [PROTOCOL]: 变更时更新此头部，然后检查 CLAUDE.md
  */
 import { Label } from '@/components/ui/label';
-import { NativeSelect, NativeSelectOption } from '@/components/ui/native-select';
 import { Button } from '@/components/ui/button';
 import { Collapsible, CollapsibleTrigger, CollapsibleContent } from '@/components/ui/collapsible';
 import type { CatalogAsset } from '@/lib/catalog';
+import { categoryLabel } from '@/lib/category-taxonomy.ts';
 import { ChevronDown, ChevronRight } from 'lucide-react';
 import { useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
@@ -56,9 +56,10 @@ function CategoryBranch({
   useEffect(() => {
     if (selectedPath?.startsWith(node.path + '/')) setExpanded(true);
   }, [selectedPath, node.path]);
-  const { t } = useTranslation();
+  const { t, i18n } = useTranslation();
+  const locale = i18n.resolvedLanguage === 'zh' ? 'zh' : 'en';
   const hasChildren = node.children.length > 0;
-  const label = node.label === 'Uncategorized' ? t('home.uncategorized') : node.label;
+  const label = categoryLabel(node.path, locale);
   const childId = `category-${encodeURIComponent(node.path)}`;
 
   return (
@@ -131,6 +132,31 @@ function CategoryTree({ nodes, selectedPath, onSelect }: CategoryTreeProps) {
   );
 }
 
+function FacetGroup({
+  title,
+  id,
+  children,
+  defaultOpen = false,
+}: {
+  title: string;
+  id: string;
+  children: React.ReactNode;
+  defaultOpen?: boolean;
+}) {
+  return (
+    <Collapsible defaultOpen={defaultOpen} className="filter-group">
+      <CollapsibleTrigger
+        render={<Button variant="ghost" className="facet-heading w-full justify-between px-0" />}
+        id={id}
+      >
+        {title}
+        <ChevronDown aria-hidden="true" className="size-3.5" />
+      </CollapsibleTrigger>
+      <CollapsibleContent className="facet-content">{children}</CollapsibleContent>
+    </Collapsible>
+  );
+}
+
 function FilterOption({
   id,
   label,
@@ -167,16 +193,22 @@ export function CatalogFilters({
   hasFilters,
 }: CatalogFiltersProps) {
   const { t } = useTranslation();
-  const valuesFor = (field: 'license' | 'source') =>
-    [...new Set(assets.map((a) => a[field]).filter((v): v is string => Boolean(v)))].sort();
   const selectedFormats = new Set(filters.formats);
   const selectedTags = new Set(filters.tags);
   const selectedBand = filters.triangleBand;
-  const formatOptions: Array<{ value: CatalogFormat; label: string; count: number }> = [
+  const formatOptions: Array<{
+    value: CatalogFormat;
+    label: string;
+    count: number;
+  }> = [
     { value: 'glb', label: 'GLB', count: facets.formats.glb },
     { value: 'blend', label: 'BLEND', count: facets.formats.blend },
   ];
-  const bandOptions: Array<{ value: TriangleBand; label: string; count: number }> = [
+  const bandOptions: Array<{
+    value: TriangleBand;
+    label: string;
+    count: number;
+  }> = [
     {
       value: 'under-5k',
       label: t('home.triangleBandMinimal'),
@@ -216,61 +248,60 @@ export function CatalogFilters({
           />
         </section>
 
-        <section
-          className="filter-group"
-          hidden={hiddenGroups.includes('format')}
-          aria-labelledby="format-filter-heading"
-        >
-          <h3 id="format-filter-heading">{t('home.formats')}</h3>
-          {formatOptions
-            .filter((option) => option.count > 0)
-            .map((option) => (
-              <FilterOption
-                key={option.value}
-                id={`format-${option.value}`}
-                label={option.label}
-                count={option.count}
-                checked={selectedFormats.has(option.value)}
-                onChange={(checked) => onFormatChange(option.value, checked)}
-              />
-            ))}
-          {formatOptions.every((option) => option.count === 0) && (
-            <p className="facet-empty">{t('home.noFacetValues')}</p>
-          )}
-        </section>
-
-        <section
-          className="filter-group"
-          hidden={hiddenGroups.includes('triangle')}
-          aria-labelledby="triangle-filter-heading"
-        >
-          <h3 id="triangle-filter-heading" title={t('home.triangleFilterNote')}>
-            {t('home.lowPolyLevel')}
-          </h3>
-          {bandOptions
-            .filter((option) => option.count > 0)
-            .map((option) => (
-              <FilterOption
-                key={option.value}
-                id={`triangles-${option.value}`}
-                label={option.label}
-                count={option.count}
-                checked={selectedBand === option.value}
-                onChange={(checked) => onTriangleBandChange(option.value, checked)}
-              />
-            ))}
-          {bandOptions.every((option) => option.count === 0) && (
-            <p className="facet-empty">{t('home.noFacetValues')}</p>
-          )}
-        </section>
-
-        {facets.tags.length > 0 && (
-          <section
-            className="filter-group"
-            hidden={hiddenGroups.includes('tag')}
-            aria-labelledby="tag-filter-heading"
+        {!hiddenGroups.includes('format') && (
+          <FacetGroup
+            title={t('home.formats')}
+            id="format-filter-heading"
+            defaultOpen={filters.formats.length > 0}
           >
-            <h3 id="tag-filter-heading">{t('home.tags')}</h3>
+            {formatOptions
+              .filter((option) => option.count > 0)
+              .map((option) => (
+                <FilterOption
+                  key={option.value}
+                  id={`format-${option.value}`}
+                  label={option.label}
+                  count={option.count}
+                  checked={selectedFormats.has(option.value)}
+                  onChange={(checked) => onFormatChange(option.value, checked)}
+                />
+              ))}
+            {formatOptions.every((option) => option.count === 0) && (
+              <p className="facet-empty">{t('home.noFacetValues')}</p>
+            )}
+          </FacetGroup>
+        )}
+
+        {!hiddenGroups.includes('triangle') && (
+          <FacetGroup
+            title={t('home.lowPolyLevel')}
+            id="triangle-filter-heading"
+            defaultOpen={Boolean(filters.triangleBand)}
+          >
+            {bandOptions
+              .filter((option) => option.count > 0)
+              .map((option) => (
+                <FilterOption
+                  key={option.value}
+                  id={`triangles-${option.value}`}
+                  label={option.label}
+                  count={option.count}
+                  checked={selectedBand === option.value}
+                  onChange={(checked) => onTriangleBandChange(option.value, checked)}
+                />
+              ))}
+            {bandOptions.every((option) => option.count === 0) && (
+              <p className="facet-empty">{t('home.noFacetValues')}</p>
+            )}
+          </FacetGroup>
+        )}
+
+        {facets.tags.length > 0 && !hiddenGroups.includes('tag') && (
+          <FacetGroup
+            title={t('home.tags')}
+            id="tag-filter-heading"
+            defaultOpen={filters.tags.length > 0}
+          >
             <div className="tag-filter-list">
               {facets.tags.map((tag) => (
                 <FilterOption
@@ -283,50 +314,33 @@ export function CatalogFilters({
                 />
               ))}
             </div>
-          </section>
+          </FacetGroup>
         )}
 
-        {(['license', 'source'] as const).map(
-          (field) =>
-            valuesFor(field).length > 0 &&
-            !hiddenGroups.includes(field) && (
-              <Label className="filter-group extra-filter" key={field}>
-                <span>{t(`workspace.${field}`)}</span>
-                <NativeSelect
-                  value={filters[field] ?? ''}
-                  onChange={(e) => onExtraChange({ [field]: e.currentTarget.value || null })}
-                >
-                  <NativeSelectOption value="">{t('workspace.any')}</NativeSelectOption>
-                  {valuesFor(field).map((v) => (
-                    <NativeSelectOption key={v} value={v}>
-                      {v} ({assets.filter((a) => a[field] === v).length})
-                    </NativeSelectOption>
-                  ))}
-                </NativeSelect>
-              </Label>
-            ),
-        )}
         {assets.some((a) => a.dimensions_m) && !hiddenGroups.includes('dimension') && (
-          <Label className="filter-group extra-filter">
-            <span>{t('workspace.dimension')}</span>
-            <NativeSelect
-              value={filters.dimension ?? ''}
-              onChange={(e) =>
-                onExtraChange({
-                  dimension:
-                    e.currentTarget.value === 'under-1m'
-                      ? 'under-1m'
-                      : e.currentTarget.value === '1m-plus'
-                        ? '1m-plus'
-                        : null,
-                })
-              }
-            >
-              <NativeSelectOption value="">{t('workspace.any')}</NativeSelectOption>
-              <NativeSelectOption value="under-1m">{t('workspace.under1m')}</NativeSelectOption>
-              <NativeSelectOption value="1m-plus">{t('workspace.over1m')}</NativeSelectOption>
-            </NativeSelect>
-          </Label>
+          <FacetGroup
+            title={t('workspace.dimension')}
+            id="dimension-filter-heading"
+            defaultOpen={Boolean(filters.dimension)}
+          >
+            {(['under-1m', '1m-plus'] as const).map((value) => {
+              const count = assets.filter(
+                (a) => a.dimensions_m && Math.max(...a.dimensions_m) < 1 === (value === 'under-1m'),
+              ).length;
+              return (
+                count > 0 && (
+                  <FilterOption
+                    key={value}
+                    id={`dimension-${value}`}
+                    label={t(value === 'under-1m' ? 'workspace.under1m' : 'workspace.over1m')}
+                    count={count}
+                    checked={filters.dimension === value}
+                    onChange={(checked) => onExtraChange({ dimension: checked ? value : null })}
+                  />
+                )
+              );
+            })}
+          </FacetGroup>
         )}
         {hasFilters && (
           <Button variant="ghost" className="clear-filters" type="button" onClick={onClear}>

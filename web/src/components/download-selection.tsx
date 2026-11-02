@@ -1,17 +1,23 @@
 /**
  * [INPUT]: 依赖独立下载选择集、公开文件协议与真实 Dataset commit。
- * [OUTPUT]: 导出选择审阅、移除、清单导出、固定版本命令与逐件下载链接。
- * [POS]: 下载工作流唯一会话；不预取大包，不声称浏览器文件已落盘。
+ * [OUTPUT]: 导出下载审阅、目录流式保存、清单和固定版本命令。
+ * [POS]: 下载工作流唯一会话；仅在用户动作后下载；目录写入关闭后才记完成。
  * [PROTOCOL]: 变更时更新此头部，然后检查 CLAUDE.md
  */
 import { Collapsible, CollapsibleTrigger, CollapsibleContent } from '@/components/ui/collapsible';
 import { Textarea } from '@/components/ui/textarea';
 import { Button } from '@/components/ui/button';
-import { useEffect, useMemo, useState } from 'react';
+import { useEffect, useMemo, useRef, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import type { CatalogAsset } from '@/lib/catalog';
 import { downloadFiles, downloadCommands, readDatasetRevision } from '@/lib/asset-downloads';
 import { getAssetDisplayName, type Locale } from '@/lib/locale';
+import {
+  downloadToDirectory,
+  pickDownloadDirectory,
+  supportsDirectoryDownload,
+  type DirectoryProgress,
+} from '@/lib/directory-download';
 import { CopyButton } from './copy-button';
 type Props = {
   assets: CatalogAsset[];
@@ -33,6 +39,15 @@ export function DownloadSelection({
   const [revision, setRevision] = useState<string | null>(null);
   const [error, setError] = useState(false);
   const [attempt, setAttempt] = useState(0);
+  const [folderSupported, setFolderSupported] = useState(false);
+  const [saving, setSaving] = useState(false);
+  const [saveProgress, setSaveProgress] = useState<DirectoryProgress | null>(null);
+  const [saveError, setSaveError] = useState(false);
+  const saveController = useRef<AbortController | null>(null);
+  useEffect(() => {
+    setFolderSupported(supportsDirectoryDownload());
+    return () => saveController.current?.abort();
+  }, []);
   const [opened, setOpened] = useState<Set<string>>(new Set());
   useEffect(() => {
     const c = new AbortController();
@@ -58,6 +73,30 @@ export function DownloadSelection({
   }, [assets, revision]);
   const files = prepared?.files ?? [];
   const urls = files.map((f) => f.url).join('\n');
+  const saveFolder = async () => {
+    if (!revision || !prepared || saving) return;
+    const controller = new AbortController();
+    saveController.current = controller;
+    setSaving(true);
+    setSaveError(false);
+    setSaveProgress(null);
+    // 必须在用户手势内打开目录选择器，不预先索取权限。
+    try {
+      const directory = await pickDownloadDirectory();
+      if (!controller.signal.aborted) {
+        await downloadToDirectory(files, revision, directory, controller.signal, setSaveProgress);
+      }
+    } catch (error) {
+      if (
+        !controller.signal.aborted &&
+        !(error instanceof DOMException && error.name === 'AbortError')
+      )
+        setSaveError(true);
+    } finally {
+      setSaving(false);
+      saveController.current = null;
+    }
+  };
   const exportManifest = () => {
     if (!revision || !prepared) return;
     const blob = new Blob(
@@ -80,11 +119,29 @@ export function DownloadSelection({
         </Button>
       </header>
       <div className="selection-actions">
-        <Button type="button" variant="link" disabled={!assets.length} onClick={onClear}>
+        <Button type="button" variant="link" disabled={saving || !assets.length} onClick={onClear}>
           {t('workspace.clearSelection')}
         </Button>
         {prepared && (
           <>
+            {folderSupported && (
+              <Button
+                type="button"
+                disabled={!files.length || saving}
+                onClick={() => void saveFolder()}
+              >
+                {t('workspace.saveFolder')}
+              </Button>
+            )}
+            {saving && (
+              <Button
+                type="button"
+                variant="outline"
+                onClick={() => saveController.current?.abort()}
+              >
+                {t('workspace.cancelDownload')}
+              </Button>
+            )}
             <CopyButton value={urls} label={t('workspace.copyFileURLs')} />
             <Button type="button" variant="link" disabled={!files.length} onClick={exportManifest}>
               {t('workspace.exportManifest')}
@@ -120,6 +177,7 @@ export function DownloadSelection({
               <Button
                 type="button"
                 variant="link"
+                disabled={saving}
                 onClick={() => onRemove(asset.id)}
                 aria-label={t('workspace.removeAsset', { id: asset.id })}
               >
@@ -160,9 +218,29 @@ export function DownloadSelection({
           </CollapsibleContent>
         </Collapsible>
       )}
-      <p className="download-status" role="status">
-        {t('workspace.downloadHandoff', { count: opened.size })}
-      </p>
+      {saveProgress && (
+        <p className="download-status" role="status">
+          {t(saveProgress.cancelled ? 'workspace.folderCancelled' : 'workspace.folderProgress', {
+            completed: saveProgress.completed.length,
+            failed: saveProgress.failed.length,
+          })}
+        </p>
+      )}
+      {saveProgress && saveProgress.failed.length > 0 && (
+        <ul className="download-failures">
+          {saveProgress.failed.map((path) => (
+            <li key={path}>
+              <code>{path}</code>
+            </li>
+          ))}
+        </ul>
+      )}
+      {saveError && <p role="alert">{t('workspace.folderError')}</p>}
+      {opened.size > 0 && (
+        <p className="download-status" role="status">
+          {t('workspace.downloadHandoff', { count: opened.size })}
+        </p>
+      )}
     </section>
   );
 }

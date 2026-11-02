@@ -1,6 +1,6 @@
 /**
  * [INPUT]: 依赖 shadcn Card、Checkbox/Badge、目录与普通链接规则。
- * [OUTPUT]: 导出资产卡；普通桌面点击预览，修改键和手机保留独立详情链接。
+ * [OUTPUT]: 导出资产卡；下载勾选与当前预览独立，修改键保留详情链接。
  * [POS]: 虚拟网格的图片卡片；只组合官方卡片与原生链接，不加载 GLB。
  * [PROTOCOL]: 变更时更新此头部，然后检查 CLAUDE.md
  */
@@ -48,6 +48,7 @@ export function AssetCard({
       role="listitem"
       data-asset-id={asset.id}
       data-selected={selected}
+      data-checked={checked}
     >
       {onCheck && (
         <Label className="asset-selection-toggle">

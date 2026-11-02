@@ -1,5 +1,5 @@
 /**
- * [INPUT]: 依赖公开目录、URL 浏览状态与独立结果、预览、下载视图。
+ * [INPUT]: 依赖公开目录、URL 浏览状态与独立结果、预览、下载视图及输入方式。
  * [OUTPUT]: 导出完整只读资产工作区；shadcn 分栏内同一 viewer 随停靠与展开保留。
  * [POS]: 首页交互组合边界；筛选交给原生侧栏；主区只保留结果与预览。
  * [PROTOCOL]: 变更时更新此头部，然后检查 CLAUDE.md
@@ -33,6 +33,23 @@ export function CatalogBrowser({ catalog, locale }: { catalog: Catalog; locale: 
   const { state: s, update } = useWorkspace();
   const [size, setSize] = useState({ width: 0, height: 0 });
   const savedSize = useRef({ width: 400, height: 360 });
+  useEffect(() => {
+    // ---- 键盘操作即时响应，指针动作才使用面板缓动 ----
+    const root = document.documentElement;
+    const pointer = () => {
+      root.dataset.workspaceInput = 'pointer';
+    };
+    const keyboard = () => {
+      delete root.dataset.workspaceInput;
+    };
+    window.addEventListener('pointerdown', pointer, true);
+    window.addEventListener('keydown', keyboard, true);
+    return () => {
+      window.removeEventListener('pointerdown', pointer, true);
+      window.removeEventListener('keydown', keyboard, true);
+      delete root.dataset.workspaceInput;
+    };
+  }, []);
   const previewPanel = usePanelRef();
   const [hiddenGroups, setHiddenGroups] = useState<string[]>([]);
   const [review, setReview] = useState(false);

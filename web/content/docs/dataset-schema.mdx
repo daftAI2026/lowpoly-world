@@ -5,7 +5,7 @@ icon: Table
 ---
 
 {/*
-[INPUT]: 依赖 web/src/lib/catalog.ts 与 asset-metadata.ts 的当前解析契约。
+[INPUT]: 依赖 web/src/lib/catalog.ts 与 asset-metadata.ts 与 category-taxonomy.ts 的契约。
 [OUTPUT]: 描述版本 2 指针、资产记录、可选元数据和 URL 安全边界。
 [POS]: Dataset Schema 文档；随网站读取契约同步更新。
 [PROTOCOL]: 变更时更新此头部，然后检查 CLAUDE.md
@@ -30,8 +30,9 @@ publication time, and file URLs.
 Optional text and numeric fields accept missing or `null` values. The interface displays missing
 values as **Not supplied**. `preview_urls` must be an array of safe public Dataset URLs.
 
-Category values use `/` or `>` as hierarchy separators. A missing category appears under
-**Uncategorized**. Triangle filters group records as fewer than 5,000, 5,000–24,999, or at least
+The original category field is preserved. The gallery maps known language aliases to stable category
+IDs and shows labels in the active language. For missing categories, only clear model names supply
+a group. Ambiguous names or unknown source categories remain **Uncategorized**, not failed QA. Triangle filters group records as fewer than 5,000, 5,000–24,999, or at least
 25,000 triangles. These bands do not rate asset quality.
 
 ## Detail resources

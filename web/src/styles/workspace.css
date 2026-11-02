@@ -93,9 +93,9 @@
 .catalog-workspace[data-expanded='true'] .workspace-splitter {
   display: none;
 }
-.asset-tile[data-selected='true'] .asset-card {
-  border-color: var(--lpw-accent);
-  background: var(--lpw-accent-soft);
+.asset-tile[data-selected='true']:not([data-checked='true']) .asset-card {
+  border-color: var(--foreground);
+  background: var(--muted);
 }
 .asset-tile {
   position: relative;

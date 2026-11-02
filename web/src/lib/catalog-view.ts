@@ -1,11 +1,16 @@
 /**
- * [INPUT]: 依赖经过 SHA256、schema、数量和 URL 校验的目录资产。
+ * [INPUT]: 依赖已校验目录与 category-taxonomy 的统一分类。
  * [OUTPUT]: 导出类别树、筛选统计、浏览器搜索排序和虚拟行分组函数。
  * [POS]: 画廊纯视图算法边界；不请求数据，也不更改原始目录顺序。
  * [PROTOCOL]: 变更时更新此头部，然后检查 CLAUDE.md
  */
 import type { CatalogAsset } from './catalog';
 import type { Locale } from './locale';
+import {
+  classifyCategory,
+  normalizeCategoryPath,
+  categorySearchText,
+} from './category-taxonomy.ts';
 
 export type CatalogFormat = 'glb' | 'blend';
 export type TriangleBand = 'under-5k' | '5k-to-25k' | '25k-plus';
@@ -46,15 +51,11 @@ export type CatalogFacets = {
   triangleBands: Record<TriangleBand, number>;
 };
 
-const EMPTY_CATEGORY = 'Uncategorized';
+const EMPTY_CATEGORY = 'uncategorized';
 
-/** Category strings accept the documented slash or greater-than separator. */
+/** 来源别名与稳定ID共用同一分类路径。 */
 export function categorySegments(category: string | null): string[] {
-  const parts = (category ?? '')
-    .split(/[/>]/)
-    .map((part) => part.trim())
-    .filter(Boolean);
-  return parts.length > 0 ? parts : [EMPTY_CATEGORY];
+  return (normalizeCategoryPath(category) ?? EMPTY_CATEGORY).split('/');
 }
 
 export function categoryPathFor(category: string | null): string {
@@ -79,7 +80,7 @@ export function buildCategoryTree(assets: readonly CatalogAsset[]): CategoryNode
   for (const asset of assets) {
     let siblingNodes = roots;
     let currentPath = '';
-    for (const label of categorySegments(asset.category)) {
+    for (const label of classifyCategory(asset).path.split('/')) {
       currentPath = currentPath ? `${currentPath}/${label}` : label;
       let node = siblingNodes.find((candidate) => candidate.label === label);
       if (!node) {
@@ -136,8 +137,8 @@ function normalizedSearchText(value: string): string {
 
 function matchesCategory(asset: CatalogAsset, selectedPath: string | null): boolean {
   if (!selectedPath) return true;
-  const selected = selectedPath.split('/');
-  const actual = categorySegments(asset.category);
+  const selected = (normalizeCategoryPath(selectedPath) ?? selectedPath).split('/');
+  const actual = classifyCategory(asset).path.split('/');
   return selected.every((segment, index) => actual[index] === segment);
 }
 
@@ -166,7 +167,14 @@ export function filterAndSortAssets(
   const result = assets.filter((asset) => {
     if (query) {
       const searchTarget = normalizedSearchText(
-        [asset.id, asset.name_en, asset.name_zh, asset.category ?? '', ...asset.tags].join(' '),
+        [
+          asset.id,
+          asset.name_en,
+          asset.name_zh,
+          asset.category ?? '',
+          categorySearchText(asset),
+          ...asset.tags,
+        ].join(' '),
       );
       if (!searchTarget.includes(query)) return false;
     }
