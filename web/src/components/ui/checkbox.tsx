@@ -1,25 +1,34 @@
 /**
- * [INPUT]: 依赖 Base UI Checkbox、Lucide 勾选图标和本地 cn 样式组合。
- * [OUTPUT]: 导出有键盘和表单语义的 Base UI 复选框。
- * [POS]: 过滤器布尔选择底座；调用方持有所选筛选值。
+ * [INPUT]: 依赖 shadcn/ui 官方源码、Base UI Checkbox 与 Lucide 图标。
+ * [OUTPUT]: 导出独立勾选与筛选布尔值的官方组件组合接口。
+ * [POS]: 受控上游源码副本；来源与外观差异见 registry.sources.json，不包含业务状态。
  * [PROTOCOL]: 变更时更新此头部，然后检查 CLAUDE.md
  */
+'use client';
+
 import { Checkbox as CheckboxPrimitive } from '@base-ui/react/checkbox';
-import { Check } from 'lucide-react';
 import { cn } from '@/lib/utils';
 
-export type CheckboxProps = CheckboxPrimitive.Root.Props & { className?: string };
+import { CheckIcon } from 'lucide-react';
 
-export function Checkbox({ className, ...props }: CheckboxProps) {
+function Checkbox({ className, ...props }: CheckboxPrimitive.Root.Props) {
   return (
     <CheckboxPrimitive.Root
       data-slot="checkbox"
-      className={cn('ui-checkbox', className)}
+      className={cn(
+        'peer relative flex size-4 shrink-0 items-center justify-center rounded-[4px] border-[0.5px] border-input transition-none outline-none group-has-disabled/field:opacity-50 group-has-[:focus-visible]/field-label:ring-0 group-has-[:focus-visible]/field-label:not-data-checked:border-input after:absolute after:-inset-x-3 after:-inset-y-2 focus-visible:border-ring focus-visible:outline focus-visible:outline-[0.5px] focus-visible:outline-ring  disabled:cursor-not-allowed disabled:opacity-50 aria-invalid:border-destructive aria-invalid:ring-3 aria-invalid:ring-destructive/20 aria-invalid:aria-checked:border-primary dark:bg-input/30 dark:aria-invalid:border-destructive/50 dark:aria-invalid:ring-destructive/40 data-checked:border-primary data-checked:bg-primary data-checked:text-primary-foreground group-has-[:focus-visible]/field-label:data-checked:border-primary dark:data-checked:bg-primary',
+        className,
+      )}
       {...props}
     >
-      <CheckboxPrimitive.Indicator data-slot="checkbox-indicator">
-        <Check aria-hidden="true" />
+      <CheckboxPrimitive.Indicator
+        data-slot="checkbox-indicator"
+        className="grid place-content-center text-current transition-none [&>svg]:size-3.5"
+      >
+        <CheckIcon />
       </CheckboxPrimitive.Indicator>
     </CheckboxPrimitive.Root>
   );
 }
+
+export { Checkbox };

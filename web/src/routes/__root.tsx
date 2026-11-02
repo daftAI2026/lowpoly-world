@@ -1,5 +1,5 @@
 /**
- * [INPUT]: 依赖 TanStack URL、静态 href helper、隔离 i18next、Fumadocs Provider、原生样式与字体许可。
+ * [INPUT]: 依赖 TanStack URL、静态 href helper、隔离 i18next、Fumadocs Provider、原生样式、字体与第三方组件许可。
  * [OUTPUT]: 导出按 URL 设置 lang 的 HTML 根路由、语言切换和静态搜索 Provider。
  * [POS]: locale 唯一注入点；语言切换保留 query/hash 原始字节并导航到真实文件。
  * [PROTOCOL]: 变更时更新此头部，然后检查 CLAUDE.md
@@ -15,6 +15,8 @@ import {
 import { useMemo } from 'react';
 import { I18nextProvider } from 'react-i18next';
 import appCss from '@/styles/app.css?url';
+import resizableLicense from '@/assets/LICENSE-react-resizable-panels.txt?url';
+import shadcnLicense from '@/assets/LICENSE-shadcn.txt?url';
 import geistLicense from '@/assets/OFL-Geist.txt?url';
 import monoLicense from '@/assets/OFL-JetBrains-Mono.txt?url';
 import { createBusinessI18n, fumadocsTranslations } from '@/lib/i18n';
@@ -32,6 +34,8 @@ export const Route = createRootRoute({
     ],
     links: [
       { rel: 'stylesheet', href: appCss },
+      { rel: 'license', href: resizableLicense, type: 'text/plain', title: 'react-resizable-panels MIT' },
+      { rel: 'license', href: shadcnLicense, type: 'text/plain', title: 'shadcn/ui MIT' },
       { rel: 'license', href: geistLicense, type: 'text/plain', title: 'Geist OFL' },
       { rel: 'license', href: monoLicense, type: 'text/plain', title: 'JetBrains Mono OFL' },
     ],

@@ -4,6 +4,9 @@
  * [POS]: 下载工作流唯一会话；不预取大包，不声称浏览器文件已落盘。
  * [PROTOCOL]: 变更时更新此头部，然后检查 CLAUDE.md
  */
+import { Collapsible, CollapsibleTrigger, CollapsibleContent } from '@/components/ui/collapsible';
+import { Textarea } from '@/components/ui/textarea';
+import { Button } from '@/components/ui/button';
 import { useEffect, useMemo, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import type { CatalogAsset } from '@/lib/catalog';
@@ -72,55 +75,56 @@ export function DownloadSelection({
     <section className="download-selection" aria-label={t('workspace.reviewSelection')}>
       <header>
         <h2>{t('workspace.selectionCount', { count: assets.length })}</h2>
-        <button className="text-button" type="button" onClick={onClose}>
+        <Button variant="link" type="button" onClick={onClose}>
           {t('workspace.backResults')}
-        </button>
+        </Button>
       </header>
       <div className="selection-actions">
-        <button type="button" className="text-button" disabled={!assets.length} onClick={onClear}>
+        <Button type="button" variant="link" disabled={!assets.length} onClick={onClear}>
           {t('workspace.clearSelection')}
-        </button>
+        </Button>
         {prepared && (
           <>
             <CopyButton value={urls} label={t('workspace.copyFileURLs')} />
-            <button
-              type="button"
-              className="text-button"
-              disabled={!files.length}
-              onClick={exportManifest}
-            >
+            <Button type="button" variant="link" disabled={!files.length} onClick={exportManifest}>
               {t('workspace.exportManifest')}
-            </button>
+            </Button>
           </>
         )}
       </div>
       <ul className="selection-items">
         {assets.map((asset) => (
           <li key={asset.id}>
-            <button className="selection-name" type="button" onClick={() => onInspect(asset.id)}>
+            <Button
+              variant="ghost"
+              className="selection-name whitespace-normal justify-start"
+              type="button"
+              onClick={() => onInspect(asset.id)}
+            >
               {getAssetDisplayName(asset, locale)} <span>{asset.id}</span>
-            </button>
+            </Button>
             <div>
               {files
                 .filter((f) => f.id === asset.id)
                 .map((f) => (
-                  <a
+                  <Button
                     key={f.path}
-                    href={f.url + '?download=true'}
-                    download
+                    variant="outline"
+                    nativeButton={false}
+                    render={<a href={f.url + '?download=true'} download />}
                     onClick={() => setOpened((set) => new Set([...set, f.path]))}
                   >
                     {f.format}
-                  </a>
+                  </Button>
                 ))}
-              <button
+              <Button
                 type="button"
-                className="text-button"
+                variant="link"
                 onClick={() => onRemove(asset.id)}
                 aria-label={t('workspace.removeAsset', { id: asset.id })}
               >
                 {t('workspace.remove')}
-              </button>
+              </Button>
             </div>
           </li>
         ))}
@@ -128,28 +132,33 @@ export function DownloadSelection({
       {error || (revision && !prepared) ? (
         <p role="alert">
           {t('workspace.downloadError')}{' '}
-          <button type="button" className="text-button" onClick={() => setAttempt((n) => n + 1)}>
+          <Button type="button" variant="link" onClick={() => setAttempt((n) => n + 1)}>
             {t('catalog.retry')}
-          </button>
+          </Button>
         </p>
       ) : !revision ? (
         <p role="status">{t('workspace.preparingDownloads')}</p>
       ) : null}
       {prepared && files.length > 0 && (
-        <details className="download-commands">
-          <summary>{t('workspace.downloadCommands')}</summary>
-          <p>{t('workspace.commandHelp')}</p>
-          <textarea
-            aria-label={t('workspace.downloadCommands')}
-            readOnly
-            value={prepared.commands}
-            rows={5}
-          />
-          <CopyButton value={prepared.commands} label={t('workspace.copyCommands')} />
-          <p className="download-revision">
-            {t('workspace.datasetCommit')}: <code>{revision}</code>
-          </p>
-        </details>
+        <Collapsible className="download-commands">
+          <CollapsibleTrigger render={<Button variant="ghost" className="justify-start" />}>
+            {t('workspace.downloadCommands')}
+          </CollapsibleTrigger>
+          <CollapsibleContent>
+            <p>{t('workspace.commandHelp')}</p>
+            <Textarea
+              className="font-mono text-xs"
+              aria-label={t('workspace.downloadCommands')}
+              readOnly
+              value={prepared.commands}
+              rows={5}
+            />
+            <CopyButton value={prepared.commands} label={t('workspace.copyCommands')} />
+            <p className="download-revision">
+              {t('workspace.datasetCommit')}: <code>{revision}</code>
+            </p>
+          </CollapsibleContent>
+        </Collapsible>
       )}
       <p className="download-status" role="status">
         {t('workspace.downloadHandoff', { count: opened.size })}

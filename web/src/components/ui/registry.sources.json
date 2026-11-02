@@ -1,0 +1,107 @@
+{
+  "style": "base-nova",
+  "library": "Base UI",
+  "source": "https://github.com/shadcn-ui/ui",
+  "license": "MIT, see ../../assets/LICENSE-shadcn.txt",
+  "adaptations": [
+    "Resolve official registry cn/import/icon templates to local aliases and Lucide",
+    "Keep official composition and interaction code",
+    "Use 0.5px borders, 40px controls, 12/14px typography and no decorative motion/shadows",
+    "Map shadcn theme tokens to the existing FU palette; do not override FU layouts",
+    "Run the project formatter; preserve component signatures and upstream event behavior"
+  ],
+  "components": {
+    "button": {
+      "url": "https://ui.shadcn.com/r/styles/base-nova/button.json",
+      "registry_sha256": "9ba7e870178813f0552b818a913a2792fb500c779e36395740b4973e3025d427",
+      "source_sha256": "313353436d0fcc8e44ab470adb614b9fd013d28626f624328ea0d66d41a6c81b",
+      "upstream_path": "registry/base-nova/ui/button.tsx",
+      "installed_sha256": "23859c205308bddfa1fdf94a805b6aa3ad3e4712689a9d8af708d1a4eb4088d3"
+    },
+    "input": {
+      "url": "https://ui.shadcn.com/r/styles/base-nova/input.json",
+      "registry_sha256": "bbad1bba130ac9750a61844eeb8f043e8a710846e07689fa85398b80a46c2741",
+      "source_sha256": "dab990dfefa0ba78854ab6602ad074270dba9d7d1262184d9bfbb62bd990903b",
+      "upstream_path": "registry/base-nova/ui/input.tsx",
+      "installed_sha256": "c166b2c4054e725c30bdfe8548ddcfa5d85ae18fc7c4cb83cab00cf3495d2a61"
+    },
+    "checkbox": {
+      "url": "https://ui.shadcn.com/r/styles/base-nova/checkbox.json",
+      "registry_sha256": "e6df7b595f25a7ee97c3fb94e0ddc35998f74c98b990d3030e485905ec677178",
+      "source_sha256": "0cc30ddee3fa93818799f48ad47a58a30652c956ce940373c3feb3559167f0af",
+      "upstream_path": "registry/base-nova/ui/checkbox.tsx",
+      "installed_sha256": "6608b07960d632f76b74c74cccbe110544ac5049b5d28d952afa78ab53365438"
+    },
+    "native-select": {
+      "url": "https://ui.shadcn.com/r/styles/base-nova/native-select.json",
+      "registry_sha256": "743d128b09f67c1921e3c302e778834639e5be92c454205cabfb61eed34b4ff1",
+      "source_sha256": "17552c2df3b8f5ee44675979c3c29a02f48454e9204f2a02b64f4b7f28bdfc2c",
+      "upstream_path": "registry/base-nova/ui/native-select.tsx",
+      "installed_sha256": "00d3a658cd87c967e2afb32800208ac6d246b0f0e7dc954a8f758b917fc0a8bc"
+    },
+    "textarea": {
+      "url": "https://ui.shadcn.com/r/styles/base-nova/textarea.json",
+      "registry_sha256": "8f01f6bc4ee556263bae7644e8b527022fa77ff203f33a258bb47142ef7d9c81",
+      "source_sha256": "82601c91ffc6c727d924162c78d7cb853114bcced4e2eb922a68ca12d4239c0f",
+      "upstream_path": "registry/base-nova/ui/textarea.tsx",
+      "installed_sha256": "da733cf07da746364746955d57f6368a78732424c3297d097e9d9c3af535dc95"
+    },
+    "popover": {
+      "url": "https://ui.shadcn.com/r/styles/base-nova/popover.json",
+      "registry_sha256": "ba5fe84f353f6c0fd2133a2ab893f5e8861fc60dc4dea548a7ec875acaa37b2c",
+      "source_sha256": "b6bc5045e7b67414816f813788b5f699d0cc5e4a23debe76c89a6ddb68079c26",
+      "upstream_path": "registry/base-nova/ui/popover.tsx",
+      "installed_sha256": "c2b78939c1957eda3ce4734f72bf3beda075f635ffa7b504928b73f10265e31e"
+    },
+    "collapsible": {
+      "url": "https://ui.shadcn.com/r/styles/base-nova/collapsible.json",
+      "registry_sha256": "74f78cd88a30185243847968977cf1de9ffbf576547f2ec1f14b5ef55505b90d",
+      "source_sha256": "ead4349ff7b01d696ef89294a81d18ee1d3f732321398896462c834ab9b9e065",
+      "upstream_path": "registry/base-nova/ui/collapsible.tsx",
+      "installed_sha256": "079d9d3949398300332eaac2f352e00b0eed9aecaadf7ce7618fddb0f02031c0"
+    },
+    "toggle": {
+      "url": "https://ui.shadcn.com/r/styles/base-nova/toggle.json",
+      "registry_sha256": "f06447a03bcc1e510f3a50d5e7735bd82bdc17bc77849596709727c215bcc20e",
+      "source_sha256": "48ab6456afc25c4cf79537252cb9512c5c2846d2b1796170eab8aca91ebf7ddf",
+      "upstream_path": "registry/base-nova/ui/toggle.tsx",
+      "installed_sha256": "5d74834362cadfaf78a07785354cc7946860056dfe2605b14cc22baf043dd08c"
+    },
+    "toggle-group": {
+      "url": "https://ui.shadcn.com/r/styles/base-nova/toggle-group.json",
+      "registry_sha256": "9f103af4a048ec392cb09b886985ec733a360a0033cc7138349f1775851a89d4",
+      "source_sha256": "143ec051e67e2d31729ba87f2a4bd7ab82efe9b82c6e68c0358bc814fbdea997",
+      "upstream_path": "registry/base-nova/ui/toggle-group.tsx",
+      "installed_sha256": "90960f25c9785d810098531765b983b9ea51e64eaf464d5da3fe56343e23626c"
+    },
+    "breadcrumb": {
+      "url": "https://ui.shadcn.com/r/styles/base-nova/breadcrumb.json",
+      "registry_sha256": "5e7a33d921824d659494dc90411393cdf795c0ad5c94631da5c2883924623350",
+      "source_sha256": "ff4288a3629605b172ba5222a51215e16b9b3ada29aafc47ca0fa27963f391b0",
+      "upstream_path": "registry/base-nova/ui/breadcrumb.tsx",
+      "installed_sha256": "f3a3231177a9965733ae4979809e15c7ee1c8e6fae2736d5e71f0d8d6e28d3bc"
+    },
+    "resizable": {
+      "url": "https://ui.shadcn.com/r/styles/base-nova/resizable.json",
+      "registry_sha256": "7415e497f342485720b6c878c81604eda0aa8b479a2211e4355c324de89a1672",
+      "source_sha256": "c45c4e1a32aefb83d60406366e2368b9d8a6e772406f8b964154e7202d6304f7",
+      "upstream_path": "registry/base-nova/ui/resizable.tsx",
+      "installed_sha256": "86d7432c93ffa565a06473e380a7be6dc0c94b27c32ccdc25e9ee6d74ddaadac"
+    },
+    "label": {
+      "url": "https://ui.shadcn.com/r/styles/base-nova/label.json",
+      "registry_sha256": "89b01e14fd39dceece9fa421e71e78ea83286bd43a2ca1c2f55d2e8d3958fff2",
+      "source_sha256": "b3b7b21d2877838fc73713df48a47248392de04a3b3fafa8961369f33ab14530",
+      "upstream_path": "registry/base-nova/ui/label.tsx",
+      "installed_sha256": "007b632fd3f9b63876b6a43667497a23e099daad6acca48d43b4efdf567a7903"
+    },
+    "badge": {
+      "url": "https://ui.shadcn.com/r/styles/base-nova/badge.json",
+      "registry_sha256": "ccc20021cdcbf0fb23c0d4d28f1da4adde8e51ba59f4b11dd2722ed97a5ee3a4",
+      "source_sha256": "d9fb280e266119c4b62a4c518e63152de27b094c68d3e5f8929d05bfb0c1bc6c",
+      "upstream_path": "registry/base-nova/ui/badge.tsx",
+      "installed_sha256": "f4f7b3c89dcbe9c761bb4da2ef6115b71b9002368a72e29a8f18701bb5807bb5"
+    }
+  },
+  "repository_head_at_audit": "4aaea19d9cff3e0908e12a8c1d504b8c5ec34610"
+}

@@ -1,9 +1,10 @@
 /**
- * [INPUT]: 依赖已验证资产、locale、唯一模型查看器与按需元数据。
+ * [INPUT]: 依赖已验证资产、唯一查看器、元数据与官方文件动作按钮。
  * [OUTPUT]: 导出面板和独立页面共享的资产内容、下载与事实。
  * [POS]: 资产展示的唯一组合器；不创建导航、筛选或第三方仿真能力。
  * [PROTOCOL]: 变更时更新此头部，然后检查 CLAUDE.md
  */
+import { Button } from '@/components/ui/button';
 import { useTranslation } from 'react-i18next';
 import type { CatalogAsset } from '@/lib/catalog';
 import { getAssetDisplayName, type Locale } from '@/lib/locale';
@@ -43,14 +44,22 @@ export function AssetDetails({
           <h2 className="detail-actions-heading">{t('asset.filesTitle')}</h2>
           <div className="detail-actions">
             {asset.glb_url && (
-              <a className="button-link button-link-primary" href={asset.glb_url} download>
+              <Button
+                variant="default"
+                nativeButton={false}
+                render={<a href={asset.glb_url} download />}
+              >
                 {t('asset.downloadGlb')}
-              </a>
+              </Button>
             )}
             {asset.blend_url && (
-              <a className="button-link" href={asset.blend_url} download>
+              <Button
+                variant="outline"
+                nativeButton={false}
+                render={<a href={asset.blend_url} download />}
+              >
                 {t('asset.downloadBlend')}
-              </a>
+              </Button>
             )}
             {!asset.glb_url && !asset.blend_url && (
               <span className="detail-note">{t('asset.filesNotSupplied')}</span>

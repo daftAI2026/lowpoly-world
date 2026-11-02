@@ -85,7 +85,15 @@ URL 独立保存预览和下载选择，支持分享、刷新与历史恢复。
 批量命令固定 Dataset commit；文件直接下载，不占用浏览器批量缓存。
 下载入口只记录已打开链接，不声称文件已保存。
 
-`src/components/ui/` 保存已审阅的 Base UI 源码组件。它不依赖 shadcn CLI 运行。
+`src/components/ui/` 保存 13 个官方 shadcn Base Nova 源码副本。
+同一类控件只用这一套。FU 保留布局、文档、搜索与资产 Card。
+`registry.sources.json` 记录官方 URL、原始摘要与外观适配。
+复用官方 Input、Checkbox、NativeSelect、Popover、Collapsible、ToggleGroup、
+Breadcrumb、Button、Textarea、Label、Badge 与 Resizable，不自写基础交互。
+`react-resizable-panels@4.16.1` 由官方 Resizable 使用。
+控件语义色引用 FU 主题；不覆盖 FU 布局，不引入 Radix。
+MIT 许可通过 HTML license 链接随产物托管。
+网站不依赖 shadcn CLI 运行。
 `components.json` 保留组件生成配置。CLI 不在默认依赖中。
 新增组件时，使用固定且经审阅的 CLI 版本。不要直接运行未审阅的 `latest`。
 

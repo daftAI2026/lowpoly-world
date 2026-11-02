@@ -1,9 +1,11 @@
 /**
- * [INPUT]: 依赖公开资产、分组导航控制与停靠尺寸契约。
+ * [INPUT]: 依赖公开资产、分组导航与官方 shadcn 动作、下拉和折叠。
  * [OUTPUT]: 导出左右下停靠、应用内展开与返回的单实例预览。
  * [POS]: 只以 CSS 重排同一 viewer；不把检查行为混成下载选择。
  * [PROTOCOL]: 变更时更新此头部，然后检查 CLAUDE.md
  */
+import { Collapsible, CollapsibleTrigger, CollapsibleContent } from '@/components/ui/collapsible';
+import { NativeSelect, NativeSelectOption } from '@/components/ui/native-select';
 import { ArrowLeft, ArrowRight, ExternalLink, Maximize2, MapPin, X } from 'lucide-react';
 import { useTranslation } from 'react-i18next';
 import type { CatalogAsset } from '@/lib/catalog';
@@ -15,7 +17,6 @@ import { toStaticHref } from '@/lib/static-href';
 import { AssetDetails } from './asset-details';
 import { CopyButton } from './copy-button';
 import { Button } from './ui/button';
-import { PreviewResizeHandle, type PreviewSize } from './preview-resize-handle';
 type Navigation = {
   previous: string | null;
   next: string | null;
@@ -29,7 +30,6 @@ type Pane = {
   onDock: (dock: PreviewDock) => void;
   onExpand: (expanded: boolean) => void;
   onClose: () => void;
-  size: PreviewSize | null;
 };
 export function AssetPreview({
   asset,
@@ -62,7 +62,6 @@ export function AssetPreview({
         }
       }}
     >
-      {p.size && !p.expanded && <PreviewResizeHandle {...p.size} />}
       <header className="preview-panel-header">
         <h2>{name}</h2>
         <div className="preview-panel-actions">
@@ -85,20 +84,20 @@ export function AssetPreview({
             <ArrowRight aria-hidden="true" />
           </Button>
           {p.expanded ? (
-            <button type="button" className="text-button" onClick={() => p.onExpand(false)}>
+            <Button type="button" variant="link" onClick={() => p.onExpand(false)}>
               {t('workspace.backResults')}
-            </button>
+            </Button>
           ) : (
             <>
-              <select
+              <NativeSelect
                 aria-label={t('asset.previewPlacement')}
                 value={p.dock}
                 onChange={(e) => p.onDock(e.currentTarget.value as PreviewDock)}
               >
-                <option value="right">{t('asset.pinRight')}</option>
-                <option value="left">{t('workspace.pinLeft')}</option>
-                <option value="bottom">{t('asset.pinBottom')}</option>
-              </select>
+                <NativeSelectOption value="right">{t('asset.pinRight')}</NativeSelectOption>
+                <NativeSelectOption value="left">{t('workspace.pinLeft')}</NativeSelectOption>
+                <NativeSelectOption value="bottom">{t('asset.pinBottom')}</NativeSelectOption>
+              </NativeSelect>
               <Button
                 size="icon"
                 variant="ghost"
@@ -109,14 +108,16 @@ export function AssetPreview({
               </Button>
             </>
           )}
-          <a
-            href={href}
-            className="preview-open-page"
-            aria-label={t('asset.openDetails')}
-            title={t('asset.openDetails')}
+          <Button
+            variant="ghost"
+            size="icon"
+            nativeButton={false}
+            render={
+              <a href={href} aria-label={t('asset.openDetails')} title={t('asset.openDetails')} />
+            }
           >
             <ExternalLink aria-hidden="true" />
-          </a>
+          </Button>
           <Button
             size="icon"
             variant="ghost"
@@ -126,24 +127,28 @@ export function AssetPreview({
             <X aria-hidden="true" />
           </Button>
         </div>
-        <details className="preview-more">
-          <summary>{asset.id}</summary>
-          <div>
-            <CopyButton value={name} label={t('workspace.copyName')} />
-            <CopyButton value={asset.id} label={t('workspace.copyID')} />
-            <CopyButton
-              value={
-                typeof window === 'undefined' ? href : new URL(href, window.location.href).href
-              }
-              label={t('workspace.copyLink')}
-            />
-            <button type="button" className="text-button" onClick={n.onFind}>
-              <MapPin aria-hidden="true" />
-              {t(n.inResults ? 'workspace.findResults' : 'workspace.allAssets')}
-            </button>
-            {!n.inResults && <p>{t('workspace.selectedOutside')}</p>}
-          </div>
-        </details>
+        <Collapsible className="preview-more">
+          <CollapsibleTrigger render={<Button variant="ghost" className="justify-start" />}>
+            {asset.id}
+          </CollapsibleTrigger>
+          <CollapsibleContent>
+            <div>
+              <CopyButton value={name} label={t('workspace.copyName')} />
+              <CopyButton value={asset.id} label={t('workspace.copyID')} />
+              <CopyButton
+                value={
+                  typeof window === 'undefined' ? href : new URL(href, window.location.href).href
+                }
+                label={t('workspace.copyLink')}
+              />
+              <Button type="button" variant="link" onClick={n.onFind}>
+                <MapPin aria-hidden="true" />
+                {t(n.inResults ? 'workspace.findResults' : 'workspace.allAssets')}
+              </Button>
+              {!n.inResults && <p>{t('workspace.selectedOutside')}</p>}
+            </div>
+          </CollapsibleContent>
+        </Collapsible>
       </header>
       <div className="preview-panel-body">
         <AssetDetails key={asset.id} asset={asset} locale={locale} compact />

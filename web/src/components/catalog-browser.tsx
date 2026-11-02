@@ -1,9 +1,12 @@
 /**
  * [INPUT]: 依赖公开目录、URL 浏览状态与独立结果、预览、下载视图。
- * [OUTPUT]: 导出完整只读资产工作区；一个 viewer 随停靠与展开保留。
+ * [OUTPUT]: 导出完整只读资产工作区；shadcn 分栏内同一 viewer 随停靠与展开保留。
  * [POS]: 首页交互组合边界；预览选择与下载选择互不隐式修改。
  * [PROTOCOL]: 变更时更新此头部，然后检查 CLAUDE.md
  */
+import { Button } from '@/components/ui/button';
+import { usePanelRef } from 'react-resizable-panels';
+import { ResizablePanelGroup, ResizablePanel, ResizableHandle } from './ui/resizable';
 import { useEffect, useMemo, useRef, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { CatalogFilters as CatalogFiltersPanel } from './catalog-filters';
@@ -11,7 +14,7 @@ import { CatalogGrid } from './catalog-grid';
 import { AssetPreview } from './asset-preview';
 import { WorkspaceToolbar } from './workspace-toolbar';
 import { DownloadSelection } from './download-selection';
-import { previewNeighbors, clampPreviewWidth } from '@/lib/catalog-selection';
+import { previewNeighbors } from '@/lib/catalog-selection';
 import {
   buildCatalogFacets,
   filterAndSortAssets,
@@ -28,8 +31,8 @@ export function CatalogBrowser({ catalog, locale }: { catalog: Catalog; locale: 
   const { t } = useTranslation();
   const { state: s, update } = useWorkspace();
   const [size, setSize] = useState({ width: 0, height: 0 });
-  const [previewWidth, setPreviewWidth] = useState(400);
-  const [previewHeight, setPreviewHeight] = useState(360);
+  const savedSize = useRef({ width: 400, height: 360 });
+  const previewPanel = usePanelRef();
   const [hiddenGroups, setHiddenGroups] = useState<string[]>([]);
   const [review, setReview] = useState(false);
   const [lastPreview, setLastPreview] = useState<string | null>(null);
@@ -47,9 +50,11 @@ export function CatalogBrowser({ catalog, locale }: { catalog: Catalog; locale: 
   const compact = size.width < 1000;
   const bottom = s.dock === 'bottom' || compact;
   const maximum = Math.max(320, Math.min(600, size.width - (s.dock === 'left' ? 280 : 512)));
-  const width = clampPreviewWidth(previewWidth, maximum);
+
   const maxHeight = Math.max(240, size.height - 180);
-  const height = Math.max(240, Math.min(maxHeight, previewHeight));
+
+  const desktop = size.width >= 900;
+  const left = s.dock === 'left' && !bottom;
   const expanded = Boolean(selected && s.expanded);
   const filter = (next: Partial<CatalogFilters>) => update({ filters: { ...s.filters, ...next } });
   const clear = () => update({ filters: { ...emptyFilters } });
@@ -97,6 +102,22 @@ export function CatalogBrowser({ catalog, locale }: { catalog: Catalog; locale: 
     );
     return () => cancelAnimationFrame(timer);
   }, [expanded]);
+  useEffect(() => {
+    let resizeFrame = 0;
+    // ---- 等待上游 ResizeObserver 更新轴尺寸，再恢复该停靠轴的大小 ----
+    const frame = requestAnimationFrame(() => {
+      resizeFrame = requestAnimationFrame(() => {
+        if (!selected) previewPanel.current?.resize(0);
+        else if (expanded) previewPanel.current?.resize('100%');
+        else
+          previewPanel.current?.resize(bottom ? savedSize.current.height : savedSize.current.width);
+      });
+    });
+    return () => {
+      cancelAnimationFrame(frame);
+      cancelAnimationFrame(resizeFrame);
+    };
+  }, [selected?.id, expanded, bottom, left, desktop, maximum, maxHeight, previewPanel]);
   return (
     <section className="catalog-browser" aria-label={t('home.collectionTitle')}>
       <div ref={toolbarRef} hidden={expanded}>
@@ -135,12 +156,6 @@ export function CatalogBrowser({ catalog, locale }: { catalog: Catalog; locale: 
         data-dock={s.dock}
         data-bottom={bottom}
         data-expanded={expanded}
-        style={
-          {
-            '--preview-width': `${width}px`,
-            '--preview-height': `${height}px`,
-          } as React.CSSProperties
-        }
       >
         <div className="workspace-filter-rail">
           <CatalogFiltersPanel
@@ -160,77 +175,101 @@ export function CatalogBrowser({ catalog, locale }: { catalog: Catalog; locale: 
             onClear={clear}
             hasFilters={hasCatalogFilters(s.filters)}
           />
-          <a
-            className="text-button"
-            href={`/${locale}/docs/contributing${import.meta.env.PROD ? '/index.html' : ''}`}
+          <Button
+            variant="ghost"
+            nativeButton={false}
+            render={
+              <a
+                href={`/${locale}/docs/contributing${import.meta.env.PROD ? '/index.html' : ''}`}
+              />
+            }
           >
             {t('workspace.contribute')}
-          </a>
+          </Button>
         </div>
-        <div className="browse-main">
-          <div className="catalog-results">
-            <CatalogGrid
-              assets={visibleAssets}
-              locale={locale}
-              onClearFilters={clear}
-              hasFilters={hasCatalogFilters(s.filters)}
-              selectedId={s.asset}
-              onSelectAsset={inspect}
-              checkedIds={s.selected}
-              onCheck={(id, enabled) => update({ selected: toggle(s.selected, id, enabled) })}
-              view={s.view}
-              density={s.density}
-              browsingSearch={serializeWorkspace(s)}
-              find={find}
-            />
-          </div>
-          {selected && (
-            <AssetPreview
-              asset={selected}
-              locale={locale}
-              navigation={{
-                previous: neighbors.previous,
-                next: neighbors.next,
-                onSelect: inspect,
-                inResults: neighbors.index >= 0,
-                onFind: () => {
-                  update({
-                    ...(neighbors.index < 0 ? { filters: { ...emptyFilters } } : {}),
-                    expanded: false,
-                  });
-                  findAsset(selected.id);
-                },
-              }}
-              pane={{
-                dock: s.dock,
-                expanded,
-                onDock: (dock) => update({ dock }),
-                onExpand: (expanded) => {
-                  update({ expanded });
-                  if (!expanded) findAsset(selected.id);
-                },
-                onClose: close,
-                size: bottom
-                  ? {
-                      value: height,
-                      minimum: 240,
-                      maximum: maxHeight,
-                      onChange: setPreviewHeight,
-                      axis: 'y',
-                      direction: -1,
-                    }
-                  : {
-                      value: width,
-                      minimum: 320,
-                      maximum,
-                      onChange: setPreviewWidth,
-                      axis: 'x',
-                      direction: s.dock === 'left' ? 1 : -1,
-                    },
-              }}
-            />
-          )}
-        </div>
+        <ResizablePanelGroup
+          className="browse-main"
+          data-left={left}
+          orientation={bottom ? 'vertical' : 'horizontal'}
+          disabled={!selected || expanded || !desktop}
+          onLayoutChanged={(_, meta) => {
+            if (meta.isUserInteraction && !expanded) {
+              const value = previewPanel.current?.getSize().inPixels;
+              if (value) {
+                if (bottom) savedSize.current.height = value;
+                else savedSize.current.width = value;
+              }
+            }
+          }}
+        >
+          <ResizablePanel
+            id="results"
+            minSize={expanded ? 0 : bottom ? 160 : 240}
+            defaultSize="70%"
+            collapsible
+          >
+            <div className="catalog-results">
+              <CatalogGrid
+                assets={visibleAssets}
+                locale={locale}
+                onClearFilters={clear}
+                hasFilters={hasCatalogFilters(s.filters)}
+                selectedId={s.asset}
+                onSelectAsset={inspect}
+                checkedIds={s.selected}
+                onCheck={(id, enabled) => update({ selected: toggle(s.selected, id, enabled) })}
+                view={s.view}
+                density={s.density}
+                browsingSearch={serializeWorkspace(s)}
+                find={find}
+              />
+            </div>
+          </ResizablePanel>
+          <ResizableHandle
+            className="workspace-splitter"
+            disabled={!selected || expanded || !desktop}
+            style={{ order: 1 }}
+            aria-label={t(bottom ? 'workspace.previewHeight' : 'asset.resizePreview')}
+          />
+          <ResizablePanel
+            id="preview"
+            panelRef={previewPanel}
+            minSize={!selected || expanded ? 0 : bottom ? 240 : 320}
+            maxSize={!selected ? 0 : expanded ? '100%' : bottom ? maxHeight : maximum}
+            defaultSize={400}
+            collapsible
+          >
+            {selected && (
+              <AssetPreview
+                asset={selected}
+                locale={locale}
+                navigation={{
+                  previous: neighbors.previous,
+                  next: neighbors.next,
+                  onSelect: inspect,
+                  inResults: neighbors.index >= 0,
+                  onFind: () => {
+                    update({
+                      ...(neighbors.index < 0 ? { filters: { ...emptyFilters } } : {}),
+                      expanded: false,
+                    });
+                    findAsset(selected.id);
+                  },
+                }}
+                pane={{
+                  dock: s.dock,
+                  expanded,
+                  onDock: (dock) => update({ dock }),
+                  onExpand: (expanded) => {
+                    update({ expanded });
+                    if (!expanded) findAsset(selected.id);
+                  },
+                  onClose: close,
+                }}
+              />
+            )}
+          </ResizablePanel>
+        </ResizablePanelGroup>
       </div>
     </section>
   );

@@ -4,6 +4,7 @@
  * [POS]: 详情页视觉层；预览只属于当前已验证资产。
  * [PROTOCOL]: 变更时更新此头部，然后检查 CLAUDE.md
  */
+
 .detail-main {
   padding: 20px 0 48px;
 }
@@ -208,17 +209,6 @@
   background: var(--lpw-raised);
 }
 
-.metadata-block > summary {
-  display: flex;
-  min-height: 42px;
-  align-items: center;
-  padding: 8px 12px;
-  color: var(--lpw-ink);
-  font-size: 14px;
-  font-weight: 560;
-  cursor: pointer;
-}
-
 .metadata-text {
   max-height: 360px;
   margin: 0;
@@ -272,15 +262,6 @@
   border-top: 0.5px solid var(--lpw-line);
 }
 
-.metadata-scope summary {
-  display: flex;
-  min-height: 40px;
-  align-items: center;
-  color: var(--lpw-ink);
-  font-size: 14px;
-  cursor: pointer;
-}
-
 .metadata-scope .metadata-note {
   margin: 4px 0 0;
 }
@@ -329,33 +310,5 @@
   font-size: 14px;
 }
 
-.button-link {
-  display: inline-flex;
-  min-height: 40px;
-  align-items: center;
-  justify-content: center;
-  padding: 0 13px;
-  border: 0.5px solid var(--lpw-line);
-  border-radius: var(--radius-md);
-  background: var(--lpw-raised);
-  color: var(--lpw-ink);
-  font-size: 14px;
-  font-weight: 520;
-  text-decoration: none;
-}
-
-.button-link-primary {
-  border-color: var(--lpw-accent);
-  background: var(--lpw-accent);
-  color: var(--lpw-raised);
-}
-
 @media (hover: hover) {
-  .button-link:hover {
-    border-color: var(--lpw-accent);
-  }
-
-  .button-link-primary:hover {
-    background: var(--lpw-accent-hover);
-  }
 }

@@ -4,6 +4,7 @@
  * [POS]: 首页唯一资产列表；虚拟化只挂载视窗附近的 AssetCard。
  * [PROTOCOL]: 变更时更新此头部，然后检查 CLAUDE.md
  */
+import { Button } from '@/components/ui/button';
 import { useVirtualizer, useWindowVirtualizer } from '@tanstack/react-virtual';
 import { useEffect, useMemo, useRef, useState } from 'react';
 import { useTranslation } from 'react-i18next';
@@ -135,9 +136,9 @@ export function CatalogGrid({
         <h3>{t('home.noMatchesTitle')}</h3>
         <p>{t('home.noMatchesDescription')}</p>
         {hasFilters && (
-          <button className="text-button" type="button" onClick={onClearFilters}>
+          <Button variant="link" type="button" onClick={onClearFilters}>
             {t('home.clearFilters')}
-          </button>
+          </Button>
         )}
       </div>
     );

@@ -22,7 +22,7 @@ dataset-schema.mdx: 记录版本 2 指针、category 层级、triangle bands 和
 dataset-schema.zh.mdx: 数据集结构；对应英文页面的完整简体中文译稿。
 contributing.mdx: 说明网站贡献范围和人工资产发布门槛。
 contributing.zh.mdx: 参与贡献；对应英文页面的完整简体中文译稿。
-release-notes.mdx: 记录已验证的网站部署与首批模型发布，区分两条发布历史。
+release-notes.mdx: 记录官方组件复用、工作区与模型发布，区分两条历史。
 release-notes.zh.mdx: 发布说明；对应英文页面的完整简体中文译稿。
 faq.mdx: 回答空目录、缺失值、viewer 回退和输入图权利问题。
 faq.zh.mdx: 常见问题；对应英文页面的完整简体中文译稿。

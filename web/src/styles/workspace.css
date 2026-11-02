@@ -1,22 +1,22 @@
 /**
- * [INPUT]: 依赖工作区停靠、展开与原生主题变量。
- * [OUTPUT]: 定义单实例预览重排、宽高分隔条与独立滚动区域。
- * [POS]: 仅作用于资产展示，不改变 Fumadocs 文档布局。
+ * [INPUT]: 依赖 shadcn 官方 Resizable 分栏和共享资产内容。
+ * [OUTPUT]: 仅定义停靠顺序、工作区尺寸与业务内容布局。
+ * [POS]: 交互由官方组件负责，不自写分隔条事件或重造基础控件。
  * [PROTOCOL]: 变更时更新此头部，然后检查 CLAUDE.md
  */
 .browse-main {
-  display: grid;
-  grid-template-columns: minmax(0, 1fr);
   min-width: 0;
-  gap: 16px;
 }
 .catalog-results,
 .workspace-filter-rail {
   min-width: 0;
 }
+.catalog-results {
+  height: 100%;
+}
 .asset-preview-panel {
-  position: relative;
   min-width: 0;
+  height: 100%;
   display: flex;
   flex-direction: column;
   border: 0.5px solid var(--lpw-line);
@@ -43,31 +43,6 @@
   align-items: center;
   gap: 4px;
 }
-.preview-panel-actions button:not(.text-button),
-.preview-open-page {
-  display: inline-flex;
-  width: 40px;
-  height: 40px;
-  padding: 10px;
-  justify-content: center;
-  align-items: center;
-  border-radius: var(--radius-sm);
-}
-.preview-panel-actions svg,
-.preview-more svg {
-  width: 16px;
-  height: 16px;
-}
-.preview-panel-actions select {
-  min-width: 60px;
-  flex: 1;
-  height: 40px;
-  padding: 0 4px;
-  border: 0.5px solid var(--lpw-line);
-  border-radius: var(--radius-sm);
-  background: var(--lpw-canvas);
-  font-size: 12px;
-}
 .preview-panel-body {
   overflow-y: auto;
   min-height: 0;
@@ -85,68 +60,39 @@
 .preview-panel-body .detail-actions {
   flex-wrap: wrap;
 }
-.preview-more {
-  font-size: 12px;
-}
-.preview-more summary {
-  min-height: 28px;
-  cursor: pointer;
-  font-family: var(--font-mono);
-  color: var(--lpw-muted);
-}
-.preview-more > div {
+.preview-more > [data-slot='collapsible-content'] {
   display: flex;
   flex-wrap: wrap;
   align-items: center;
   gap: 0 12px;
 }
-.preview-more .text-button {
-  display: inline-flex;
-  align-items: center;
-  gap: 4px;
+.preview-more > [data-slot='collapsible-trigger'] {
+  font-family: var(--font-mono);
   font-size: 12px;
 }
-.preview-resizer {
-  position: absolute;
-  z-index: 2;
-  top: 0;
-  bottom: 0;
-  left: -9px;
+.workspace-splitter {
+  flex: 0 0 16px !important;
   width: 16px;
-  cursor: col-resize;
-  touch-action: none;
+  background: transparent;
 }
-.preview-resizer::after {
+.workspace-splitter[aria-orientation='horizontal'] {
+  width: 100%;
+  height: 16px;
+}
+.workspace-splitter::before {
   content: '';
   position: absolute;
-  left: 7px;
-  top: calc(50% - 20px);
   width: 0.5px;
   height: 40px;
   background: var(--lpw-line);
 }
-.preview-resizer[data-direction='1'] {
-  right: -9px;
-  left: auto;
-}
-.preview-resizer[data-axis='y'] {
-  top: -9px;
-  bottom: auto;
-  left: 0;
-  right: 0;
-  width: auto;
-  height: 16px;
-  cursor: row-resize;
-}
-.preview-resizer[data-axis='y']::after {
-  top: 7px;
-  left: calc(50% - 20px);
+.workspace-splitter[aria-orientation='horizontal']::before {
   width: 40px;
   height: 0.5px;
 }
-.preview-resizer:focus-visible {
-  outline: 0.5px solid var(--lpw-focus);
-  outline-offset: 0;
+.catalog-workspace[data-preview='false'] .workspace-splitter,
+.catalog-workspace[data-expanded='true'] .workspace-splitter {
+  display: none;
 }
 .asset-tile[data-selected='true'] .asset-card {
   border-color: var(--lpw-accent);
@@ -166,12 +112,6 @@
   place-items: center;
   background: var(--lpw-canvas);
   border-radius: var(--radius-lg) 0 var(--radius-sm) 0;
-}
-.asset-selection-toggle input,
-.workspace-preferences input {
-  accent-color: var(--lpw-accent);
-  width: 16px;
-  height: 16px;
 }
 .asset-grid[data-view='list'] .asset-card {
   display: grid;
@@ -229,10 +169,7 @@
     overscroll-behavior: contain;
   }
   .browse-main {
-    height: 100%;
     min-height: 0;
-    grid-template-rows: minmax(0, 1fr);
-    align-items: stretch;
   }
   .catalog-results {
     min-height: 0;
@@ -240,51 +177,22 @@
     overscroll-behavior: contain;
   }
   .asset-preview-panel {
-    height: 100%;
     max-height: 100%;
     min-height: 0;
   }
-  .catalog-workspace[data-preview='true'][data-dock='right'][data-bottom='false'] .browse-main {
-    grid-template-columns: minmax(240px, 1fr) var(--preview-width);
-  }
-  .catalog-workspace[data-preview='true'][data-bottom='true'] .browse-main {
-    grid-template-rows: minmax(160px, 1fr) var(--preview-height);
-  }
   .catalog-workspace[data-preview='true'][data-dock='left'][data-bottom='false'] {
-    grid-template-columns: var(--preview-width) minmax(0, 1fr);
+    grid-template-columns: minmax(0, 1fr);
   }
   .catalog-workspace[data-preview='true'][data-dock='left'][data-bottom='false']
     .workspace-filter-rail {
     display: none;
   }
-  .catalog-workspace[data-preview='true'][data-dock='left'][data-bottom='false'] .browse-main {
-    display: contents;
-  }
-  .catalog-workspace[data-preview='true'][data-dock='left'][data-bottom='false']
-    .asset-preview-panel {
-    grid-column: 1;
-    grid-row: 1;
-  }
-  .catalog-workspace[data-preview='true'][data-dock='left'][data-bottom='false'] .catalog-results {
-    grid-column: 2;
-    grid-row: 1;
-  }
   .catalog-workspace[data-expanded='true'] {
-    grid-template-columns: minmax(0, 1fr) !important;
+    grid-template-columns: minmax(0, 1fr);
     height: calc(100dvh - 150px);
   }
-  .catalog-workspace[data-expanded='true'] .workspace-filter-rail,
-  .catalog-workspace[data-expanded='true'] .catalog-results {
+  .catalog-workspace[data-expanded='true'] .workspace-filter-rail {
     display: none;
-  }
-  .catalog-workspace[data-expanded='true'] .browse-main {
-    display: grid !important;
-    grid-template-columns: minmax(0, 1fr) !important;
-    grid-template-rows: minmax(0, 1fr) !important;
-  }
-  .catalog-workspace[data-expanded='true'] .asset-preview-panel {
-    grid-column: 1 !important;
-    grid-row: 1 !important;
   }
   .catalog-workspace[data-expanded='true'] .preview-panel-body .asset-detail {
     grid-template-columns: minmax(0, 1fr) 280px;
@@ -301,17 +209,49 @@
   }
 }
 @container (max-width: 899px) {
+  .browse-main[data-slot='resizable-panel-group'] {
+    display: block !important;
+    height: auto !important;
+    overflow: visible !important;
+  }
+  .browse-main > [data-panel] {
+    flex: none !important;
+    width: 100% !important;
+    height: auto !important;
+    overflow: visible !important;
+  }
+  .browse-main > [data-panel] > div {
+    height: auto !important;
+    overflow: visible !important;
+  }
+  .catalog-results {
+    height: auto;
+  }
   .asset-preview-panel {
     max-height: 85dvh;
   }
-  .preview-resizer {
+  .workspace-splitter {
     display: none;
   }
   .catalog-workspace[data-expanded='true'] .workspace-filter-rail,
-  .catalog-workspace[data-expanded='true'] .catalog-results {
+  .catalog-workspace[data-expanded='true'] #results {
     display: none;
   }
   .catalog-workspace[data-expanded='true'] {
     grid-template-columns: minmax(0, 1fr);
   }
+}
+
+/* ---- Panel 的 class/style 属于内部内容；仅在外层指定停靠顺序 ---- */
+.browse-main > #results {
+  order: 0;
+}
+.browse-main > #preview {
+  order: 2;
+}
+.browse-main[data-left='true'] > #results {
+  order: 2;
+}
+.browse-main[data-left='true'] > #preview {
+  order: 0;
 }

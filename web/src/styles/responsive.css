@@ -4,13 +4,10 @@
  * [POS]: 跨组件断点规则；局部尺寸仍归属各模块样式。
  * [PROTOCOL]: 变更时更新此头部，然后检查 CLAUDE.md
  */
-@container (min-width: 720px) {
-  .filter-disclosure > summary {
-    display: none;
-  }
 
-  .filter-disclosure > .filter-panel {
-    display: block;
+@container (min-width: 720px) {
+  .filter-heading {
+    display: none;
   }
 }
 
@@ -44,10 +41,6 @@
     min-width: 0;
   }
 
-  .sort-control select {
-    min-width: 142px;
-  }
-
   .catalog-result-count {
     text-align: right;
   }
@@ -79,10 +72,6 @@
 
   .sort-control {
     justify-content: space-between;
-  }
-
-  .sort-control select {
-    flex: 1;
   }
 
   .catalog-result-count {

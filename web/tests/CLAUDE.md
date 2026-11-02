@@ -3,6 +3,8 @@
 
 ## 成员清单
 
+component-reuse.test.mjs: 官方组件来源、禁止重复基础控件与 FU 主题桥接回归。
+
 workspace-state.test.mjs: 验证完整浏览 URL、适用筛选与固定版本下载协议。
 
 catalog.test.mjs: 验证指针、404 空态、摘要、schema、计数、ID、URL 和可选字段。

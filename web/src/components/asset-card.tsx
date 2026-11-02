@@ -1,9 +1,12 @@
 /**
- * [INPUT]: 依赖原生 Card、目录、locale 与普通链接拦截规则。
+ * [INPUT]: 依赖 FU Card、shadcn Checkbox/Badge、目录与普通链接规则。
  * [OUTPUT]: 导出资产卡；普通桌面点击预览，修改键和手机保留独立详情链接。
  * [POS]: 虚拟网格的图片卡片；不自建卡片壳，不加载 GLB。
  * [PROTOCOL]: 变更时更新此头部，然后检查 CLAUDE.md
  */
+import { Label } from '@/components/ui/label';
+import { Checkbox } from '@/components/ui/checkbox';
+import { Badge } from '@/components/ui/badge';
 import { Card } from 'fumadocs-ui/components/card';
 import type { CatalogAsset } from '@/lib/catalog';
 import { getAssetDisplayName, localizedPath, type Locale } from '@/lib/locale';
@@ -46,14 +49,13 @@ export function AssetCard({
       data-selected={selected}
     >
       {onCheck && (
-        <label className="asset-selection-toggle">
-          <input
-            type="checkbox"
+        <Label className="asset-selection-toggle">
+          <Checkbox
             checked={checked}
-            onChange={(e) => onCheck(asset.id, e.currentTarget.checked)}
+            onCheckedChange={(checked) => onCheck(asset.id, checked === true)}
             aria-label={t('workspace.selectAsset', { id: asset.id })}
           />
-        </label>
+        </Label>
       )}
       <Card
         href={href}
@@ -83,7 +85,11 @@ export function AssetCard({
           ) : (
             <span className="asset-preview-empty">{t('asset.noPreview')}</span>
           )}
-          {formats.length > 0 && <span className="asset-format">{formats.join(' + ')}</span>}
+          {formats.length > 0 && (
+            <Badge variant="outline" className="asset-format">
+              {formats.join(' + ')}
+            </Badge>
+          )}
         </span>
         {view === 'list' && (
           <span className="index-facts">

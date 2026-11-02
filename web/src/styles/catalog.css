@@ -4,6 +4,7 @@
  * [POS]: 资产库工作台视觉层；详情舞台和全局 token 由兄弟文件负责。
  * [PROTOCOL]: 变更时更新此头部，然后检查 CLAUDE.md
  */
+
 .catalog-section {
   padding: 20px 0 48px;
 }
@@ -30,23 +31,6 @@
   flex: 0 0 auto;
 }
 
-.ui-input {
-  width: 100%;
-  min-width: 0;
-  height: 40px;
-  padding: 0 11px;
-  border: 0.5px solid var(--lpw-line);
-  border-radius: var(--radius-md);
-  background: var(--lpw-raised);
-  color: var(--lpw-ink);
-  font-size: 14px;
-}
-
-.ui-input::placeholder {
-  color: var(--lpw-muted);
-  opacity: 1;
-}
-
 .sort-control {
   display: flex;
   align-items: center;
@@ -54,17 +38,6 @@
   color: var(--lpw-muted);
   font-size: 14px;
   white-space: nowrap;
-}
-
-.sort-control select {
-  height: 40px;
-  min-width: 154px;
-  padding: 0 30px 0 10px;
-  border: 0.5px solid var(--lpw-line);
-  border-radius: var(--radius-md);
-  background: var(--lpw-raised);
-  color: var(--lpw-ink);
-  font-size: 14px;
 }
 
 .catalog-result-count {
@@ -88,40 +61,8 @@
   border-top: 0.5px solid var(--lpw-line);
 }
 
-.filter-disclosure > summary {
-  display: flex;
-  min-height: 44px;
-  align-items: center;
-  justify-content: space-between;
-  color: var(--lpw-ink);
-  font-size: 14px;
-  font-weight: 600;
-  cursor: pointer;
-  list-style: none;
-}
-
-.filter-disclosure > summary::-webkit-details-marker {
-  display: none;
-}
-
-.filter-disclosure > summary::after {
-  content: '+';
-  color: var(--lpw-muted);
-  font-family: var(--font-mono);
-  font-size: 14px;
-}
-
-.filter-disclosure[open] > summary::after {
-  content: '−';
-}
-
 .filter-panel {
-  display: none;
   padding: 4px 0 14px;
-}
-
-.filter-disclosure[open] > .filter-panel {
-  display: block;
 }
 
 .filter-group {
@@ -154,50 +95,6 @@
   gap: 2px;
 }
 
-.category-disclosure,
-.category-disclosure-spacer {
-  display: grid;
-  width: 32px;
-  height: 40px;
-  flex: 0 0 32px;
-  place-items: center;
-  border: 0;
-  background: transparent;
-  color: var(--lpw-muted);
-}
-
-.category-disclosure svg {
-  width: 15px;
-  height: 15px;
-}
-
-.category-select {
-  display: flex;
-  min-width: 0;
-  min-height: 40px;
-  flex: 1;
-  align-items: center;
-  justify-content: space-between;
-  gap: 8px;
-  padding: 4px 7px;
-  border: 0;
-  border-radius: var(--radius-sm);
-  background: transparent;
-  color: var(--lpw-ink);
-  font-size: 14px;
-  text-align: left;
-}
-
-.category-select[data-selected='true'] {
-  background: var(--lpw-accent-soft);
-  color: var(--lpw-ink);
-}
-
-.category-select > span:first-child,
-.filter-option-label {
-  overflow-wrap: anywhere;
-}
-
 .category-all {
   width: 100%;
   margin: 1px 0 4px;
@@ -226,37 +123,6 @@
   flex: 1;
 }
 
-.ui-checkbox {
-  position: relative;
-  display: inline-flex;
-  width: 16px;
-  height: 16px;
-  flex: 0 0 16px;
-  align-items: center;
-  justify-content: center;
-  padding: 0;
-  border: 0.5px solid var(--lpw-muted);
-  border-radius: var(--radius-sm);
-  background: var(--lpw-raised);
-  color: var(--lpw-raised);
-}
-
-.ui-checkbox[data-checked] {
-  border-color: var(--lpw-accent);
-  background: var(--lpw-accent);
-}
-
-.ui-checkbox svg {
-  width: 12px;
-  height: 12px;
-  stroke-width: 3;
-}
-
-.ui-checkbox:disabled {
-  cursor: not-allowed;
-  opacity: 0.5;
-}
-
 .facet-hint,
 .facet-empty {
   margin: 5px 0 0;
@@ -275,25 +141,6 @@
 }
 
 @media (hover: hover) {
-  .category-select:hover,
-  .category-disclosure:hover {
-    background: var(--lpw-surface);
-  }
-}
-
-.text-button {
-  min-height: 40px;
-  padding: 0 4px;
-  border: 0;
-  background: transparent;
-  color: var(--lpw-accent);
-  font-size: 14px;
-  text-decoration: underline;
-  text-underline-offset: 3px;
-}
-
-.text-button:focus-visible {
-  border-radius: var(--radius-sm);
 }
 
 .asset-grid {
@@ -435,14 +282,6 @@
   font-size: 14px;
 }
 
-.catalog-error-details summary {
-  width: fit-content;
-  min-height: 40px;
-  display: flex;
-  align-items: center;
-  cursor: pointer;
-}
-
 .catalog-error-details code {
   display: block;
   max-height: 160px;
@@ -458,4 +297,20 @@
 
 .retry-button {
   min-height: 40px;
+}
+
+.category-disclosure-spacer {
+  display: block;
+  width: 40px;
+  height: 40px;
+  flex-shrink: 0;
+}
+.category-all {
+  margin-bottom: 4px;
+}
+.filter-heading {
+  min-height: 40px;
+}
+.extra-filter [data-slot='native-select-wrapper'] {
+  width: 100%;
 }

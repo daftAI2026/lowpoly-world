@@ -6,7 +6,7 @@
  */
 import { describe, expect, it } from 'vite-plus/test';
 import { readFile } from 'node:fs/promises';
-import { previewNeighbors, shouldOpenPreview, clampPreviewWidth } from '../src/lib/catalog-selection.ts';
+import { previewNeighbors, shouldOpenPreview } from '../src/lib/catalog-selection.ts';
 const read = (p) => readFile(new URL(p, import.meta.url), 'utf8');
 
 describe('Separate product surfaces', () => {
@@ -50,10 +50,5 @@ describe('Preview selection rules', () => {
   it('does not pretend a filtered-out selection belongs to the results', () => {
     expect(previewNeighbors([{id:'a'}],'b')).toEqual({index:-1,previous:null,next:null});
     expect(previewNeighbors([],null).index).toBe(-1);
-  });
-  it('clamps resizing to usable space', () => {
-    expect(clampPreviewWidth(100,600)).toBe(320);
-    expect(clampPreviewWidth(900,600)).toBe(600);
-    expect(clampPreviewWidth(420,600)).toBe(420);
   });
 });

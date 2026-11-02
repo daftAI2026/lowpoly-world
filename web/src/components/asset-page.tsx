@@ -4,6 +4,7 @@
  * [POS]: 独立详情页的状态边界；内容复用 AssetDetails，返回链接保留语言和规范浏览条件。
  * [PROTOCOL]: 变更时更新此头部，然后检查 CLAUDE.md
  */
+import { Button } from '@/components/ui/button';
 import { useRouterState } from '@tanstack/react-router';
 import { parseWorkspace, serializeWorkspace } from '@/lib/workspace-state';
 import { useTranslation } from 'react-i18next';
@@ -29,9 +30,14 @@ export function AssetPage({ id, locale }: { id?: string; locale: Locale }) {
     return (
       <HomeLayout {...baseOptions(locale)}>
         <main id="main-content" className="detail-main">
-          <a className="back-link" href={galleryUrl}>
+          <Button
+            variant="link"
+            className="back-link"
+            nativeButton={false}
+            render={<a href={galleryUrl} />}
+          >
             {t('asset.backGallery')}
-          </a>
+          </Button>
           <h1 className="detail-heading">{t('asset.detailTitle')}</h1>
           <CatalogStateView state={state} onRetry={retry} />
         </main>
@@ -45,9 +51,14 @@ export function AssetPage({ id, locale }: { id?: string; locale: Locale }) {
   return (
     <HomeLayout {...baseOptions(locale)}>
       <main id="main-content" className="detail-main">
-        <a className="back-link" href={galleryUrl}>
+        <Button
+          variant="link"
+          className="back-link"
+          nativeButton={false}
+          render={<a href={galleryUrl} />}
+        >
           {t('asset.backGallery')}
-        </a>
+        </Button>
         {!id && (
           <section className="detail-empty" role="status">
             <h1>{t('asset.chooseTitle')}</h1>

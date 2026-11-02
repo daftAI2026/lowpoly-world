@@ -37,7 +37,17 @@ HF 使用官方黄色 SVG，模型材质与源预览不染色。
 文档仅在 DocsShell 内调用官方 Spacious。
 展示首页与独立资产详情使用官方 HomeLayout。
 导航、外链、语言和文档搜索复用原生组件。
-资产卡扩展原生 Card，按钮复用 buttonVariants。
+资产卡扩展 FU 原生 Card，不并存第二套卡片。
+展厅动作、表单、折叠和分栏复用官方 shadcn Base Nova。
+只采用 Base UI 版本，不混入 Radix。
+按钮不再拼接 Base UI 原语和 FU buttonVariants。
+筛选树、偏好弹层和分隔条不自写交互实现。
+13 个组件的官方 URL 与摘要见 registry.sources.json。
+官方源码只适配导入、图标和既定外观约束。
+边线 0.5px，控件 40px，不增加装饰动效。
+shadcn 语义色单向引用 FU token，不生成第二套色板。
+原始 MIT 许可随构建托管。
+业务组件只组合官方控件与真实资产状态。
 就地预览复用 AssetDetails，不另写一套 viewer 或元数据。
 
 ## 5. 布局与功能

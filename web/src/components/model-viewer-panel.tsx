@@ -56,12 +56,14 @@ export function ModelViewerPanel({ modelUrl, previewUrl, assetName }: ModelViewe
     viewer.addEventListener('load', onLoad);
     viewer.addEventListener('error', onError);
 
-    void import('@google/model-viewer').then(() => {
-      if (!active) return;
-      if (viewer.loaded) setStatus('ready');
-    }).catch(() => {
-      if (active) setStatus('error');
-    });
+    void import('@google/model-viewer')
+      .then(() => {
+        if (!active) return;
+        if (viewer.loaded) setStatus('ready');
+      })
+      .catch(() => {
+        if (active) setStatus('error');
+      });
 
     return () => {
       active = false;
@@ -155,7 +157,7 @@ export function ModelViewerPanel({ modelUrl, previewUrl, assetName }: ModelViewe
         <Button
           type="button"
           size="sm"
-          variant={autoRotate ? 'primary' : 'secondary'}
+          variant={autoRotate ? 'default' : 'secondary'}
           aria-pressed={autoRotate}
           onClick={() => setAutoRotate((current) => !current)}
           disabled={status !== 'ready'}
@@ -176,7 +178,9 @@ export function ModelViewerPanel({ modelUrl, previewUrl, assetName }: ModelViewe
         </Button>
       </div>
       {fullscreenFailed && (
-        <p className="viewer-note" role="status">{t('asset.fullscreenUnavailable')}</p>
+        <p className="viewer-note" role="status">
+          {t('asset.fullscreenUnavailable')}
+        </p>
       )}
     </section>
   );

@@ -1,9 +1,13 @@
 /**
- * [INPUT]: 依赖目录派生 facet、当前筛选状态、实际内容宽度和本地化事件。
+ * [INPUT]: 依赖目录 facet、当前筛选与官方 shadcn 折叠、动作和表单。
  * [OUTPUT]: 导出分类树、格式、三角面数和标签筛选面板。
  * [POS]: 画廊筛选唯一视图；计数来自已校验目录，不读取外部统计。
  * [PROTOCOL]: 变更时更新此头部，然后检查 CLAUDE.md
  */
+import { Label } from '@/components/ui/label';
+import { NativeSelect, NativeSelectOption } from '@/components/ui/native-select';
+import { Button } from '@/components/ui/button';
+import { Collapsible, CollapsibleTrigger, CollapsibleContent } from '@/components/ui/collapsible';
 import type { CatalogAsset } from '@/lib/catalog';
 import { ChevronDown, ChevronRight } from 'lucide-react';
 import { useEffect, useRef, useState } from 'react';
@@ -58,10 +62,15 @@ function CategoryBranch({
   const childId = `category-${encodeURIComponent(node.path)}`;
 
   return (
-    <li className="category-tree-node">
+    <Collapsible
+      open={expanded}
+      onOpenChange={setExpanded}
+      render={<li className="category-tree-node" />}
+    >
       <div className="category-tree-row">
         {hasChildren ? (
-          <button
+          <CollapsibleTrigger
+            render={<Button variant="ghost" size="icon" />}
             type="button"
             className="category-disclosure"
             aria-label={
@@ -71,26 +80,26 @@ function CategoryBranch({
             }
             aria-expanded={expanded}
             aria-controls={childId}
-            onClick={() => setExpanded((current) => !current)}
           >
             {expanded ? <ChevronDown aria-hidden="true" /> : <ChevronRight aria-hidden="true" />}
-          </button>
+          </CollapsibleTrigger>
         ) : (
           <span className="category-disclosure-spacer" aria-hidden="true" />
         )}
-        <button
+        <Button
+          variant={selectedPath === node.path ? 'secondary' : 'ghost'}
           type="button"
-          className="category-select"
+          className="category-select min-w-0 flex-1 shrink h-auto min-h-10 justify-between whitespace-normal text-left"
           data-selected={selectedPath === node.path}
           aria-pressed={selectedPath === node.path}
           onClick={() => onSelect(selectedPath === node.path ? null : node.path)}
         >
           <span>{label}</span>
           <span className="facet-count">{node.count}</span>
-        </button>
+        </Button>
       </div>
       {hasChildren && (
-        <ul id={childId} className="category-tree-children" hidden={!expanded}>
+        <CollapsibleContent render={<ul id={childId} className="category-tree-children" />}>
           {node.children.map((child) => (
             <CategoryBranch
               key={child.path}
@@ -99,9 +108,9 @@ function CategoryBranch({
               onSelect={onSelect}
             />
           ))}
-        </ul>
+        </CollapsibleContent>
       )}
-    </li>
+    </Collapsible>
   );
 }
 
@@ -136,11 +145,11 @@ function FilterOption({
   onChange: (checked: boolean) => void;
 }) {
   return (
-    <label className="filter-option" htmlFor={id}>
+    <Label className="filter-option" htmlFor={id}>
       <Checkbox id={id} checked={checked} onCheckedChange={(value) => onChange(value === true)} />
       <span className="filter-option-label">{label}</span>
       <span className="facet-count">{count}</span>
-    </label>
+    </Label>
   );
 }
 
@@ -201,26 +210,31 @@ export function CatalogFilters({
 
   return (
     <aside ref={filtersRef} className="catalog-filters" aria-label={t('home.filters')}>
-      <details
+      <Collapsible
         className="filter-disclosure"
         open={filtersOpen}
-        onToggle={(event) => {
-          if (!isDesktop) setIsExpanded(event.currentTarget.open);
+        onOpenChange={(open) => {
+          if (!isDesktop) setIsExpanded(open);
         }}
       >
-        <summary>{t('home.filters')}</summary>
-        <div className="filter-panel">
+        <CollapsibleTrigger
+          render={<Button variant="ghost" className="filter-heading w-full justify-between" />}
+        >
+          {t('home.filters')}
+        </CollapsibleTrigger>
+        <CollapsibleContent className="filter-panel">
           <section className="filter-group" aria-labelledby="category-filter-heading">
             <h3 id="category-filter-heading">{t('home.categories')}</h3>
-            <button
+            <Button
+              variant={filters.categoryPath === null ? 'secondary' : 'ghost'}
               type="button"
-              className="category-select category-all"
+              className="category-select category-all w-full justify-start"
               data-selected={filters.categoryPath === null}
               aria-pressed={filters.categoryPath === null}
               onClick={() => onCategoryChange(null)}
             >
               <span>{t('home.allCategories')}</span>
-            </button>
+            </Button>
             <CategoryTree
               nodes={facets.categories}
               selectedPath={filters.categoryPath}
@@ -302,26 +316,26 @@ export function CatalogFilters({
             (field) =>
               valuesFor(field).length > 0 &&
               !hiddenGroups.includes(field) && (
-                <label className="filter-group extra-filter" key={field}>
+                <Label className="filter-group extra-filter" key={field}>
                   <span>{t(`workspace.${field}`)}</span>
-                  <select
+                  <NativeSelect
                     value={filters[field] ?? ''}
                     onChange={(e) => onExtraChange({ [field]: e.currentTarget.value || null })}
                   >
-                    <option value="">{t('workspace.any')}</option>
+                    <NativeSelectOption value="">{t('workspace.any')}</NativeSelectOption>
                     {valuesFor(field).map((v) => (
-                      <option key={v} value={v}>
+                      <NativeSelectOption key={v} value={v}>
                         {v} ({assets.filter((a) => a[field] === v).length})
-                      </option>
+                      </NativeSelectOption>
                     ))}
-                  </select>
-                </label>
+                  </NativeSelect>
+                </Label>
               ),
           )}
           {assets.some((a) => a.dimensions_m) && !hiddenGroups.includes('dimension') && (
-            <label className="filter-group extra-filter">
+            <Label className="filter-group extra-filter">
               <span>{t('workspace.dimension')}</span>
-              <select
+              <NativeSelect
                 value={filters.dimension ?? ''}
                 onChange={(e) =>
                   onExtraChange({
@@ -334,19 +348,19 @@ export function CatalogFilters({
                   })
                 }
               >
-                <option value="">{t('workspace.any')}</option>
-                <option value="under-1m">{t('workspace.under1m')}</option>
-                <option value="1m-plus">{t('workspace.over1m')}</option>
-              </select>
-            </label>
+                <NativeSelectOption value="">{t('workspace.any')}</NativeSelectOption>
+                <NativeSelectOption value="under-1m">{t('workspace.under1m')}</NativeSelectOption>
+                <NativeSelectOption value="1m-plus">{t('workspace.over1m')}</NativeSelectOption>
+              </NativeSelect>
+            </Label>
           )}
           {hasFilters && (
-            <button className="text-button clear-filters" type="button" onClick={onClear}>
+            <Button variant="ghost" className="clear-filters" type="button" onClick={onClear}>
               {t('home.clearFilters')}
-            </button>
+            </Button>
           )}
-        </div>
-      </details>
+        </CollapsibleContent>
+      </Collapsible>
     </aside>
   );
 }

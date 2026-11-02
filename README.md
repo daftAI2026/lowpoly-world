@@ -6,7 +6,7 @@
 -->
 # Lowpoly World
 
-低多边形资产展示应用，共用 Fumadocs 原生视觉，展示工作区与文档采用独立布局。
+低多边形资产展示应用。导航、文档和卡片复用 Fumadocs，展厅控件复用官方 shadcn Base UI。两者共用主题，展示与文档采用独立布局。
 项目包含两个交付：HF Dataset 与 HF Static Space 应用。模型库、3D 查看与使用文档都在应用内。
 网站只读取公开 Dataset，不接触私人 Drive 或审核目录。
 

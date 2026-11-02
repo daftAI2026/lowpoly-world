@@ -4,6 +4,7 @@
  * [POS]: 工作区操作层；不覆盖原生文档、导航或主题值。
  * [PROTOCOL]: 变更时更新此头部，然后检查 CLAUDE.md
  */
+
 .asset-breadcrumb {
   display: flex;
   flex-wrap: wrap;
@@ -32,38 +33,13 @@
   padding-bottom: 12px;
   font-size: 12px;
 }
-.workspace-controls .text-button {
-  font-size: 12px;
-}
-.view-controls {
-  display: inline-flex;
-  border: 0.5px solid var(--lpw-line);
-  border-radius: var(--radius-sm);
-}
-.view-controls button {
-  min-height: 40px;
-  padding: 0 12px;
-}
-.view-controls [aria-pressed='true'] {
-  background: var(--lpw-accent-soft);
-  color: var(--lpw-accent);
-}
 .density-control {
   display: inline-flex;
   align-items: center;
   gap: 8px;
 }
-.density-control select,
-.extra-filter select {
-  height: 40px;
-  max-width: 100%;
-  padding: 0 8px;
-  border: 0.5px solid var(--lpw-line);
-  border-radius: var(--radius-sm);
-  background: var(--lpw-canvas);
-  color: var(--lpw-ink);
-}
 .extra-filter {
+  align-items: stretch;
   display: flex;
   flex-direction: column;
   gap: 8px;
@@ -73,42 +49,6 @@
 .filter-group[hidden] {
   display: none;
 }
-.workspace-preferences {
-  position: relative;
-}
-.workspace-preferences summary {
-  min-height: 40px;
-  display: flex;
-  align-items: center;
-  cursor: pointer;
-  text-decoration: underline;
-  text-underline-offset: 3px;
-}
-.workspace-preferences > div {
-  position: absolute;
-  z-index: 5;
-  top: 100%;
-  left: 0;
-  width: 240px;
-  padding: 12px;
-  border: 0.5px solid var(--lpw-line);
-  border-radius: var(--radius-md);
-  background: var(--lpw-canvas);
-}
-.workspace-preferences label {
-  display: flex;
-  gap: 8px;
-  align-items: center;
-  min-height: 40px;
-}
-.workspace-preferences fieldset {
-  margin-top: 8px;
-  border-top: 0.5px solid var(--lpw-line);
-  padding-top: 8px;
-}
-.workspace-preferences legend {
-  color: var(--lpw-muted);
-}
 .filter-chips {
   display: flex;
   flex-wrap: wrap;
@@ -116,18 +56,6 @@
   gap: 8px;
   margin: 0 0 12px;
   font-size: 12px;
-}
-.filter-chips > button:not(.text-button) {
-  display: flex;
-  align-items: center;
-  gap: 12px;
-  padding: 0 8px;
-  min-height: 32px;
-  max-width: 100%;
-  overflow-wrap: anywhere;
-  background: var(--lpw-accent-soft);
-  border: 0.5px solid var(--lpw-line);
-  border-radius: var(--radius-sm);
 }
 .download-selection {
   margin-bottom: 20px;
@@ -186,31 +114,10 @@
   gap: 16px;
   font-size: 12px;
 }
-.selection-items a {
-  display: inline-flex;
-  align-items: center;
-  min-height: 40px;
-  color: var(--lpw-accent);
-  text-decoration: underline;
-}
+
 .download-commands {
   margin-top: 12px;
   font-size: 14px;
-}
-.download-commands summary {
-  min-height: 40px;
-  cursor: pointer;
-}
-.download-commands textarea {
-  display: block;
-  width: 100%;
-  margin-top: 12px;
-  padding: 12px;
-  font-size: 12px;
-  font-family: var(--font-mono);
-  border: 0.5px solid var(--lpw-line);
-  border-radius: var(--radius-sm);
-  background: var(--lpw-surface);
 }
 .copy-control {
   display: inline-flex;
@@ -233,15 +140,23 @@
   .workspace-controls {
     gap: 4px 12px;
   }
-  .workspace-preferences > div {
-    left: auto;
-    right: 0;
-    width: min(240px, 80vw);
-  }
   .selection-items li > div {
     width: 100%;
   }
   .download-selection {
     padding: 12px;
   }
+}
+
+.workspace-preferences-content label {
+  min-height: 40px;
+}
+.workspace-preferences-content fieldset {
+  border-top: 0.5px solid var(--lpw-line);
+  margin-top: 8px;
+  padding-top: 8px;
+}
+.workspace-preferences-content legend {
+  font-size: 12px;
+  color: var(--lpw-muted);
 }
