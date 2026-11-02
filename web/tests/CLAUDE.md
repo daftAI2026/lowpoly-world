@@ -3,7 +3,7 @@
 
 ## 成员清单
 
-directory-download.test.mjs: 内存流回归固定版本、关闭写入、失败隔离、取消与路径拒绝。
+directory-download.test.mjs: 独立窗口能力检测与内存流回归，覆盖固定版本、取消和路径拒绝。
 
 category-taxonomy.test.mjs: 分类别名归并、中英标签、保守名称推导与冲突回退回归。
 

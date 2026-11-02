@@ -8,7 +8,7 @@ category-taxonomy.ts: 按来源别名和明确名称归类，共用分类路径�
 
 workspace-state.ts: 浏览状态白名单与规范 URL；预览和下载选择独立。
 use-workspace.ts: TanStack URL 是浏览状态唯一来源，保留历史和滚动。
-directory-download.ts: 用户选择目录后的固定版本流式保存；完成计数只取已关闭写入。
+directory-download.ts: 独立安全窗口由用户选目录后固定版本流式保存；完成计数只取已关闭写入。
 asset-downloads.ts: 固定 Dataset commit 的文件 URL、命令和版本读取，不下载模型。
 
 catalog.ts: 读取 V2 指针与快照，校验 SHA256、字段和唯一 ID。

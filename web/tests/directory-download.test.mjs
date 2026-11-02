@@ -5,7 +5,7 @@
  * [PROTOCOL]: 变更时更新此头部，然后检查 CLAUDE.md
  */
 import { describe, it, expect } from 'vite-plus/test';
-import { downloadToDirectory } from '../src/lib/directory-download.ts';
+import { downloadToDirectory, supportsDirectoryDownload } from '../src/lib/directory-download.ts';
 const revision = 'a'.repeat(40);
 const file = (path) => ({
   id: 'LPW-00001',
@@ -36,6 +36,15 @@ function memoryDirectory() {
   return { directory, written, folders };
 }
 describe('Streamed directory downloads', () => {
+  it('offers directory writes only in a secure standalone window with the API', () => {
+    const window = { isSecureContext: true, showDirectoryPicker() {} };
+    window.top = window;
+    expect(supportsDirectoryDownload(window)).toBe(true);
+    expect(supportsDirectoryDownload({ ...window, top: {} })).toBe(false);
+    expect(supportsDirectoryDownload({ ...window, isSecureContext: false })).toBe(false);
+    delete window.showDirectoryPicker;
+    expect(supportsDirectoryDownload(window)).toBe(false);
+  });
   it('writes each file at the pinned revision and records completion only after close', async () => {
     const { directory, written, folders } = memoryDirectory();
     const events = [];

@@ -1,6 +1,6 @@
 /**
  * [INPUT]: 依赖目录仓库身份、固定版本文件、用户选定目录与流式写入。
- * [OUTPUT]: 提供能力检测、目录选择与可取消的顺序文件下载。
+ * [OUTPUT]: 提供独立安全窗口能力检测、目录选择与可取消的顺序下载。
  * [POS]: 下载执行边界；不上传、不缓存完整模型，不申请后台目录权限。
  * [PROTOCOL]: 变更时更新此头部，然后检查 CLAUDE.md
  */
@@ -15,8 +15,14 @@ type PickerWindow = Window & {
   showDirectoryPicker?: (options: { mode: 'readwrite' }) => Promise<DownloadDirectory>;
 };
 export type DirectoryProgress = { completed: string[]; failed: string[]; cancelled: boolean };
-export function supportsDirectoryDownload(): boolean {
-  return typeof window !== 'undefined' && Boolean((window as PickerWindow).showDirectoryPicker);
+export function supportsDirectoryDownload(
+  context: Window | undefined = typeof window === 'undefined' ? undefined : window,
+): boolean {
+  return Boolean(
+    context?.isSecureContext &&
+    context.top === context &&
+    (context as PickerWindow).showDirectoryPicker,
+  );
 }
 export async function pickDownloadDirectory(): Promise<DownloadDirectory> {
   const picker = (window as PickerWindow).showDirectoryPicker;
