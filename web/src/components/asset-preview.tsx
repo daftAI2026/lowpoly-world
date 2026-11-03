@@ -1,12 +1,25 @@
 /**
- * [INPUT]: 依赖公开资产、分组导航与官方 shadcn 动作、下拉和折叠。
- * [OUTPUT]: 导出左右下停靠、应用内展开与返回的单实例预览。
+ * [INPUT]: 依赖公开资产、分组导航与官方 shadcn 动作与锚定菜单。
+ * [OUTPUT]: 导出紧凑身份栏、图标停靠菜单与同实例预览。
  * [POS]: 只以 CSS 重排同一 viewer；不把检查行为混成下载选择。
  * [PROTOCOL]: 变更时更新此头部，然后检查 CLAUDE.md
  */
-import { Collapsible, CollapsibleTrigger, CollapsibleContent } from '@/components/ui/collapsible';
-import { NativeSelect, NativeSelectOption } from '@/components/ui/native-select';
-import { ArrowLeft, ArrowRight, ExternalLink, Maximize2, MapPin, X } from 'lucide-react';
+import { Popover, PopoverTrigger, PopoverContent } from '@/components/ui/popover';
+import { useState } from 'react';
+import {
+  ArrowLeft,
+  ArrowRight,
+  ExternalLink,
+  Maximize2,
+  Minimize2,
+  MapPin,
+  X,
+  PanelRight,
+  PanelLeft,
+  PanelBottom,
+  ChevronDown,
+  Check,
+} from 'lucide-react';
 import { useTranslation } from 'react-i18next';
 import type { CatalogAsset } from '@/lib/catalog';
 import { parseWorkspace, serializeWorkspace } from '@/lib/workspace-state';
@@ -43,6 +56,7 @@ export function AssetPreview({
   pane: Pane;
 }) {
   const { t } = useTranslation();
+  const [dockOpen, setDockOpen] = useState(false);
   const search = useRouterState({ select: (s) => s.location.searchStr });
   const back = serializeWorkspace(parseWorkspace(search));
   const name = getAssetDisplayName(asset, locale);
@@ -63,12 +77,47 @@ export function AssetPreview({
       }}
     >
       <header className="preview-panel-header">
-        <h2>{name}</h2>
+        <Popover>
+          <h2>
+            <PopoverTrigger
+              render={
+                <Button
+                  variant="ghost"
+                  className="preview-identity"
+                  title={`${name} (${asset.id})`}
+                />
+              }
+            >
+              <span>{name}</span>
+              <ChevronDown aria-hidden="true" />
+            </PopoverTrigger>
+          </h2>
+          <PopoverContent align="start" className="preview-identity-menu" aria-label={name}>
+            <code>{asset.id}</code>
+            <CopyButton value={name} label={t('workspace.copyName')} />
+            <CopyButton value={asset.id} label={t('workspace.copyID')} />
+            <CopyButton
+              value={
+                typeof window === 'undefined' ? href : new URL(href, window.location.href).href
+              }
+              label={t('workspace.copyLink')}
+            />
+            <Button variant="ghost" onClick={n.onFind}>
+              <MapPin aria-hidden="true" />
+              {t(n.inResults ? 'workspace.findResults' : 'workspace.allAssets')}
+            </Button>
+            <Button variant="ghost" nativeButton={false} render={<a href={href} />}>
+              <ExternalLink aria-hidden="true" />
+              {t('asset.openDetails')}
+            </Button>
+          </PopoverContent>
+        </Popover>
         <div className="preview-panel-actions">
           <Button
             size="icon"
             variant="ghost"
             aria-label={t('asset.previousAsset')}
+            title={t('asset.previousAsset')}
             disabled={!n.previous}
             onClick={() => n.previous && n.onSelect(n.previous)}
           >
@@ -78,77 +127,82 @@ export function AssetPreview({
             size="icon"
             variant="ghost"
             aria-label={t('asset.nextAsset')}
+            title={t('asset.nextAsset')}
             disabled={!n.next}
             onClick={() => n.next && n.onSelect(n.next)}
           >
             <ArrowRight aria-hidden="true" />
           </Button>
-          {p.expanded ? (
-            <Button type="button" variant="link" onClick={() => p.onExpand(false)}>
-              {t('workspace.backResults')}
-            </Button>
-          ) : (
-            <>
-              <NativeSelect
+          {!p.expanded && (
+            <Popover open={dockOpen} onOpenChange={setDockOpen}>
+              <PopoverTrigger
+                render={
+                  <Button
+                    variant="ghost"
+                    size="icon"
+                    aria-label={t('asset.previewPlacement')}
+                    title={t('asset.previewPlacement')}
+                  />
+                }
+              >
+                {p.dock === 'left' ? (
+                  <PanelLeft aria-hidden="true" />
+                ) : p.dock === 'bottom' ? (
+                  <PanelBottom aria-hidden="true" />
+                ) : (
+                  <PanelRight aria-hidden="true" />
+                )}
+              </PopoverTrigger>
+              <PopoverContent
+                align="end"
+                className="preview-dock-menu"
                 aria-label={t('asset.previewPlacement')}
-                value={p.dock}
-                onChange={(e) => p.onDock(e.currentTarget.value as PreviewDock)}
               >
-                <NativeSelectOption value="right">{t('asset.pinRight')}</NativeSelectOption>
-                <NativeSelectOption value="left">{t('workspace.pinLeft')}</NativeSelectOption>
-                <NativeSelectOption value="bottom">{t('asset.pinBottom')}</NativeSelectOption>
-              </NativeSelect>
-              <Button
-                size="icon"
-                variant="ghost"
-                aria-label={t('workspace.expandPreview')}
-                onClick={() => p.onExpand(true)}
-              >
-                <Maximize2 aria-hidden="true" />
-              </Button>
-            </>
+                {(['right', 'left', 'bottom'] as const).map((dock) => (
+                  <Button
+                    key={dock}
+                    variant="ghost"
+                    aria-pressed={p.dock === dock}
+                    className="justify-between"
+                    onClick={() => {
+                      p.onDock(dock);
+                      setDockOpen(false);
+                    }}
+                  >
+                    <span>
+                      {t(
+                        dock === 'right'
+                          ? 'asset.pinRight'
+                          : dock === 'left'
+                            ? 'workspace.pinLeft'
+                            : 'asset.pinBottom',
+                      )}
+                    </span>
+                    {p.dock === dock && <Check aria-hidden="true" />}
+                  </Button>
+                ))}
+              </PopoverContent>
+            </Popover>
           )}
           <Button
             variant="ghost"
             size="icon"
-            nativeButton={false}
-            render={
-              <a href={href} aria-label={t('asset.openDetails')} title={t('asset.openDetails')} />
-            }
+            aria-label={t(p.expanded ? 'workspace.backResults' : 'workspace.expandPreview')}
+            title={t(p.expanded ? 'workspace.backResults' : 'workspace.expandPreview')}
+            onClick={() => p.onExpand(!p.expanded)}
           >
-            <ExternalLink aria-hidden="true" />
+            {p.expanded ? <Minimize2 aria-hidden="true" /> : <Maximize2 aria-hidden="true" />}
           </Button>
           <Button
             size="icon"
             variant="ghost"
             aria-label={t('asset.closePreview')}
+            title={t('asset.closePreview')}
             onClick={p.onClose}
           >
             <X aria-hidden="true" />
           </Button>
         </div>
-        <Collapsible className="preview-more">
-          <CollapsibleTrigger render={<Button variant="ghost" className="justify-start" />}>
-            {asset.id}
-          </CollapsibleTrigger>
-          <CollapsibleContent>
-            <div>
-              <CopyButton value={name} label={t('workspace.copyName')} />
-              <CopyButton value={asset.id} label={t('workspace.copyID')} />
-              <CopyButton
-                value={
-                  typeof window === 'undefined' ? href : new URL(href, window.location.href).href
-                }
-                label={t('workspace.copyLink')}
-              />
-              <Button type="button" variant="link" onClick={n.onFind}>
-                <MapPin aria-hidden="true" />
-                {t(n.inResults ? 'workspace.findResults' : 'workspace.allAssets')}
-              </Button>
-              {!n.inResults && <p>{t('workspace.selectedOutside')}</p>}
-            </div>
-          </CollapsibleContent>
-        </Collapsible>
       </header>
       <div className="preview-panel-body">
         <AssetDetails key={asset.id} asset={asset} locale={locale} compact />

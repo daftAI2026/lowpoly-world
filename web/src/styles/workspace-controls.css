@@ -1,6 +1,6 @@
 /**
  * [INPUT]: 依赖工具栏、选择集、复制动作与输入方式标记。
- * [OUTPUT]: 对齐结果工具、条件条和下载审阅；指针面板缓动 250ms。
+ * [OUTPUT]: 对齐结果工具、条件条与复制反馈；指针面板缓动 250ms。
  * [POS]: 工作区操作层；不覆盖原生文档、导航或主题值。
  * [PROTOCOL]: 变更时更新此头部，然后检查 CLAUDE.md
  */
@@ -85,68 +85,6 @@
   margin: 0 0 12px;
   font-size: 12px;
 }
-.download-selection {
-  margin-bottom: 20px;
-  padding: 16px;
-  border: 0.5px solid var(--lpw-line);
-  border-radius: var(--radius-lg);
-}
-.download-selection header {
-  display: flex;
-  flex-wrap: wrap;
-  justify-content: space-between;
-  align-items: center;
-  gap: 8px;
-}
-.download-selection h2 {
-  font-size: 20px;
-  font-weight: 600;
-}
-.selection-actions {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 8px 20px;
-}
-.selection-items {
-  margin: 12px 0;
-  max-height: 320px;
-  overflow-y: auto;
-  list-style: none;
-  padding: 0;
-}
-.selection-items li {
-  display: flex;
-  flex-wrap: wrap;
-  justify-content: space-between;
-  align-items: center;
-  gap: 8px;
-  padding: 8px 0;
-  border-top: 0.5px solid var(--lpw-line);
-}
-.selection-name {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 4px 12px;
-  text-align: left;
-  font-size: 14px;
-}
-.selection-name span {
-  font-size: 12px;
-  color: var(--lpw-muted);
-  font-family: var(--font-mono);
-}
-.selection-items li > div {
-  display: flex;
-  flex-wrap: wrap;
-  align-items: center;
-  gap: 16px;
-  font-size: 12px;
-}
-
-.download-commands {
-  margin-top: 12px;
-  font-size: 14px;
-}
 .copy-control {
   display: inline-flex;
   flex-wrap: wrap;
@@ -157,13 +95,7 @@
 .copy-control [role='status'] {
   color: var(--lpw-muted);
 }
-.download-status,
-.download-revision {
-  margin-top: 8px;
-  color: var(--lpw-muted);
-  font-size: 12px;
-  overflow-wrap: anywhere;
-}
+
 @container (max-width: 719px) {
   .workspace-controls {
     gap: 4px 12px;
@@ -202,12 +134,7 @@
 }
 @media (prefers-reduced-motion: no-preference) {
   :root[data-workspace-input='pointer']
-    :is(
-      .facet-content[data-open],
-      .download-selection,
-      .asset-preview-panel,
-      [data-slot='popover-content']
-    ) {
+    :is(.facet-content[data-open], .asset-preview-panel, [data-slot='popover-content']) {
     animation: workspace-surface-in 250ms ease-out;
   }
   :root[data-workspace-input='pointer'] .facet-heading > svg {
@@ -215,10 +142,10 @@
   }
 }
 
-.download-failures {
-  max-height: 120px;
-  overflow: auto;
-  color: var(--lpw-danger);
-  font-size: 12px;
-  overflow-wrap: anywhere;
+.result-selection-toggle {
+  display: grid;
+  place-items: center;
+  width: 40px;
+  min-height: 40px;
+  cursor: pointer;
 }

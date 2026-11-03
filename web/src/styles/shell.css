@@ -1,6 +1,6 @@
 /**
  * [INPUT]: 依赖 Spacious 全屏主面板与应用内容 class。
- * [OUTPUT]: 提供展示页容器与文档回退提示，不限制全屏壳宽度。
+ * [OUTPUT]: 提供展厅工具带搜索对齐与文档回退提示，不限制全屏壳宽度。
  * [POS]: 应用内容样式；原生壳负责导航几何，兄弟文件负责资产区域。
  * [PROTOCOL]: 变更时更新此头部，然后检查 CLAUDE.md
  */
@@ -30,4 +30,17 @@
   clip: rect(0, 0, 0, 0);
   white-space: nowrap;
   clip-path: inset(50%);
+}
+
+/* ---- 展厅工具带与原生侧栏搜索带对齐；不改文档页几何 ---- */
+.gallery-main:has(.catalog-browser) {
+  padding-block-start: 0;
+  padding-block-end: 0;
+}
+.workspace-toolbar-host {
+  position: sticky;
+  top: 0;
+  z-index: 10;
+  padding-block: 4px;
+  background: var(--background);
 }

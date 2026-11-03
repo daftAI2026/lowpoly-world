@@ -3,6 +3,12 @@
 
 ## 成员清单
 
+download-ui.fixture.tsx: 真实组件的合成流浏览器装配，隔离文件权限、失败和重试。
+
+catalog-layout.test.mjs: 紧凑名称编号、自然结果滚动与同排预览图标回归。
+
+download-queue.test.mjs: 任务独立于弹层、排队取消、未完成文件重试与确认分层回归。
+
 directory-download.test.mjs: 独立窗口能力检测与内存流回归，覆盖固定版本、取消和路径拒绝。
 
 category-taxonomy.test.mjs: 分类别名归并、中英标签、保守名称推导与冲突回退回归。

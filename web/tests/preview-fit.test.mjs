@@ -24,10 +24,13 @@ describe('Bottom preview fits the pane', () => {
   });
   it('keeps bottom actions in the header row rather than consuming three rows', async () => {
     const css = await read('../src/styles/workspace.css');
-    expect(rule(css, `${prefix} .preview-panel-header`)).toContain(
-      'grid-template-columns: minmax(0, 1fr) auto auto',
-    );
-    expect(rule(css, `${prefix} .preview-more`)).toContain('display: contents');
+    expect(rule(css, '.preview-panel-header')).toContain('flex-direction: row');
+    expect(rule(css, '.preview-panel-actions')).toContain('flex-wrap: nowrap');
+    const source = await read('../src/components/asset-preview.tsx');
+    expect(source).toContain('preview-dock-menu');
+    expect(source).toContain("'workspace.pinLeft'");
+    expect(source).not.toContain('NativeSelect');
+    expect(source).not.toContain('preview-more');
   });
   it('puts compact metadata in the facts column and preserves standalone metadata placement', async () => {
     const source = await read('../src/components/asset-details.tsx');

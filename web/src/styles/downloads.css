@@ -1,0 +1,222 @@
+/**
+ * [INPUT]: 依赖官方Popover、Dialog、Progress与下载业务class。
+ * [OUTPUT]: 对齐锚定选择审阅、独立下载确认和持久任务面板。
+ * [POS]: 下载流程视觉层；不改变资产网格高度或官方焦点语义。
+ * [PROTOCOL]: 变更时更新此头部，然后检查 CLAUDE.md
+ */
+.selection-controls {
+  display: flex;
+  align-items: center;
+  gap: 0;
+}
+.selection-review[data-slot='popover-content'],
+.download-task-panel[data-slot='popover-content'] {
+  width: min(472px, calc(100vw - 24px));
+  max-height: min(600px, calc(100dvh - 100px));
+  gap: 0;
+  padding: 0;
+  overflow: hidden;
+}
+.download-panel-header,
+.selection-review-footer,
+.download-command-heading,
+.download-command header,
+.download-task-list header,
+.download-task-list footer {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 8px;
+}
+.download-panel-header {
+  flex-shrink: 0;
+  padding: 4px 8px 4px 12px;
+  border-bottom: 0.5px solid var(--lpw-line);
+  font-size: 14px;
+}
+.selection-review-list,
+.download-task-list {
+  min-height: 0;
+  overflow-y: auto;
+  list-style: none;
+  padding: 8px;
+  margin: 0;
+}
+.selection-review-list > li {
+  display: flex;
+  align-items: center;
+  gap: 0;
+}
+.selection-review-asset[data-slot='button'] {
+  min-width: 0;
+  height: auto;
+  min-height: 48px;
+  flex: 1;
+  justify-content: flex-start;
+  gap: 10px;
+  white-space: normal;
+  text-align: left;
+}
+.selection-review-asset img {
+  width: 32px;
+  height: 32px;
+  object-fit: contain;
+  flex-shrink: 0;
+  border-radius: var(--radius-sm);
+  background: var(--muted);
+}
+.selection-review-asset span {
+  min-width: 0;
+  overflow-wrap: anywhere;
+}
+.selection-review-asset code,
+.download-command code,
+.download-task-list code {
+  color: var(--muted-foreground);
+  font-size: 12px;
+}
+.selection-review-footer {
+  flex-shrink: 0;
+  padding: 8px 12px;
+  border-top: 0.5px solid var(--lpw-line);
+  flex-wrap: wrap;
+}
+.selection-review-footer > span {
+  margin-right: auto;
+  color: var(--muted-foreground);
+  font-size: 12px;
+}
+.download-confirm[data-slot='dialog-content'] {
+  width: min(760px, calc(100vw - 24px));
+  max-width: none;
+  max-height: calc(100dvh - 32px);
+  padding: 0;
+  gap: 0;
+  overflow: hidden;
+}
+.download-dialog-header[data-slot='dialog-header'] {
+  flex-direction: row;
+  align-items: center;
+  justify-content: space-between;
+  padding: 8px 12px 8px 20px;
+  border-bottom: 0.5px solid var(--lpw-line);
+}
+.download-dialog-header [data-slot='dialog-title'] {
+  font-size: 20px;
+  line-height: 1.4;
+}
+.download-dialog-body {
+  min-height: 0;
+  padding: 16px 20px;
+  overflow-y: auto;
+}
+.download-license {
+  margin: 0 0 12px;
+  font-size: 14px;
+}
+.download-license a {
+  color: var(--foreground);
+  text-decoration: underline;
+  text-underline-offset: 3px;
+}
+.download-hint {
+  margin: 8px 12px;
+  color: var(--muted-foreground);
+  font-size: 12px;
+}
+.download-dialog-body > .download-hint {
+  margin-inline: 0;
+}
+.download-command-heading {
+  margin-top: 16px;
+}
+.download-command-heading h3 {
+  margin: 0;
+  font-size: 14px;
+  font-weight: 600;
+}
+.download-command {
+  padding-block: 8px 12px;
+  border-top: 0.5px solid var(--lpw-line);
+}
+.download-command header {
+  flex-wrap: wrap;
+  font-size: 14px;
+}
+.download-command header > span {
+  min-width: 0;
+  overflow-wrap: anywhere;
+}
+.download-command textarea {
+  min-height: 88px;
+  font-size: 12px;
+}
+.download-command > [data-slot='button'] {
+  padding-inline: 0;
+}
+.download-task-panel [data-slot='popover-title'] {
+  font-size: 14px;
+}
+.download-task-summary {
+  padding: 8px 12px;
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  justify-content: space-between;
+  font-size: 12px;
+  color: var(--muted-foreground);
+}
+.download-task-list > li {
+  padding: 8px;
+  border-top: 0.5px solid var(--lpw-line);
+}
+.download-task-list header {
+  align-items: first baseline;
+  font-size: 14px;
+}
+.download-task-list header > span:first-child {
+  min-width: 0;
+  overflow-wrap: anywhere;
+}
+.download-task-list header > span:last-child {
+  flex-shrink: 0;
+  color: var(--muted-foreground);
+  font-size: 12px;
+}
+.download-task-list [data-slot='progress'] {
+  margin-top: 12px;
+}
+.download-task-list footer {
+  font-size: 12px;
+  color: var(--muted-foreground);
+}
+.download-task-list footer > div {
+  display: flex;
+}
+.download-task-badge {
+  position: absolute;
+  top: 0;
+  right: 0;
+  min-width: 16px;
+  padding: 0 3px;
+  border-radius: var(--radius-sm);
+  background: var(--primary);
+  color: var(--primary-foreground);
+  font-size: 12px;
+  line-height: 16px;
+}
+.download-failures {
+  max-height: 100px;
+  margin: 4px 0;
+  padding-left: 16px;
+  overflow: auto;
+  color: var(--destructive);
+  font-size: 12px;
+  overflow-wrap: anywhere;
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  :root[data-workspace-input='pointer'] .download-confirm {
+    animation: workspace-surface-in 250ms ease-out;
+  }
+}

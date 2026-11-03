@@ -4,6 +4,8 @@
 
 ## 成员清单
 
+dialog.tsx: shadcn/ui 官方 Base Nova，下载确认的焦点、遮罩与关闭语义。
+progress.tsx: shadcn/ui 官方 Base Nova，真实文件写入任务进度。
 card.tsx: shadcn/ui 官方 Base Nova，资产预览和名称事实区组合，不含链接行为。
 button.tsx: shadcn/ui 官方 Base Nova，通用动作与按钮链接样式。
 input.tsx: shadcn/ui 官方 Base Nova，文本与搜索输入。

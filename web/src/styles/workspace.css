@@ -1,6 +1,6 @@
 /**
  * [INPUT]: 依赖 shadcn 官方 Resizable 分栏和共享资产内容。
- * [OUTPUT]: 定义停靠尺寸与下方画布余高，元数据独立滚动。
+ * [OUTPUT]: 定义停靠尺寸、紧凑身份栏与吸附预览；左右结果自然滚动。
  * [POS]: 交互由官方组件负责，不自写分隔条事件或重造基础控件。
  * [PROTOCOL]: 变更时更新此头部，然后检查 CLAUDE.md
  */
@@ -24,12 +24,16 @@
 }
 .preview-panel-header {
   display: flex;
-  flex-direction: column;
-  gap: 8px;
-  padding: 12px;
+  flex-direction: row;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 4px;
+  padding: 4px 8px;
   border-bottom: 0.5px solid var(--lpw-line);
 }
 .preview-panel-header h2 {
+  min-width: 0;
+  flex: 1;
   margin: 0;
   font-size: 14px;
   line-height: 1.5;
@@ -37,8 +41,9 @@
   overflow-wrap: anywhere;
 }
 .preview-panel-actions {
+  flex-shrink: 0;
   display: flex;
-  flex-wrap: wrap;
+  flex-wrap: nowrap;
   align-items: center;
   gap: 4px;
 }
@@ -58,16 +63,6 @@
 .preview-panel-body .viewer-controls,
 .preview-panel-body .detail-actions {
   flex-wrap: wrap;
-}
-.preview-more > [data-slot='collapsible-content'] {
-  display: flex;
-  flex-wrap: wrap;
-  align-items: center;
-  gap: 0 12px;
-}
-.preview-more > [data-slot='collapsible-trigger'] {
-  font-family: var(--font-mono);
-  font-size: 12px;
 }
 .workspace-splitter {
   flex: 0 0 16px !important;
@@ -196,30 +191,6 @@
     aspect-ratio: auto;
   }
   /* ---- 下方画布按面板余高适配，事实列单独滚动 ---- */
-  .catalog-workspace[data-bottom='true'][data-expanded='false'] .preview-panel-header {
-    display: grid;
-    grid-template-columns: minmax(0, 1fr) auto auto;
-    align-items: center;
-    gap: 8px 12px;
-  }
-  .catalog-workspace[data-bottom='true'][data-expanded='false'] .preview-panel-actions {
-    grid-column: 3;
-    grid-row: 1;
-  }
-  .catalog-workspace[data-bottom='true'][data-expanded='false'] .preview-more {
-    display: contents;
-  }
-  .catalog-workspace[data-bottom='true'][data-expanded='false']
-    .preview-more
-    > [data-slot='collapsible-trigger'] {
-    grid-column: 2;
-    grid-row: 1;
-  }
-  .catalog-workspace[data-bottom='true'][data-expanded='false']
-    .preview-more
-    > [data-slot='collapsible-content'] {
-    grid-column: 1 / -1;
-  }
   .catalog-workspace[data-bottom='true'][data-expanded='false'] .preview-panel-body {
     display: flex;
     flex: 1;
@@ -303,4 +274,69 @@
 }
 .browse-main[data-left='true'] > #preview {
   order: 0;
+}
+
+/* ---- 左右停靠时结果采用原生主面板滚动，预览独立吸附 ---- */
+@media (min-width: 900px) {
+  .catalog-workspace:is([data-bottom='false'], [data-preview='false'])[data-expanded='false'] {
+    height: auto;
+    min-height: var(--workspace-height, 320px);
+  }
+  .catalog-workspace:is([data-bottom='false'], [data-preview='false'])[data-expanded='false']
+    .browse-main {
+    height: auto;
+    overflow: visible !important;
+    align-items: flex-start;
+  }
+  .catalog-workspace:is([data-bottom='false'], [data-preview='false'])[data-expanded='false']
+    .browse-main
+    > #results {
+    overflow: visible !important;
+  }
+  .catalog-workspace:is([data-bottom='false'], [data-preview='false'])[data-expanded='false']
+    .browse-main
+    > #results
+    > div {
+    overflow: visible !important;
+  }
+  .catalog-workspace:is([data-bottom='false'], [data-preview='false'])[data-expanded='false']
+    .catalog-results {
+    height: auto;
+    overflow: visible;
+  }
+  .catalog-workspace:is([data-bottom='false'], [data-preview='false'])[data-expanded='false']
+    .browse-main
+    > #preview {
+    position: sticky;
+    top: var(--workspace-toolbar-height, 61px);
+    height: var(--workspace-height, calc(100dvh - 160px)) !important;
+  }
+}
+
+.preview-identity[data-slot='button'] {
+  justify-content: flex-start;
+  max-width: 100%;
+  height: auto;
+  min-height: 40px;
+  gap: 4px;
+  padding-inline: 4px;
+  white-space: normal;
+  text-align: left;
+}
+.preview-identity > span {
+  min-width: 0;
+  overflow-wrap: anywhere;
+}
+.preview-identity-menu[data-slot='popover-content'] {
+  width: min(280px, calc(100vw - 24px));
+}
+.preview-identity-menu > code {
+  padding: 8px;
+  font-size: 12px;
+}
+.preview-identity-menu [data-slot='button'] {
+  justify-content: flex-start;
+}
+.preview-dock-menu[data-slot='popover-content'] {
+  width: 180px;
 }

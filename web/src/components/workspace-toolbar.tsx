@@ -7,7 +7,7 @@
 import { Label } from '@/components/ui/label';
 import { NativeSelect, NativeSelectOption } from '@/components/ui/native-select';
 import { Button } from '@/components/ui/button';
-import { Fragment } from 'react';
+import { Fragment, type ReactNode } from 'react';
 import { Popover, PopoverTrigger, PopoverContent } from '@/components/ui/popover';
 import { Checkbox } from '@/components/ui/checkbox';
 import { ToggleGroup, ToggleGroupItem } from '@/components/ui/toggle-group';
@@ -20,7 +20,7 @@ import {
   BreadcrumbSeparator,
 } from '@/components/ui/breadcrumb';
 import { normalizeCategoryPath, categoryLabel } from '@/lib/category-taxonomy.ts';
-import { Grid2X2, List, Square, Settings2, Download } from 'lucide-react';
+import { Grid2X2, List, Square, Settings2 } from 'lucide-react';
 import { useTranslation } from 'react-i18next';
 import type { WorkspaceState } from '@/lib/workspace-state';
 import { emptyFilters } from '@/lib/workspace-state';
@@ -30,9 +30,11 @@ type Props = {
   update: (s: Partial<WorkspaceState>, replace?: boolean) => void;
   visible: number;
   total: number;
-  selectedCount: number;
   onSelectResults: () => void;
-  onReview: () => void;
+  onDeselectResults: () => void;
+  allResultsSelected: boolean;
+  someResultsSelected: boolean;
+  downloadControls: ReactNode;
   hiddenGroups: string[];
   onHiddenGroups: (groups: string[]) => void;
   onReopen: (() => void) | null;
@@ -42,9 +44,11 @@ export function WorkspaceToolbar({
   update,
   visible,
   total,
-  selectedCount,
   onSelectResults,
-  onReview,
+  onDeselectResults,
+  allResultsSelected,
+  someResultsSelected,
+  downloadControls,
   hiddenGroups,
   onHiddenGroups,
   onReopen,
@@ -107,21 +111,21 @@ export function WorkspaceToolbar({
           <p className="catalog-result-count" aria-live="polite">
             {t('home.resultCount', { visible, total })}
           </p>
-          <Button type="button" variant="link" disabled={!visible} onClick={onSelectResults}>
-            {t('workspace.selectResults', { count: visible })}
-          </Button>
+          <Label
+            className="result-selection-toggle"
+            title={t('workspace.selectResults', { count: visible })}
+          >
+            <Checkbox
+              checked={allResultsSelected}
+              indeterminate={!allResultsSelected && someResultsSelected}
+              disabled={!visible}
+              aria-label={t('workspace.selectResults', { count: visible })}
+              onCheckedChange={(checked) => (checked ? onSelectResults() : onDeselectResults())}
+            />
+          </Label>
         </div>
         <div className="workspace-view-actions">
-          <Button
-            type="button"
-            variant="ghost"
-            onClick={onReview}
-            aria-label={`${t('workspace.reviewSelection')} (${selectedCount})`}
-            title={`${t('workspace.reviewSelection')} (${selectedCount})`}
-          >
-            <Download aria-hidden="true" />
-            {selectedCount}
-          </Button>
+          {downloadControls}
           <div className="view-options">
             <ToggleGroup
               className="view-controls"

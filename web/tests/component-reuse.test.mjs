@@ -15,6 +15,8 @@ describe('Official component reuse', () => {
     );
     const source = JSON.parse(await read('../src/components/ui/registry.sources.json'));
     for (const name of [
+      'dialog',
+      'progress',
       'badge',
       'button',
       'card',

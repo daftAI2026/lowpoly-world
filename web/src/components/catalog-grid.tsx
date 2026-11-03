@@ -1,5 +1,5 @@
 /**
- * [INPUT]: 依赖真实资产、locale、容器宽度、选中编号与实际滚动元素。
+ * [INPUT]: 依赖真实资产、locale、容器宽度、滚动模式、选中编号与实际滚动元素。
  * [OUTPUT]: 导出按卡片最小宽度排列的虚拟网格与无结果状态。
  * [POS]: 首页唯一资产列表；虚拟化只挂载视窗附近的 AssetCard。
  * [PROTOCOL]: 变更时更新此头部，然后检查 CLAUDE.md
@@ -14,7 +14,7 @@ import type { CatalogAsset } from '@/lib/catalog';
 import type { Locale } from '@/lib/locale';
 
 // ---- 估算文字区与行间距；实际行高由 virtualizer.measureElement 校正 ----
-const CARD_DETAILS_ESTIMATE = 96;
+const CARD_DETAILS_ESTIMATE = 64;
 
 type CatalogGridProps = {
   assets: CatalogAsset[];
@@ -29,6 +29,7 @@ type CatalogGridProps = {
   density?: 'small' | 'medium' | 'large';
   browsingSearch?: string;
   find?: { id: string; request: number } | null;
+  scrollScope?: 'page' | 'panel';
 };
 
 function columnCountForWidth(width: number, density: string): number {
@@ -51,6 +52,7 @@ export function CatalogGrid({
   density = 'medium',
   browsingSearch,
   find,
+  scrollScope = 'page',
 }: CatalogGridProps) {
   const { t } = useTranslation();
   const gridRef = useRef<HTMLDivElement>(null);
@@ -107,7 +109,7 @@ export function CatalogGrid({
       observer.disconnect();
       window.removeEventListener('resize', updateMeasurements);
     };
-  }, [assets.length]);
+  }, [assets.length, scrollScope]);
 
   useEffect(() => {
     virtualizer.measure();

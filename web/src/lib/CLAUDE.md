@@ -8,6 +8,8 @@ category-taxonomy.ts: 按来源别名和明确名称归类，共用分类路径�
 
 workspace-state.ts: 浏览状态白名单与规范 URL；预览和下载选择独立。
 use-workspace.ts: TanStack URL 是浏览状态唯一来源，保留历史和滚动。
+download-queue.ts: 按资产保存任务，弹层解绑不取消；重试只写未完成文件。
+use-download-queue.ts: React绑定队列与离页提醒，工作区卸载时取消。
 directory-download.ts: 独立安全窗口由用户选目录后固定版本流式保存；完成计数只取已关闭写入。
 asset-downloads.ts: 固定 Dataset commit 的文件 URL、命令和版本读取，不下载模型。
 

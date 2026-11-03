@@ -110,6 +110,20 @@
       "source_sha256": "645c3d73e387a99f1492220cc619453b0c7f5454134ee3cd548be7a80f7eccde",
       "upstream_path": "registry/base-nova/ui/card.tsx",
       "installed_sha256": "76ab4e41ccc1eed3388ed4192dc23611f141f0958c0cdc35fc4913c9950d83ba"
+    },
+    "dialog": {
+      "url": "https://ui.shadcn.com/r/styles/base-nova/dialog.json",
+      "registry_sha256": "40fc321d25eb9590d07db54b00d9bc1a74274a549aa06d5915a34ba302ed8b94",
+      "source_sha256": "5be79d2cf2d2152a29d9f14c8e209ad57b696e9dfbf0b9cdf4523a7c710c8d02",
+      "upstream_path": "registry/base-nova/ui/dialog.tsx",
+      "installed_sha256": "ba03acf15266a90f40b90ae0d96652eb6bf2e503b92543aadf3ad92eaafc94b2"
+    },
+    "progress": {
+      "url": "https://ui.shadcn.com/r/styles/base-nova/progress.json",
+      "registry_sha256": "359e72beff723311ec2e4d5154a0f80dedd253bd6b16959a4db0773714ceab52",
+      "source_sha256": "2c104695a495968e9ee426039e291abc4fb2ff32f36b5faa4e8b450c2a4cc14c",
+      "upstream_path": "registry/base-nova/ui/progress.tsx",
+      "installed_sha256": "19ffac6a469e00aaa12d09ccb6aa503acc6381c20cb18b0cd253e6dd78d6560f"
     }
   },
   "repository_head_at_audit": "4aaea19d9cff3e0908e12a8c1d504b8c5ec34610"

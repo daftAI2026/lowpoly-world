@@ -14,7 +14,14 @@ export type DownloadDirectory = {
 type PickerWindow = Window & {
   showDirectoryPicker?: (options: { mode: 'readwrite' }) => Promise<DownloadDirectory>;
 };
-export type DirectoryProgress = { completed: string[]; failed: string[]; cancelled: boolean };
+export type DirectoryProgress = {
+  completed: string[];
+  failed: string[];
+  cancelled: boolean;
+  current?: string;
+  loaded?: number;
+  total?: number;
+};
 export function supportsDirectoryDownload(
   context: Window | undefined = typeof window === 'undefined' ? undefined : window,
 ): boolean {
@@ -75,7 +82,27 @@ export async function downloadToDirectory(
       const handle = await folder.getFileHandle(parts.at(-1)!, { create: true });
       const writable = await handle.createWritable();
       // pipeTo 关闭写入后才记完成；中止或错误会回滚未提交的文件流。
-      await response.body.pipeTo(writable, { signal });
+      let loaded = 0;
+      const length = Number(response.headers.get('content-length'));
+      const total = length > 0 ? length : undefined;
+      await response.body
+        .pipeThrough(
+          new TransformStream<Uint8Array, Uint8Array>({
+            transform(chunk, controller) {
+              loaded += chunk.byteLength;
+              onProgress({
+                ...result,
+                completed: [...result.completed],
+                failed: [...result.failed],
+                current: file.path,
+                loaded,
+                total,
+              });
+              controller.enqueue(chunk);
+            },
+          }),
+        )
+        .pipeTo(writable, { signal });
       result.completed.push(file.path);
     } catch {
       if (signal.aborted) {

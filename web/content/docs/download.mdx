@@ -6,7 +6,7 @@ icon: Download
 
 {/*
 [INPUT]: 依赖目录中的 GLB、BLEND 和公开文件 URL。
-[OUTPUT]: 说明单件、目录流式保存、选择集与固定版本命令。
+[OUTPUT]: 说明锚定审阅、下载确认、持续任务与固定版本命令。
 [POS]: Download 文档；只引用已校验记录中的文件地址。
 [PROTOCOL]: 变更时更新此头部，然后检查 CLAUDE.md
 */}
@@ -20,16 +20,17 @@ Open an asset from the verified catalog. Use **Download GLB** or **Download BLEN
 
 1. Check the assets you need. Opening a preview does not select it for download.
 2. Use **Select filtered results** to add the current results, not unpublished assets.
-3. Open **Review selection** to inspect or remove items.
-4. Export the manifest, copy file URLs, or open **Download with HF CLI** and run the commands.
+3. Click **N selected** to review, remove items, or copy URLs.
+4. Click **Download** to open confirmation, then save to a folder or copy fixed-version commands.
+5. Open **Downloads** to track, cancel, retry, or remove tasks.
 
-The manifest and commands pin files to a Dataset commit. This is not the source ZIP hash or the asset's version label. Install the [official Hugging Face CLI](https://huggingface.co/docs/huggingface_hub/guides/cli) before running commands. The website does not run them for you.
+The commands pin files to a Dataset commit. This is not the source ZIP hash or the asset's version label. Install the [official Hugging Face CLI](https://huggingface.co/docs/huggingface_hub/guides/cli) before running commands. The website does not run them for you.
 
 ## Save to a folder
 
 Open the gallery in a standalone tab. Secure windows with directory-write support show **Save to folder**. The embedded HF page keeps file links and CLI without requesting directory permission. Click it and choose a destination. Files stream sequentially without assembling a ZIP in memory. A subfolder named with the full Dataset commit separates each version from older downloads.
 
-The saved count increases only after a file's write stream closes. Failed paths are listed. **Stop downloads** keeps completed files. Closing the review also stops the current task. Retrying saves the current selection again.
+The saved count increases only after a file's write stream closes. Failed paths are listed. **Stop downloads** keeps completed files. Closing the review or confirmation does not stop started downloads. Leaving the workspace stops them. Retrying saves the current selection again.
 
 Ordinary file links still hand saving to the browser without tracking completion. Use file links or HF CLI when directory writes are unavailable.
 

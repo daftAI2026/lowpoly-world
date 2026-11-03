@@ -52,7 +52,6 @@ export function CatalogBrowser({ catalog, locale }: { catalog: Catalog; locale: 
   }, []);
   const previewPanel = usePanelRef();
   const [hiddenGroups, setHiddenGroups] = useState<string[]>([]);
-  const [review, setReview] = useState(false);
   const [lastPreview, setLastPreview] = useState<string | null>(null);
   const [find, setFind] = useState<{ id: string; request: number } | null>(null);
   const workspaceRef = useRef<HTMLDivElement>(null);
@@ -63,7 +62,9 @@ export function CatalogBrowser({ catalog, locale }: { catalog: Catalog; locale: 
     [catalog.assets, s.filters, s.sort, locale],
   );
   const selected = catalog.assets.find((a) => a.id === s.asset);
-  const checked = catalog.assets.filter((a) => s.selected.includes(a.id));
+  const selectedIds = new Set(s.selected);
+  const checked = catalog.assets.filter((a) => selectedIds.has(a.id));
+  const selectedVisible = visibleAssets.filter((asset) => selectedIds.has(asset.id)).length;
   const neighbors = previewNeighbors(visibleAssets, s.asset);
   const compact = size.width < 1000;
   const bottom = s.dock === 'bottom' || compact;
@@ -95,14 +96,24 @@ export function CatalogBrowser({ catalog, locale }: { catalog: Catalog; locale: 
     const toolbar = toolbarRef.current;
     if (!host || !toolbar) return;
     const measure = () => {
-      setSize({ width: host.clientWidth, height: host.clientHeight });
       const page = host.closest<HTMLElement>('.site-main');
       const scroller = page?.parentElement;
-      const bottom = scroller?.getBoundingClientRect().bottom ?? window.innerHeight;
-      const inset = page ? Number.parseFloat(getComputedStyle(page).paddingBottom) : 16;
-      host.style.setProperty(
-        '--workspace-height',
-        `${Math.max(320, bottom - host.getBoundingClientRect().top - inset)}px`,
+      const bottomEdge = scroller?.getBoundingClientRect().bottom ?? window.innerHeight;
+      const visibleTop = Math.max(
+        host.getBoundingClientRect().top,
+        toolbar.getBoundingClientRect().bottom + 8,
+      );
+      const availableHeight = Math.max(320, bottomEdge - visibleTop - 8);
+      const width = host.clientWidth;
+      setSize((current) =>
+        current.width === width && current.height === availableHeight
+          ? current
+          : { width, height: availableHeight },
+      );
+      host.style.setProperty('--workspace-height', `${availableHeight}px`);
+      host.parentElement?.style.setProperty(
+        '--workspace-toolbar-height',
+        `${toolbar.getBoundingClientRect().height}px`,
       );
     };
     measure();
@@ -179,35 +190,37 @@ export function CatalogBrowser({ catalog, locale }: { catalog: Catalog; locale: 
     >
       <h1 className="visually-hidden">{t('home.collectionTitle')}</h1>
       <section className="catalog-browser" aria-label={t('home.collectionTitle')}>
-        <div ref={toolbarRef} hidden={expanded}>
+        <div ref={toolbarRef} className="workspace-toolbar-host" hidden={expanded}>
           <WorkspaceToolbar
             state={s}
             update={update}
             visible={visibleAssets.length}
             total={catalog.count}
-            selectedCount={checked.length}
+            allResultsSelected={
+              Boolean(visibleAssets.length) && selectedVisible === visibleAssets.length
+            }
+            someResultsSelected={selectedVisible > 0}
+            onDeselectResults={() => {
+              const visibleIds = new Set(visibleAssets.map((asset) => asset.id));
+              update({ selected: s.selected.filter((id) => !visibleIds.has(id)) });
+            }}
             onSelectResults={() =>
               update({ selected: [...new Set([...s.selected, ...visibleAssets.map((a) => a.id)])] })
             }
-            onReview={() => setReview((v) => !v)}
+            downloadControls={
+              <DownloadSelection
+                assets={checked}
+                locale={locale}
+                onRemove={(id) => update({ selected: s.selected.filter((value) => value !== id) })}
+                onClear={() => update({ selected: [] })}
+                onInspect={inspect}
+              />
+            }
             hiddenGroups={hiddenGroups}
             onHiddenGroups={setHiddenGroups}
             onReopen={!selected && lastPreview ? () => inspect(lastPreview) : null}
           />
         </div>
-        {review && !expanded && (
-          <DownloadSelection
-            assets={checked}
-            locale={locale}
-            onRemove={(id) => update({ selected: s.selected.filter((v) => v !== id) })}
-            onClear={() => update({ selected: [] })}
-            onInspect={(id) => {
-              setReview(false);
-              inspect(id);
-            }}
-            onClose={() => setReview(false)}
-          />
-        )}
         <div
           ref={workspaceRef}
           className="catalog-workspace"
@@ -251,6 +264,7 @@ export function CatalogBrowser({ catalog, locale }: { catalog: Catalog; locale: 
                   density={s.density}
                   browsingSearch={serializeWorkspace(s)}
                   find={find}
+                  scrollScope={selected && bottom ? 'panel' : 'page'}
                 />
               </div>
             </ResizablePanel>

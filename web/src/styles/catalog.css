@@ -1,6 +1,6 @@
 /**
  * [INPUT]: 依赖筛选、卡片、按钮和目录状态语义 class。
- * [OUTPUT]: 提供搜索、分类筛选、虚拟网格和目录状态样式。
+ * [OUTPUT]: 提供搜索、分类筛选、虚拟网格、紧凑名称编号和目录状态样式。
  * [POS]: 资产库工作台视觉层；详情舞台和全局 token 由兄弟文件负责。
  * [PROTOCOL]: 变更时更新此头部，然后检查 CLAUDE.md
  */
@@ -195,13 +195,14 @@
 .asset-card-heading {
   order: 2;
   display: flex;
-  flex-direction: column;
-  align-items: stretch;
-  gap: 8px;
-  padding: 12px;
+  flex-direction: row;
+  flex-wrap: wrap;
+  align-items: first baseline;
+  gap: 4px 8px;
+  padding: 10px 12px;
 }
 .asset-card-heading h3 {
-  min-height: 2.8em;
+  min-height: 0;
   margin: 0;
   color: var(--lpw-ink);
   font-size: 14px;
@@ -347,4 +348,13 @@
 .asset-tile[data-checked='true'] .asset-card {
   border-color: var(--primary);
   background: var(--accent);
+}
+
+/* ---- 名称与编号共用一行，窄卡自然换行，不预留空行 ---- */
+.asset-card-heading [data-slot='card-title'] {
+  flex: 1 1 5em;
+  min-width: 0;
+}
+.asset-card-heading [data-slot='card-description'] {
+  flex: 0 0 auto;
 }
