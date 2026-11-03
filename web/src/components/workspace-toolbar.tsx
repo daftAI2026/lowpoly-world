@@ -1,6 +1,6 @@
 /**
  * [INPUT]: 依赖 URL 状态、真实分类与官方 shadcn 表单、弹层和导航。
- * [OUTPUT]: 导出单行结果工具栏、图标视图与三档密度选择。
+ * [OUTPUT]: 导出结果工具带；全选与视图成组，全局动作仅在窄屏回落。
  * [POS]: 工作区工具栏；只发状态变更，不加载目录或模型。
  * [PROTOCOL]: 变更时更新此头部，然后检查 CLAUDE.md
  */
@@ -8,7 +8,6 @@ import { Label } from '@/components/ui/label';
 import { NativeSelect, NativeSelectOption } from '@/components/ui/native-select';
 import { Button } from '@/components/ui/button';
 import { Fragment, type ReactNode } from 'react';
-import { Popover, PopoverTrigger, PopoverContent } from '@/components/ui/popover';
 import { Checkbox } from '@/components/ui/checkbox';
 import { ToggleGroup, ToggleGroupItem } from '@/components/ui/toggle-group';
 import {
@@ -20,7 +19,7 @@ import {
   BreadcrumbSeparator,
 } from '@/components/ui/breadcrumb';
 import { normalizeCategoryPath, categoryLabel } from '@/lib/category-taxonomy.ts';
-import { Grid2X2, List, Square, Settings2 } from 'lucide-react';
+import { Grid2X2, List, Square } from 'lucide-react';
 import { useTranslation } from 'react-i18next';
 import type { WorkspaceState } from '@/lib/workspace-state';
 import { emptyFilters } from '@/lib/workspace-state';
@@ -35,8 +34,7 @@ type Props = {
   allResultsSelected: boolean;
   someResultsSelected: boolean;
   downloadControls: ReactNode;
-  hiddenGroups: string[];
-  onHiddenGroups: (groups: string[]) => void;
+  globalActions?: ReactNode;
   onReopen: (() => void) | null;
 };
 export function WorkspaceToolbar({
@@ -49,8 +47,7 @@ export function WorkspaceToolbar({
   allResultsSelected,
   someResultsSelected,
   downloadControls,
-  hiddenGroups,
-  onHiddenGroups,
+  globalActions,
   onReopen,
 }: Props) {
   const { t, i18n } = useTranslation();
@@ -111,6 +108,10 @@ export function WorkspaceToolbar({
           <p className="catalog-result-count" aria-live="polite">
             {t('home.resultCount', { visible, total })}
           </p>
+        </div>
+        <div className="workspace-view-actions">
+          {downloadControls}
+          {globalActions}
           <Label
             className="result-selection-toggle"
             title={t('workspace.selectResults', { count: visible })}
@@ -123,9 +124,6 @@ export function WorkspaceToolbar({
               onCheckedChange={(checked) => (checked ? onSelectResults() : onDeselectResults())}
             />
           </Label>
-        </div>
-        <div className="workspace-view-actions">
-          {downloadControls}
           <div className="view-options">
             <ToggleGroup
               className="view-controls"
@@ -185,55 +183,6 @@ export function WorkspaceToolbar({
               ))}
             </ToggleGroup>
           </div>
-          <Popover>
-            <PopoverTrigger
-              render={
-                <Button
-                  variant="ghost"
-                  size="icon"
-                  aria-label={t('workspace.preferences')}
-                  title={t('workspace.preferences')}
-                />
-              }
-            >
-              <Settings2 aria-hidden="true" />
-            </PopoverTrigger>
-            <PopoverContent align="start" className="workspace-preferences-content">
-              <Label>
-                <Checkbox
-                  checked={Boolean(f.withPreview)}
-                  onCheckedChange={(checked) => filter({ withPreview: checked === true })}
-                />
-                {t('workspace.onlyPreviews')}
-              </Label>
-              <fieldset>
-                <legend>{t('workspace.filterGroups')}</legend>
-                {(['format', 'triangle', 'tag', 'dimension'] as const).map((group) => (
-                  <Label key={group}>
-                    <Checkbox
-                      checked={!hiddenGroups.includes(group)}
-                      onCheckedChange={(checked) =>
-                        onHiddenGroups(
-                          checked === true
-                            ? hiddenGroups.filter((g) => g !== group)
-                            : [...hiddenGroups, group],
-                        )
-                      }
-                    />
-                    {t(
-                      group === 'format'
-                        ? 'home.formats'
-                        : group === 'triangle'
-                          ? 'home.lowPolyLevel'
-                          : group === 'tag'
-                            ? 'home.tags'
-                            : `workspace.${group}`,
-                    )}
-                  </Label>
-                ))}
-              </fieldset>
-            </PopoverContent>
-          </Popover>
           <Label className="sort-control">
             <span>{t('home.sortLabel')}</span>
             <NativeSelect

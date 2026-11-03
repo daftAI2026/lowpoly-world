@@ -12,7 +12,7 @@ import { I18nextProvider } from "react-i18next";
 import { WorkspaceToolbar } from "../src/components/workspace-toolbar.tsx";
 import { defaultWorkspace } from "../src/lib/workspace-state.ts";
 import { createBusinessI18n } from "../src/lib/i18n.ts";
-function renderToolbar(categoryPath) {
+function renderToolbar(categoryPath, someResultsSelected = false) {
   const state = defaultWorkspace();
   state.filters.categoryPath = categoryPath;
   const noop = () => {};
@@ -25,7 +25,10 @@ function renderToolbar(categoryPath) {
         update: noop,
         visible: 0,
         total: 0,
-        selectedCount: 0,
+        allResultsSelected: false,
+        someResultsSelected,
+        onDeselectResults: noop,
+        downloadControls: null,
         onSelectResults: noop,
         onReview: noop,
         hiddenGroups: [],
@@ -38,6 +41,11 @@ function renderToolbar(categoryPath) {
 const read = (path) => readFile(new URL(path, import.meta.url), "utf8");
 
 describe("Compact catalog header", () => {
+  it("distinguishes partially selected results from all-selected", () => {
+    const markup = renderToolbar(null, true);
+    expect(markup).toContain('aria-checked="mixed"');
+    expect(markup).toContain("lucide-minus");
+  });
   it("renders no default breadcrumb but retains the selected category hierarchy", () => {
     expect(renderToolbar(null)).not.toContain('data-slot="breadcrumb"');
     const filtered = renderToolbar("Props/Furniture");
@@ -74,11 +82,22 @@ describe("Compact catalog header", () => {
     const controls = await read("../src/styles/workspace-controls.css");
     const shell = await read("../src/styles/shell.css");
     expect(controls).toMatch(
-      /\.workspace-controls\s*\{[^}]*margin-bottom:\s*8px;/s,
+      /\.workspace-controls\s*\{[^}]*margin-bottom:\s*16px;/s,
     );
     expect(controls).not.toContain("grid-template-columns: 232px");
     expect(controls).toMatch(/\.asset-breadcrumb\s*\{[^}]*flex-wrap: wrap/s);
     expect(shell).not.toContain(".gallery-title");
+  });
+  it("groups selection with views, moves global actions to FU actions slot and hides contributions", async () => {
+    const toolbar = await read("../src/components/workspace-toolbar.tsx");
+    const browser = await read("../src/components/catalog-browser.tsx");
+    const shell = await read("../src/components/gallery-shell.tsx");
+    expect(toolbar.indexOf('className="result-selection-toggle"')).toBeGreaterThan(toolbar.indexOf('className="workspace-view-actions"'));
+    expect(toolbar).not.toContain('Settings2');
+    expect(shell).toContain("fumadocs-ui/layouts/spacious/slots/actions");
+    expect(shell).toContain('actions: GalleryHeaderActions');
+    expect(browser).toContain('<DownloadTasks');
+    expect(browser).not.toContain("t('workspace.contribute')");
   });
   it("uses accessible shadcn icon groups and direct thumbnail sizes", async () => {
     const source = await read("../src/components/workspace-toolbar.tsx");

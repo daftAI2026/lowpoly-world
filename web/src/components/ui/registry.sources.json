@@ -32,7 +32,8 @@
       "registry_sha256": "e6df7b595f25a7ee97c3fb94e0ddc35998f74c98b990d3030e485905ec677178",
       "source_sha256": "0cc30ddee3fa93818799f48ad47a58a30652c956ce940373c3feb3559167f0af",
       "upstream_path": "registry/base-nova/ui/checkbox.tsx",
-      "installed_sha256": "8fc4965602b0809199bca4c24920249801b250963314c757996354f900117c60"
+      "installed_sha256": "a74bacda4e295234ce1561f0f19de30715c21dd4412717f036d7f9f59ec9e492",
+      "indeterminate_adaptation": "Use Lucide Minus for Base UI indeterminate state and the same primary role as checked; preserve original keyboard/aria semantics."
     },
     "native-select": {
       "url": "https://ui.shadcn.com/r/styles/base-nova/native-select.json",

@@ -1,6 +1,6 @@
 /**
- * [INPUT]: 依赖独立下载选择集、官方Popover与持久下载队列。
- * [OUTPUT]: 导出选择计数、锚定审阅、下载确认和独立任务入口。
+ * [INPUT]: 依赖独立选择集、官方Popover与工作区注入的下载队列。
+ * [OUTPUT]: 导出选择审阅与下载确认，开始后通知全局任务入口。
  * [POS]: 下载流程组合边界；选择、确认与执行分层，弹层不改变结果排版。
  * [PROTOCOL]: 变更时更新此头部，然后检查 CLAUDE.md
  */
@@ -11,8 +11,7 @@ import { Button } from './ui/button';
 import { Popover, PopoverTrigger, PopoverContent } from './ui/popover';
 import { CopyButton } from './copy-button';
 import { DownloadDialog } from './download-dialog';
-import { DownloadTasks } from './download-tasks';
-import { useDownloadQueue } from '@/lib/use-download-queue';
+import type { DownloadQueue } from '@/lib/download-queue';
 import type { CatalogAsset } from '@/lib/catalog';
 import { getAssetDisplayName, type Locale } from '@/lib/locale';
 export function DownloadSelection({
@@ -21,20 +20,22 @@ export function DownloadSelection({
   onRemove,
   onClear,
   onInspect,
+  queue,
+  onStarted,
 }: {
   assets: CatalogAsset[];
   locale: Locale;
   onRemove: (id: string) => void;
   onClear: () => void;
   onInspect: (id: string) => void;
+  queue: DownloadQueue;
+  onStarted: () => void;
 }) {
   const { t } = useTranslation();
-  const [review, setReview] = useState(false),
-    [tasksOpen, setTasksOpen] = useState(false);
+  const [review, setReview] = useState(false);
   const [request, setRequest] = useState<{ key: number; assets: CatalogAsset[] } | null>(null);
   const serial = useRef(0),
     confirming = useRef(false);
-  const { jobs, queue, active } = useDownloadQueue();
   const ask = (selection: CatalogAsset[]) => {
     confirming.current = true;
     setRequest({ key: ++serial.current, assets: [...selection] });
@@ -138,14 +139,6 @@ export function DownloadSelection({
           </Button>
         </div>
       )}
-      <DownloadTasks
-        jobs={jobs}
-        queue={queue}
-        active={active}
-        locale={locale}
-        open={tasksOpen}
-        onOpenChange={setTasksOpen}
-      />
       <DownloadDialog
         request={request}
         locale={locale}
@@ -153,7 +146,7 @@ export function DownloadSelection({
         onStart={(selected, revision, directory) => {
           closeDialog();
           setReview(false);
-          setTasksOpen(true);
+          onStarted();
           void queue.enqueue(selected, revision, directory);
         }}
       />

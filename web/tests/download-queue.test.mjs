@@ -80,7 +80,9 @@ describe('Reference interaction layers', () => {
     const browser = await read('../src/components/catalog-browser.tsx');
     expect(review).toContain('PopoverTrigger');
     expect(review).toContain('DownloadDialog');
-    expect(review).toContain('DownloadTasks');
+    expect(browser).toContain('DownloadTasks');
+    expect(browser).toContain('useDownloadQueue');
+    expect(review).not.toContain('useDownloadQueue');
     expect(browser).not.toContain('review && !expanded');
   });
 });

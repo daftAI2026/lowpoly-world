@@ -1,25 +1,35 @@
 /**
- * [INPUT]: 依赖下载队列外部存储与 React 的订阅、生命周期。
- * [OUTPUT]: 导出稳定的下载队列与任务快照。
- * [POS]: 工作区下载绑定；只有离开工作区才取消，关闭弹层不卸载此绑定。
+ * [INPUT]: 依赖稳定下载队列与 React 生命周期，不订阅界面进度。
+ * [OUTPUT]: 导出工作区唯一队列，任务变化只更新离页保护。
+ * [POS]: 队列所有权边界；进度由任务视图订阅，避免整个资产库重绘。
  * [PROTOCOL]: 变更时更新此头部，然后检查 CLAUDE.md
  */
-import { useEffect, useState, useSyncExternalStore } from 'react';
+import { useEffect, useState } from 'react';
 import { createDownloadQueue } from './download-queue';
 export function useDownloadQueue() {
   const [queue] = useState(() => createDownloadQueue());
-  const jobs = useSyncExternalStore(queue.subscribe, queue.getSnapshot, queue.getSnapshot);
-  const active = jobs.filter((job) => job.status === 'active' || job.status === 'queued').length;
-  const busy = active > 0;
-  useEffect(() => () => queue.cancelAll(), [queue]);
   useEffect(() => {
-    if (!busy) return;
     const warn = (event: BeforeUnloadEvent) => {
       event.preventDefault();
       event.returnValue = '';
     };
-    window.addEventListener('beforeunload', warn);
-    return () => window.removeEventListener('beforeunload', warn);
-  }, [busy]);
-  return { queue, jobs, active };
+    let busy = false;
+    const sync = () => {
+      const next = queue
+        .getSnapshot()
+        .some((job) => job.status === 'active' || job.status === 'queued');
+      if (next === busy) return;
+      busy = next;
+      if (busy) window.addEventListener('beforeunload', warn);
+      else window.removeEventListener('beforeunload', warn);
+    };
+    const unsubscribe = queue.subscribe(sync);
+    sync();
+    return () => {
+      unsubscribe();
+      window.removeEventListener('beforeunload', warn);
+      queue.cancelAll();
+    };
+  }, [queue]);
+  return queue;
 }

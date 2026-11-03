@@ -1,6 +1,6 @@
 /**
  * [INPUT]: 依赖资产详情组件与统一视觉 token。
- * [OUTPUT]: 提供模型舞台、文件入口、发布事实和权利说明样式。
+ * [OUTPUT]: 提供等宽视角动作、整行折叠、文件入口和事实排版。
  * [POS]: 详情页视觉层；预览只属于当前已验证资产。
  * [PROTOCOL]: 变更时更新此头部，然后检查 CLAUDE.md
  */
@@ -111,10 +111,19 @@
 }
 
 .viewer-controls {
-  display: flex;
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
   gap: 7px;
-  flex-wrap: wrap;
   padding-top: 10px;
+}
+
+.viewer-controls > [data-slot='button'] {
+  width: 100%;
+  min-width: 0;
+  height: auto;
+  min-height: 40px;
+  padding: 6px;
+  white-space: normal;
 }
 
 .viewer-note,
@@ -207,6 +216,23 @@
   border: 0.5px solid var(--lpw-line);
   border-radius: var(--radius-md);
   background: var(--lpw-raised);
+}
+
+.metadata-disclosure {
+  display: flex;
+  width: 100%;
+  height: auto;
+  min-height: 48px;
+  justify-content: space-between;
+  padding: 12px;
+  border-radius: inherit;
+  white-space: normal;
+  text-align: left;
+  cursor: pointer;
+}
+
+.metadata-disclosure[aria-expanded='true'] > svg {
+  rotate: 180deg;
 }
 
 .metadata-text {

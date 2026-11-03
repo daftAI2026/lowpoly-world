@@ -8,6 +8,8 @@ import { createRoot } from 'react-dom/client';
 import { useState } from 'react';
 import { I18nextProvider } from 'react-i18next';
 import { DownloadSelection } from '../src/components/download-selection';
+import { DownloadTasks } from '../src/components/download-tasks';
+import { useDownloadQueue } from '../src/lib/use-download-queue';
 import { createBusinessI18n } from '../src/lib/i18n';
 import type { CatalogAsset } from '../src/lib/catalog';
 import type { DownloadDirectory } from '../src/lib/directory-download';
@@ -95,6 +97,8 @@ export function mountDownloadFixture() {
   document.body.appendChild(host);
   const root = createRoot(host);
   function Fixture() {
+    const queue = useDownloadQueue();
+    const [tasksOpen, setTasksOpen] = useState(false);
     const [assets, setAssets] = useState([source(1), source(2)]);
     return (
       <I18nextProvider i18n={createBusinessI18n('zh')}>
@@ -106,7 +110,10 @@ export function mountDownloadFixture() {
             onRemove={(id) => setAssets((value) => value.filter((asset) => asset.id !== id))}
             onClear={() => setAssets([])}
             onInspect={() => {}}
+            queue={queue}
+            onStarted={() => setTasksOpen(true)}
           />
+          <DownloadTasks queue={queue} locale="zh" open={tasksOpen} onOpenChange={setTasksOpen} />
         </div>
       </I18nextProvider>
     );

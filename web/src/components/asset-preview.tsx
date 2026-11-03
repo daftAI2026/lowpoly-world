@@ -1,6 +1,6 @@
 /**
  * [INPUT]: 依赖公开资产、分组导航与官方 shadcn 动作与锚定菜单。
- * [OUTPUT]: 导出紧凑身份栏、图标停靠菜单与同实例预览。
+ * [OUTPUT]: 导出紧凑身份栏、同实例预览和固定文件下载底栏。
  * [POS]: 只以 CSS 重排同一 viewer；不把检查行为混成下载选择。
  * [PROTOCOL]: 变更时更新此头部，然后检查 CLAUDE.md
  */
@@ -27,7 +27,7 @@ import { useRouterState } from '@tanstack/react-router';
 import type { PreviewDock } from '@/lib/workspace-state';
 import { getAssetDisplayName, localizedPath, type Locale } from '@/lib/locale';
 import { toStaticHref } from '@/lib/static-href';
-import { AssetDetails } from './asset-details';
+import { AssetDetails, AssetFileActions } from './asset-details';
 import { CopyButton } from './copy-button';
 import { Button } from './ui/button';
 type Navigation = {
@@ -207,6 +207,9 @@ export function AssetPreview({
       <div className="preview-panel-body">
         <AssetDetails key={asset.id} asset={asset} locale={locale} compact />
       </div>
+      <footer className="preview-file-footer">
+        <AssetFileActions asset={asset} />
+      </footer>
     </aside>
   );
 }

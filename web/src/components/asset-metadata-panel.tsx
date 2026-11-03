@@ -1,11 +1,12 @@
 /**
  * [INPUT]: 依赖公开 metadata、统一分类与官方 shadcn 控件。
- * [OUTPUT]: 展示本地化分类与资产事实；许可保留，存储来源不进入界面。
+ * [OUTPUT]: 展示本地化事实与整行可点击折叠项；不展示存储来源。
  * [POS]: 共享 AssetDetails 的元数据视图；缺字段与质量状态不推断。
  * [PROTOCOL]: 变更时更新此头部，然后检查 CLAUDE.md
  */
 import { Collapsible, CollapsibleTrigger, CollapsibleContent } from '@/components/ui/collapsible';
 import { Button } from '@/components/ui/button';
+import { ChevronDown } from 'lucide-react';
 import { useMemo } from 'react';
 import { useTranslation } from 'react-i18next';
 import type { CatalogAsset } from '@/lib/catalog';
@@ -45,8 +46,9 @@ function MetadataBlock({
 }) {
   return (
     <Collapsible className="metadata-block">
-      <CollapsibleTrigger render={<Button variant="ghost" className="justify-start" />}>
+      <CollapsibleTrigger render={<Button variant="ghost" className="metadata-disclosure" />}>
         {title}
+        <ChevronDown aria-hidden="true" />
       </CollapsibleTrigger>
       <CollapsibleContent>
         {status === 'available' && <pre className="metadata-text">{value}</pre>}
@@ -245,8 +247,9 @@ export function AssetMetadataPanel({ asset }: AssetMetadataPanelProps) {
           unavailable={metadataUnavailable}
         />
         <Collapsible className="metadata-block">
-          <CollapsibleTrigger render={<Button variant="ghost" className="justify-start" />}>
+          <CollapsibleTrigger render={<Button variant="ghost" className="metadata-disclosure" />}>
             {t('asset.previews')}
+            <ChevronDown aria-hidden="true" />
           </CollapsibleTrigger>
           <CollapsibleContent>
             <PreviewGallery asset={asset} release={release} />
@@ -255,8 +258,9 @@ export function AssetMetadataPanel({ asset }: AssetMetadataPanelProps) {
       </div>
 
       <Collapsible className="metadata-scope">
-        <CollapsibleTrigger render={<Button variant="ghost" className="justify-start" />}>
+        <CollapsibleTrigger render={<Button variant="ghost" className="metadata-disclosure" />}>
           {t('asset.metadataScope')}
+          <ChevronDown aria-hidden="true" />
         </CollapsibleTrigger>
         <CollapsibleContent>
           <p className="metadata-note">{t('asset.metadataAsPublished')}</p>

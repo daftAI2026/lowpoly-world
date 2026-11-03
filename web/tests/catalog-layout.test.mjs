@@ -23,6 +23,30 @@ describe('Compact asset workspace', () => {
     const grid = await read('../src/components/catalog-grid.tsx');
     expect(grid).toContain('[assets.length, scrollScope]');
   });
+  it('masks scrolling cards behind gallery navigation without changing document headers', async () => {
+    const css = await read('../src/styles/shell.css');
+    expect(css).toContain('#nd-page-panel:has(.catalog-browser) > header');
+  });
+  it('keeps metadata disclosure hit areas full width and visibly expandable', async () => {
+    const source = await read('../src/components/asset-metadata-panel.tsx');
+    expect(source.match(/className="metadata-disclosure"/g)).toHaveLength(3);
+    expect(source.match(/<ChevronDown aria-hidden="true"/g)).toHaveLength(3);
+    const css = await read('../src/styles/detail.css');
+    expect(css).toMatch(/\.metadata-disclosure\s*\{[^}]*width: 100%/s);
+    expect(css).toMatch(/\.metadata-disclosure\s*\{[^}]*min-height: 48px/s);
+  });
+  it('pins file actions outside the preview scroll body and fills viewer controls evenly', async () => {
+    const source = await read('../src/components/asset-preview.tsx');
+    expect(source).toMatch(/<\/div>\s*<footer className="preview-file-footer">/);
+    expect(source).toContain('<AssetFileActions asset={asset} />');
+    const css = await read('../src/styles/detail.css');
+    expect(css).toMatch(/\.viewer-controls\s*\{[^}]*grid-template-columns: repeat\(3, minmax\(0, 1fr\)\)/s);
+  });
+  it('uses a centered non-idle splitter affordance instead of a stray top line', async () => {
+    const css = await read('../src/styles/workspace.css');
+    expect(css).toMatch(/\.workspace-splitter::before\s*\{[^}]*top: 50%/s);
+    expect(css).toMatch(/\.workspace-splitter::before\s*\{[^}]*opacity: 0/s);
+  });
   it('keeps the preview identity and icon actions together without a separate ID row', async () => {
     const source = await read('../src/components/asset-preview.tsx');
     expect(source).toContain('preview-identity');

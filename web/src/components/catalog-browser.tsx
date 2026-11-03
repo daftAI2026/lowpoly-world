@@ -1,11 +1,10 @@
 /**
  * [INPUT]: 依赖公开目录、URL 浏览状态与独立结果、预览、下载视图及输入方式。
- * [OUTPUT]: 导出完整只读资产工作区；shadcn 分栏内同一 viewer 随停靠与展开保留。
+ * [OUTPUT]: 导出只读工作区，全局动作投影到FU插槽，下载队列独立常驻。
  * [POS]: 首页交互组合边界；筛选交给原生侧栏；主区只保留结果与预览。
  * [PROTOCOL]: 变更时更新此头部，然后检查 CLAUDE.md
  */
 import { GalleryShell } from './gallery-shell';
-import { Button } from '@/components/ui/button';
 import { usePanelRef } from 'react-resizable-panels';
 import { ResizablePanelGroup, ResizablePanel, ResizableHandle } from './ui/resizable';
 import { useEffect, useMemo, useRef, useState } from 'react';
@@ -15,6 +14,9 @@ import { CatalogGrid } from './catalog-grid';
 import { AssetPreview } from './asset-preview';
 import { WorkspaceToolbar } from './workspace-toolbar';
 import { DownloadSelection } from './download-selection';
+import { DownloadTasks } from './download-tasks';
+import { WorkspacePreferences } from './workspace-preferences';
+import { useDownloadQueue } from '@/lib/use-download-queue';
 import { previewNeighbors } from '@/lib/catalog-selection';
 import {
   buildCatalogFacets,
@@ -32,6 +34,8 @@ export function CatalogBrowser({ catalog, locale }: { catalog: Catalog; locale: 
   const { t } = useTranslation();
   const { state: s, update } = useWorkspace();
   const [size, setSize] = useState({ width: 0, height: 0 });
+  const queue = useDownloadQueue();
+  const [tasksOpen, setTasksOpen] = useState(false);
   const savedSize = useRef({ width: 400, height: 360 });
   useEffect(() => {
     // ---- 键盘操作即时响应，指针动作才使用面板缓动 ----
@@ -168,21 +172,26 @@ export function CatalogBrowser({ catalog, locale }: { catalog: Catalog; locale: 
         onClear={clear}
         hasFilters={hasCatalogFilters(s.filters)}
       />
-      <Button
-        variant="ghost"
-        nativeButton={false}
-        render={
-          <a href={`/${locale}/docs/contributing${import.meta.env.PROD ? '/index.html' : ''}`} />
-        }
-      >
-        {t('workspace.contribute')}
-      </Button>
+    </>
+  );
+  // ---- 沿用现有测量，窄屏只保留一份任务入口，队列不随插槽迁移 ----
+  const useHeaderActions = size.width > 0 && window.matchMedia('(min-width: 768px)').matches;
+  const globalActions = (
+    <>
+      <DownloadTasks queue={queue} locale={locale} open={tasksOpen} onOpenChange={setTasksOpen} />
+      <WorkspacePreferences
+        withPreview={Boolean(s.filters.withPreview)}
+        onWithPreview={(withPreview) => filter({ withPreview })}
+        hiddenGroups={hiddenGroups}
+        onHiddenGroups={setHiddenGroups}
+      />
     </>
   );
   return (
     <GalleryShell
       locale={locale}
       sidebar={sidebar}
+      actions={useHeaderActions ? globalActions : undefined}
       search={{
         query: s.filters.query,
         onQueryChange: (query) => update({ filters: { ...s.filters, query } }, true),
@@ -214,10 +223,11 @@ export function CatalogBrowser({ catalog, locale }: { catalog: Catalog; locale: 
                 onRemove={(id) => update({ selected: s.selected.filter((value) => value !== id) })}
                 onClear={() => update({ selected: [] })}
                 onInspect={inspect}
+                queue={queue}
+                onStarted={() => setTasksOpen(true)}
               />
             }
-            hiddenGroups={hiddenGroups}
-            onHiddenGroups={setHiddenGroups}
+            globalActions={useHeaderActions ? null : globalActions}
             onReopen={!selected && lastPreview ? () => inspect(lastPreview) : null}
           />
         </div>

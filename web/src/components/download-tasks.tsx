@@ -1,32 +1,31 @@
 /**
- * [INPUT]: 依赖持久下载队列快照、locale与官方Popover、Progress、Button。
+ * [INPUT]: 订阅稳定下载队列，依赖locale与官方Popover、Progress、Button。
  * [OUTPUT]: 导出独立任务入口与进行中、完成、失败状态面板。
  * [POS]: 下载执行的观察视图；关闭面板不取消，只有明确取消动作才停止。
  * [PROTOCOL]: 变更时更新此头部，然后检查 CLAUDE.md
  */
 import { Download, X, RotateCcw } from 'lucide-react';
+import { useSyncExternalStore } from 'react';
 import { useTranslation } from 'react-i18next';
 import { Popover, PopoverTrigger, PopoverContent, PopoverTitle } from './ui/popover';
 import { Button } from './ui/button';
 import { Progress } from './ui/progress';
 import { getAssetDisplayName, type Locale } from '@/lib/locale';
-import type { DownloadJob, DownloadQueue } from '@/lib/download-queue';
+import type { DownloadQueue } from '@/lib/download-queue';
 export function DownloadTasks({
-  jobs,
   queue,
-  active,
   locale,
   open,
   onOpenChange,
 }: {
-  jobs: readonly DownloadJob[];
   queue: DownloadQueue;
-  active: number;
   locale: Locale;
   open: boolean;
   onOpenChange: (open: boolean) => void;
 }) {
   const { t } = useTranslation();
+  const jobs = useSyncExternalStore(queue.subscribe, queue.getSnapshot, queue.getSnapshot);
+  const active = jobs.filter((job) => job.status === 'active' || job.status === 'queued').length;
   const done = jobs.filter((job) => job.status === 'complete').length,
     failed = jobs.filter((job) => job.status === 'failed').length;
   return (

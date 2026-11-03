@@ -5,17 +5,17 @@
 
 download-ui.fixture.tsx: 真实组件的合成流浏览器装配，隔离文件权限、失败和重试。
 
-catalog-layout.test.mjs: 紧凑名称编号、自然结果滚动与同排预览图标回归。
+catalog-layout.test.mjs: 整行折叠、等宽视角、固定下载和有界拖拽提示回归。
 
 download-queue.test.mjs: 任务独立于弹层、排队取消、未完成文件重试与确认分层回归。
 
 directory-download.test.mjs: 独立窗口能力检测与内存流回归，覆盖固定版本、取消和路径拒绝。
 
-category-taxonomy.test.mjs: 分类别名归并、中英标签、保守名称推导与冲突回退回归。
+category-taxonomy.test.mjs: 分类别名、历史物体覆盖与复合名词回归；未知字段和跨类歧义仍回退。
 
 gallery-shell.test.mjs: 全屏原生壳、唯一模型搜索、无章节列和静态详情链接回归。
 
-catalog-header.test.mjs: 展厅单行工具栏、图标密度组、按需分类路径与唯一模型搜索回归。
+catalog-header.test.mjs: 全局动作分层、全选混合态、间距与原生搜索回归。
 
 preview-fit.test.mjs: 下方画布高度、紧凑工具栏与预览元数据事实列回归。
 

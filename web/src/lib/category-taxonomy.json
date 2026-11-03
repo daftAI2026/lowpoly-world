@@ -5,7 +5,7 @@
     "POS": "网站分类唯一数据源，不包含质量或权利判断",
     "PROTOCOL": "[PROTOCOL]: 变更时更新此头部，然后检查 CLAUDE.md"
   },
-  "version": 1,
+  "version": 2,
   "categories": [
     {
       "id": "furniture",
@@ -20,18 +20,7 @@
       "zh": "座椅与沙发",
       "en": "Seating",
       "aliases": ["Furniture/Seating", "家具/座椅"],
-      "terms": [
-        "chair",
-        "armchair",
-        "sofa",
-        "couch",
-        "stool",
-        "bench",
-        "footstool",
-        "椅",
-        "沙发",
-        "凳"
-      ],
+      "terms": ["chair", "armchair", "sofa", "couch", "stool", "bench", "footstool", "椅", "沙发", "凳"],
       "phrases": []
     },
     {
@@ -40,26 +29,14 @@
       "en": "Tables",
       "aliases": ["家具/桌台"],
       "terms": ["table", "desk", "桌"],
-      "phrases": ["dining table", "coffee table"]
+      "phrases": ["dining table", "coffee table", "sofa table", "side tables"]
     },
     {
       "id": "furniture/storage",
       "zh": "收纳家具",
       "en": "Storage furniture",
       "aliases": ["家具/收纳"],
-      "terms": [
-        "cabinet",
-        "cupboard",
-        "wardrobe",
-        "bookshelf",
-        "shelf",
-        "bookcase",
-        "sideboard",
-        "shelving",
-        "柜",
-        "书架",
-        "置物架"
-      ],
+      "terms": ["cabinet", "cupboard", "wardrobe", "bookshelf", "shelf", "bookcase", "sideboard", "shelving", "柜", "书架", "置物架"],
       "phrases": ["shoe rack", "hat rack", "shoe cabinet", "衣帽架"]
     },
     {
@@ -83,15 +60,7 @@
       "zh": "灯具",
       "en": "Lighting",
       "aliases": ["家居/灯具"],
-      "terms": [
-        "lamp",
-        "lantern",
-        "chandelier",
-        "台灯",
-        "吊灯",
-        "壁灯",
-        "落地灯"
-      ],
+      "terms": ["lamp", "lantern", "chandelier", "台灯", "吊灯", "壁灯", "落地灯"],
       "phrases": ["table lamp", "desk lamp", "floor lamp"]
     },
     {
@@ -100,15 +69,16 @@
       "en": "Kitchenware",
       "aliases": ["家居/厨房"],
       "terms": [
-        "sink",
-        "steamer",
-        "colander",
-        "grater",
-        "厨房",
-        "水槽",
-        "蒸锅"
+        "sink", "steamer", "colander", "grater", "厨房", "水槽", "蒸锅", "cooker", "multicooker", "fryer", "oven", "toaster",
+        "rotisserie", "grill", "kettle", "airpot", "cezve", "blender", "tongs", "ladle", "skimmer", "spoon", "scoop",
+        "nutcracker", "电饭煲", "料理棒", "咖啡", "漏勺", "饭勺", "开瓶器", "开盖器"
       ],
-      "phrases": []
+      "phrases": [
+        "chocolate fountain", "noodle basket", "gnocchi board", "sandwich press", "electric baking pan", "water urn",
+        "coffee pot", "coffee maker", "coffee machine", "vietnamese phin", "egg beater", "cake stand", "bottle opener",
+        "can opener", "seafood cracker", "salad servers", "cake server", "carving fork", "rice paddle", "honey dipper",
+        "melon baller", "slow cooker"
+      ]
     },
     {
       "id": "household/cookware",
@@ -116,36 +86,17 @@
       "en": "Cookware",
       "aliases": ["家居/烹饪器具"],
       "terms": [
-        "frying pan",
-        "wok",
-        "griddle",
-        "saucepan",
-        "skillet",
-        "cookware",
-        "平底锅",
-        "炒锅",
-        "煎锅"
+        "frying pan", "wok", "griddle", "saucepan", "skillet", "cookware", "平底锅", "炒锅", "煎锅", "hotpot", "pan",
+        "dolsot", "fondue", "石锅", "火锅", "炖锅", "松饼锅", "模盘"
       ],
-      "phrases": []
+      "phrases": ["waffle iron"]
     },
     {
       "id": "household/tableware",
       "zh": "餐饮器皿",
       "en": "Tableware",
       "aliases": ["家居/餐饮器皿"],
-      "terms": [
-        "bowl",
-        "plate",
-        "mug",
-        "cup",
-        "goblet",
-        "tumbler",
-        "teapot",
-        "碗",
-        "餐盘",
-        "茶杯",
-        "茶壶"
-      ],
+      "terms": ["bowl", "plate", "mug", "cup", "goblet", "tumbler", "teapot", "碗", "餐盘", "茶杯", "茶壶"],
       "phrases": ["wine glass"]
     },
     {
@@ -162,20 +113,8 @@
       "en": "Architecture",
       "aliases": ["建筑", "architecture", "buildings"],
       "terms": [
-        "building",
-        "pavilion",
-        "church",
-        "cathedral",
-        "mosque",
-        "temple",
-        "pagoda",
-        "bridge",
-        "archway",
-        "建筑",
-        "亭",
-        "教堂",
-        "寺庙",
-        "牌坊"
+        "building", "pavilion", "church", "cathedral", "mosque", "temple", "pagoda", "bridge", "archway", "建筑", "亭",
+        "教堂", "寺庙", "牌坊"
       ],
       "phrases": []
     },
@@ -184,8 +123,16 @@
       "zh": "公共与商业建筑",
       "en": "Public and commercial",
       "aliases": ["建筑/公共与商业"],
-      "terms": [],
-      "phrases": []
+      "terms": [
+        "school", "kindergarten", "library", "courthouse", "hospital", "clinic", "museum", "planetarium", "学校", "教学楼",
+        "幼儿园", "图书馆", "阅览馆", "市政厅", "消防站", "警察局", "急救站", "医院", "诊所", "邮局", "交易大厅", "活动中心", "文化馆", "博物馆", "美术馆", "天文馆",
+        "科学中心"
+      ],
+      "phrases": [
+        "reading hall", "town hall", "fire station", "police station", "ambulance station", "post office",
+        "mail sorting center", "bank branch", "exchange hall", "community center", "youth center", "cultural center",
+        "art gallery", "science center", "lecture hall building", "aquarium building"
+      ]
     },
     {
       "id": "architecture/religious-historic",
@@ -209,23 +156,14 @@
       "en": "Clothing and accessories",
       "aliases": ["服饰", "服饰/配件", "clothing"],
       "terms": [
-        "shirt",
-        "jacket",
-        "coat",
-        "dress",
-        "skirt",
-        "trousers",
-        "belt",
-        "scarf",
-        "sunglasses",
-        "eyeglasses",
-        "手套",
-        "衬衫",
-        "外套",
-        "围巾",
-        "眼镜"
+        "shirt", "jacket", "coat", "dress", "skirt", "trousers", "belt", "scarf", "sunglasses", "eyeglasses", "手套",
+        "衬衫", "外套", "围巾", "眼镜", "blazer", "tailcoat", "waistcoat", "gown", "robe", "yukata", "qipao", "kilt", "sari",
+        "kaftan", "thobe", "tutu", "shorts", "swimsuit", "wetsuit", "vest", "apron", "shawl", "gaiter", "necktie",
+        "cummerbund", "suspenders", "cufflinks", "brooch", "headband", "sweatband", "turban", "燕尾服", "马甲", "手术服",
+        "学位袍", "法官袍", "浴衣", "旗袍", "中山装", "长袍", "礼服", "短裤", "泳衣", "潜水服", "滑雪服", "背心", "围裙", "披肩", "围脖", "领带", "领结",
+        "腰封", "背带", "袖扣", "胸针", "发带", "汗带", "头巾", "绑腿"
       ],
-      "phrases": []
+      "phrases": ["scrub suit", "zhongshan suit", "monk habit", "ski suit", "bow tie", "collar pin", "tie clip"]
     },
     {
       "id": "clothing/headwear",
@@ -233,24 +171,18 @@
       "en": "Headwear",
       "aliases": ["服饰/帽饰"],
       "terms": [
-        "hat",
-        "beret",
-        "fedora",
-        "beanie",
-        "sunhat",
-        "棒球帽",
-        "贝雷帽",
-        "礼帽"
+        "hat", "beret", "fedora", "beanie", "sunhat", "棒球帽", "贝雷帽", "礼帽", "帽", "headdress", "balaclava", "mortarboard",
+        "toque"
       ],
-      "phrases": ["baseball cap", "bucket hat"]
+      "phrases": ["baseball cap", "bucket hat", "sun visor", "spa headband", "academic hood", "sunhat"]
     },
     {
       "id": "clothing/footwear",
       "zh": "鞋靴",
       "en": "Footwear",
       "aliases": ["服饰/鞋靴"],
-      "terms": ["shoe", "boot", "sneaker", "slipper", "sandal", "鞋", "靴"],
-      "phrases": []
+      "terms": ["shoe", "boot", "sneaker", "slipper", "sandal", "鞋", "靴", "geta", "木屐", "人字拖", "脚蹼"],
+      "phrases": ["flip flop", "diving fin"]
     },
     {
       "id": "tools",
@@ -258,19 +190,8 @@
       "en": "Tools and equipment",
       "aliases": ["工具", "设备", "tools", "equipment"],
       "terms": [
-        "hammer",
-        "screwdriver",
-        "wrench",
-        "pliers",
-        "drill",
-        "camera",
-        "microphone",
-        "headphones",
-        "锤",
-        "扳手",
-        "螺丝刀",
-        "相机",
-        "麦克风"
+        "hammer", "screwdriver", "wrench", "pliers", "drill", "camera", "microphone", "headphones", "锤", "扳手", "螺丝刀",
+        "相机", "麦克风"
       ],
       "phrases": ["bench vise"]
     },
@@ -280,20 +201,8 @@
       "en": "Vehicles",
       "aliases": ["交通", "vehicles"],
       "terms": [
-        "bicycle",
-        "motorcycle",
-        "truck",
-        "car",
-        "bus",
-        "airplane",
-        "helicopter",
-        "boat",
-        "汽车",
-        "卡车",
-        "自行车",
-        "摩托车",
-        "飞机",
-        "轮船"
+        "bicycle", "motorcycle", "truck", "car", "bus", "airplane", "helicopter", "boat", "汽车", "卡车", "自行车", "摩托车",
+        "飞机", "轮船"
       ],
       "phrases": []
     },
@@ -320,6 +229,110 @@
       "aliases": ["Environment/Rocks", "自然/岩石"],
       "terms": ["rock", "boulder", "cairn", "岩石", "石堆"],
       "phrases": []
+    },
+    {
+      "id": "household/cleaning",
+      "zh": "清洁与洗护",
+      "en": "Cleaning and laundry",
+      "aliases": ["清洁与洗护"],
+      "terms": [
+        "vacuum", "mop", "squeegee", "duster", "broom", "dustpan", "washboard", "washer", "dehumidifier", "洗衣", "吸尘器",
+        "拖把", "除尘", "垃圾桶", "衣架", "除球器", "挂烫机", "除湿", "防尘罩", "鞋撑", "鞋刷", "鞋拔", "擦鞋", "刮泥垫"
+      ],
+      "phrases": [
+        "straw brush", "window cleaner", "scrub brush", "bottle brush", "tumble dryer", "drying rack", "drying rail",
+        "trouser hanger", "tier hanger", "tie carousel", "ironing board", "steam iron", "garment steamer",
+        "lint roller", "fabric shaver", "recycling bin", "soap pump bottle", "refill pouch", "vacuum storage bag",
+        "garment cover", "shoe tree", "boot shaper", "shoe brush", "shoehorn", "shoe shine box", "boot scraper mat",
+        "carpet beater", "carpet sweeper", "moisture absorber", "shoe sanitizer cabinet", "desktop vacuum"
+      ]
+    },
+    {
+      "id": "household/bathroom",
+      "zh": "卫浴用品",
+      "en": "Bathroom",
+      "aliases": ["卫浴用品"],
+      "terms": [
+        "bathtub", "ofuro", "shower", "faucet", "basin", "toilet", "bidet", "urinal", "浴缸", "浴桶", "淋浴", "花洒", "洗手",
+        "便器", "净身盆", "浴室", "毛巾架", "纸巾卷架", "牙刷", "冲牙器", "皂架"
+      ],
+      "phrases": [
+        "bath mixer tap", "vessel sink", "double vanity", "scrub sink", "towel ladder", "towel rail", "towel ring",
+        "spare roll stand", "toothbrush cup holder", "toothbrush dock", "water flosser", "bath salt jar", "soap rack",
+        "vanity mirror", "shaving mirror", "medicine cabinet", "grab clamp", "shower stool", "toilet pan"
+      ]
+    },
+    {
+      "id": "clothing/bags",
+      "zh": "箱包与携行用品",
+      "en": "Bags and carrying accessories",
+      "aliases": ["箱包与携行用品"],
+      "terms": [
+        "backpack", "briefcase", "suitcase", "pannier", "wallet", "purse", "背包", "公文包", "行李箱", "软袋", "拍包", "卡包", "钱包",
+        "钥匙包", "行李牌", "钥匙扣"
+      ],
+      "phrases": [
+        "messenger bag", "doctor bag", "duffel bag", "trekking pack", "sling bag", "waist pack", "clutch bag",
+        "bucket bag", "saddle bag", "tote bag", "shopping bag", "picnic basket", "camera shoulder bag",
+        "camera hard case", "instrument gig bag", "racket bag", "ski bag", "yoga mat bag", "diaper bag",
+        "pet travel carrier", "backpack carrier", "shopping trolley bag", "makeup train case", "toiletry bag",
+        "pencil pouch", "spectacle case", "passport holder", "card wallet", "key case", "key fob", "luggage tag",
+        "luggage strap", "suitcase cover", "bicycle pannier"
+      ]
+    },
+    {
+      "id": "household/travel",
+      "zh": "出行用品",
+      "en": "Travel accessories",
+      "aliases": ["出行用品"],
+      "terms": ["umbrella", "parasol", "雨伞", "阳伞", "伞套", "颈枕", "睡眠眼罩", "耳塞盒"],
+      "phrases": ["travel neck pillow", "sleep mask", "earplug case", "umbrella sleeve"]
+    },
+    {
+      "id": "household/personal-care",
+      "zh": "个人护理",
+      "en": "Personal care",
+      "aliases": ["个人护理"],
+      "terms": [
+        "shaver", "razor", "comb", "lipstick", "mascara", "puff", "perfume", "manicure", "吹风机", "直发夹", "卷发棒", "波浪夹",
+        "理发器", "剃须", "发梳", "发卷", "发夹", "发簪", "发圈", "口红", "粉饼", "眼影", "睫毛", "化妆刷", "粉扑", "美妆蛋", "香水", "指甲", "修甲", "面霜",
+        "精华", "面膜", "刮痧", "按摩", "热水袋", "冰敷袋"
+      ],
+      "phrases": [
+        "hair dryer", "hair straightener", "curling iron", "barrel waver", "hair clipper", "hair brush", "hair roller",
+        "hair clip", "sectioning clip", "hair stick", "hair tie", "powder case", "eyeshadow palette", "eyelash curler",
+        "makeup brush", "fan brush", "powder puff", "makeup sponge", "nail clipper", "nail file", "nail polish",
+        "toe separator", "pumice stone", "cleanser bottle", "face cream", "serum dropper", "face mask", "gua sha",
+        "facial roller", "scalp massager", "massage gun", "foam roller", "foot roller", "hot water bottle", "ice bag"
+      ]
+    },
+    {
+      "id": "tools/healthcare",
+      "zh": "医疗与辅助用品",
+      "en": "Healthcare and mobility aids",
+      "aliases": ["医疗与辅助用品"],
+      "terms": [
+        "thermometer", "stethoscope", "cane", "crutch", "rollator", "wheelchair", "体温计", "耳温枪", "额温计", "血压计", "听诊器",
+        "急救箱", "药片", "拐杖", "肘拐", "腋拐", "助行车"
+      ],
+      "phrases": [
+        "blood pressure monitor", "first aid case", "pill organizer", "walking cane", "quad cane", "forearm crutch",
+        "underarm crutch", "manual wheelchair", "leg elevation wedge", "oxygen trolley"
+      ]
+    },
+    {
+      "id": "architecture/residential",
+      "zh": "住宅与居所",
+      "en": "Residential",
+      "aliases": ["住宅与居所"],
+      "terms": [
+        "house", "houses", "home", "dwelling", "chalet", "cabin", "cottage", "bungalow", "villa", "townhouse",
+        "apartment", "dormitory", "yaodong", "tulou", "住宅", "民居", "木屋", "窑洞", "土楼", "公寓", "宿舍楼", "别墅", "平房", "小屋"
+      ],
+      "phrases": [
+        "bedouin tent", "mountain refuge", "barn conversion", "housing court", "cabin unit", "roof house",
+        "pavilion house", "tree house", "bridge apartment"
+      ]
     },
     {
       "id": "uncategorized",

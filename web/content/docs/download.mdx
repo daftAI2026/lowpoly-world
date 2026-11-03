@@ -26,11 +26,13 @@ Open an asset from the verified catalog. Use **Download GLB** or **Download BLEN
 
 The commands pin files to a Dataset commit. This is not the source ZIP hash or the asset's version label. Install the [official Hugging Face CLI](https://huggingface.co/docs/huggingface_hub/guides/cli) before running commands. The website does not run them for you.
 
+On desktop, **Downloads** is in the top-right actions. On narrow screens, it remains in the results toolbar.
+
 ## Save to a folder
 
 Open the gallery in a standalone tab. Secure windows with directory-write support show **Save to folder**. The embedded HF page keeps file links and CLI without requesting directory permission. Click it and choose a destination. Files stream sequentially without assembling a ZIP in memory. A subfolder named with the full Dataset commit separates each version from older downloads.
 
-The saved count increases only after a file's write stream closes. Failed paths are listed. **Stop downloads** keeps completed files. Closing the review or confirmation does not stop started downloads. Leaving the workspace stops them. Retrying saves the current selection again.
+The saved count increases only after a file's write stream closes. Failed paths are listed. **Stop downloads** keeps completed files. Closing the review or confirmation does not stop started downloads. Leaving the workspace stops them. Retrying saves only files that have not completed.
 
 Ordinary file links still hand saving to the browser without tracking completion. Use file links or HF CLI when directory writes are unavailable.
 

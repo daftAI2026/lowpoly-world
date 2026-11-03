@@ -8,7 +8,7 @@ meta.zh.json: 复用导航顺序，提供中文搜索分组名称。
 
 index.mdx: Getting Started；说明独立入口、完整工作区、预览和复用。
 index.zh.mdx: 快速开始；对应英文页面的完整简体中文译稿。
-download.mdx: 锚定审阅、独立确认、持续任务与固定版本CLI，区分完成证据。
+download.mdx: 选择审阅、全局任务、固定文件底栏与失败补传，区分完成证据。
 download.zh.mdx: 下载；对应英文页面的完整简体中文译稿。
 license.mdx: 说明网站 MIT 与逐件审核模型 CC BY 4.0，排除第三方参考图。
 license.zh.mdx: 许可协议；对应英文页面的完整简体中文译稿。
