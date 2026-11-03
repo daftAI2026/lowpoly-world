@@ -18,8 +18,8 @@ copy-button.tsx: 组合官方 Button 与真实 Clipboard 反馈，不重造按�
 asset-card.tsx: 组合 shadcn Card 展示正方形完整预览、同排名称与编号；原生链接适配静态路径。角落勾选内移；紫色下载勾选区别于预览当前项。
 asset-metadata-panel.tsx: 按需读取元数据；五个折叠标题整行命中并保留官方键盘语义。
 asset-page.tsx: 组合模型文件入口、查看器与 metadata；返回链接指向当前语言 index.html。
-catalog-browser.tsx: 原生侧栏承载筛选，主区组合 URL 与官方 Resizable 分栏，不重造拖拽交互。
-catalog-filters.tsx: 展示分类树与有值筛选项；统一双语分类和折叠选项；不提供固定许可与存储来源选择。
+catalog-browser.tsx: 原生侧栏承载筛选，主区组合 URL 与官方 Resizable 分栏；打开预览后结果独立滚动。
+catalog-filters.tsx: 展示分类树与有值筛选项；整行命中、独立展开与分类选择；不提供固定许可与存储来源选择。
 catalog-grid.tsx: 真实滚动宿主的行虚拟化，支持网格、列表、密度与结果定位。
 catalog-state.tsx: 共用双语加载、空目录和目录校验失败视图；只保留必要重试入口。
 docs-shell.tsx: 文档侧栏只放正文树；右上角提供返回模型页入口。

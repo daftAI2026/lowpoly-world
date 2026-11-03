@@ -1,6 +1,6 @@
 /**
  * [INPUT]: 依赖目录 facet、当前筛选与官方 shadcn 折叠、动作和表单。
- * [OUTPUT]: 导出本地化分类树和折叠选项筛选，不提供固定许可或存储来源选择。
+ * [OUTPUT]: 导出整行命中的分类与折叠筛选；不提供固定许可或来源选择。
  * [POS]: 原生侧栏与抽屉中的筛选内容；不另建折叠外壳。
  * [PROTOCOL]: 变更时更新此头部，然后检查 CLAUDE.md
  */
@@ -84,9 +84,7 @@ function CategoryBranch({
           >
             {expanded ? <ChevronDown aria-hidden="true" /> : <ChevronRight aria-hidden="true" />}
           </CollapsibleTrigger>
-        ) : (
-          <span className="category-disclosure-spacer" aria-hidden="true" />
-        )}
+        ) : null}
         <Button
           variant={selectedPath === node.path ? 'secondary' : 'ghost'}
           type="button"

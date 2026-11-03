@@ -1,6 +1,6 @@
 /**
  * [INPUT]: 依赖 shadcn 官方 Resizable 分栏和共享资产内容。
- * [OUTPUT]: 定义吸附预览、固定文件底栏与按需拖拽提示；结果自然滚动。
+ * [OUTPUT]: 预览打开时画布固定，结果与事实独立滚动；关闭后结果自然滚动。
  * [POS]: 交互由官方组件负责，不自写分隔条事件或重造基础控件。
  * [PROTOCOL]: 变更时更新此头部，然后检查 CLAUDE.md
  */
@@ -213,6 +213,46 @@
     min-height: 240px;
     aspect-ratio: auto;
   }
+  /* ---- 打开预览后：画布与下载不滚动，仅事实列滚动 ---- */
+  .catalog-workspace[data-preview='true'] .preview-panel-body {
+    display: flex;
+    overflow: hidden;
+  }
+  .catalog-workspace[data-preview='true'] .asset-detail {
+    width: 100%;
+    height: 100%;
+    min-height: 0;
+    grid-template-rows: minmax(0, 1fr) minmax(120px, 1fr);
+    align-items: stretch;
+  }
+  .catalog-workspace[data-preview='true'] .viewer-panel {
+    display: flex;
+    flex-direction: column;
+    min-height: 0;
+  }
+  .catalog-workspace[data-preview='true'] .viewer-stage:not(:fullscreen) {
+    flex: 1;
+    min-height: 0;
+    height: auto;
+    aspect-ratio: auto;
+  }
+  .catalog-workspace[data-preview='true'] .viewer-controls {
+    flex-shrink: 0;
+  }
+  .catalog-workspace[data-preview='true'] .asset-detail-copy {
+    min-height: 0;
+    overflow-y: auto;
+    overscroll-behavior: contain;
+    scrollbar-gutter: stable;
+    scrollbar-width: thin;
+  }
+  .catalog-workspace[data-expanded='true'] .asset-detail {
+    grid-template-rows: minmax(0, 1fr);
+  }
+  .catalog-workspace[data-preview='true'] .catalog-results {
+    scrollbar-gutter: stable;
+    scrollbar-width: thin;
+  }
   /* ---- 下方画布按面板余高适配，事实列单独滚动 ---- */
   .catalog-workspace[data-bottom='true'][data-expanded='false'] .preview-panel-body {
     display: flex;
@@ -251,7 +291,7 @@
     grid-template-columns: minmax(0, 1fr) minmax(160px, 0.7fr);
   }
 }
-@container (max-width: 899px) {
+@media (max-width: 899px) {
   .browse-main[data-slot='resizable-panel-group'] {
     display: block !important;
     height: auto !important;
@@ -299,45 +339,33 @@
   order: 0;
 }
 
-/* ---- 左右停靠时结果采用原生主面板滚动，预览独立吸附 ---- */
+/* ---- 未开预览时，结果仍使用 FU 主面板自然滚动 ---- */
 @media (min-width: 900px) {
-  .catalog-workspace:is([data-bottom='false'], [data-preview='false'])[data-expanded='false'] {
+  .catalog-workspace[data-preview='false'][data-expanded='false'] {
     height: auto;
     min-height: var(--workspace-height, 320px);
   }
-  .catalog-workspace:is([data-bottom='false'], [data-preview='false'])[data-expanded='false']
+  .catalog-workspace[data-preview='false'][data-expanded='false']
     .browse-main {
     height: auto;
     overflow: visible !important;
     align-items: flex-start;
   }
-  .catalog-workspace:is([data-bottom='false'], [data-preview='false'])[data-expanded='false']
+  .catalog-workspace[data-preview='false'][data-expanded='false']
     .browse-main
     > #results {
     overflow: visible !important;
   }
-  .catalog-workspace:is([data-bottom='false'], [data-preview='false'])[data-expanded='false']
+  .catalog-workspace[data-preview='false'][data-expanded='false']
     .browse-main
     > #results
     > div {
     overflow: visible !important;
   }
-  .catalog-workspace:is([data-bottom='false'], [data-preview='false'])[data-expanded='false']
+  .catalog-workspace[data-preview='false'][data-expanded='false']
     .catalog-results {
     height: auto;
     overflow: visible;
-  }
-  .catalog-workspace:is([data-bottom='false'], [data-preview='false'])[data-expanded='false']
-    .browse-main
-    > #preview {
-    position: sticky;
-    top: var(--workspace-toolbar-height, 61px);
-    height: var(--workspace-height, calc(100dvh - 160px)) !important;
-  }
-  .catalog-workspace[data-bottom='false'][data-expanded='false'] .workspace-splitter {
-    position: sticky;
-    top: var(--workspace-toolbar-height, 69px);
-    height: var(--workspace-height, calc(100dvh - 160px));
   }
 }
 

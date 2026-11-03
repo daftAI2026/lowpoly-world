@@ -60,7 +60,7 @@ describe('Official component reuse', () => {
     const css = await read('../src/styles/shadcn.css');
     expect(css).toContain('--color-background: var(--background)');
     expect(css).toContain('--color-primary: var(--primary)');
-    expect([...css.matchAll(/--color-fd-([\w-]+)\s*:/g)].map((m) => m[1])).toEqual([]);
+    expect([...css.matchAll(/--color-fd-([\w-]+)\s*:/g)].map((m) => m[1])).toEqual(['border']);
     expect(css).not.toMatch(/#[\da-f]{3,8}\b/i);
   });
 });

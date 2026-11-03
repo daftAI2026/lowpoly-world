@@ -1,6 +1,6 @@
 /**
  * [INPUT]: 依赖筛选、卡片、按钮和目录状态语义 class。
- * [OUTPUT]: 提供搜索、分类筛选、虚拟网格、紧凑名称编号和目录状态样式。
+ * [OUTPUT]: 提供整行筛选命中、分类树与紧凑资产网格样式。
  * [POS]: 资产库工作台视觉层；详情舞台和全局 token 由兄弟文件负责。
  * [PROTOCOL]: 变更时更新此头部，然后检查 CLAUDE.md
  */
@@ -305,12 +305,6 @@
   min-height: 40px;
 }
 
-.category-disclosure-spacer {
-  display: block;
-  width: 40px;
-  height: 40px;
-  flex-shrink: 0;
-}
 .category-all {
   margin-bottom: 4px;
 }
@@ -322,8 +316,14 @@
 }
 
 /* ---- 分类与筛选共用官方折叠动作，内容按需展开 ---- */
+.filter-group:has(> .facet-heading) {
+  padding-block: 0;
+}
 .facet-heading {
-  min-height: 40px;
+  width: 100%;
+  height: auto;
+  min-height: 64px;
+  padding-block: 12px;
   color: var(--lpw-muted);
   font-size: 12px;
 }
@@ -348,4 +348,13 @@
 }
 .asset-card-heading [data-slot='card-description'] {
   flex: 0 0 auto;
+}
+
+/* ---- 叶子分类不留不可点击的假箭头位；筛选整行共用命中区 ---- */
+.category-tree-row:not(:has(.category-disclosure)) .category-select {
+  padding-inline-start: 52px;
+}
+.filter-option {
+  width: 100%;
+  padding-inline: 8px;
 }

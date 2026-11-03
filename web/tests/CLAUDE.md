@@ -5,7 +5,7 @@
 
 download-ui.fixture.tsx: 真实组件的合成流浏览器装配，隔离文件权限、失败和重试。
 
-catalog-layout.test.mjs: 整行折叠、等宽视角、固定下载和有界拖拽提示回归。
+catalog-layout.test.mjs: 侧栏整行命中、固定画布、独立滚动与文件底栏回归。
 
 download-queue.test.mjs: 任务独立于弹层、排队取消、未完成文件重试与确认分层回归。
 

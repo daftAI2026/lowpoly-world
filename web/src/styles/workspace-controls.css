@@ -158,7 +158,7 @@
   align-items: center;
   flex-shrink: 0;
   padding: 2px;
-  border: 0.5px solid var(--border);
+  border: 0.5px solid var(--lpw-line);
   border-radius: var(--radius-lg);
 }
 .result-selection-group .selection-controls [data-slot='button'] {

@@ -54,4 +54,25 @@ describe('Compact asset workspace', () => {
     expect(source).not.toContain('NativeSelect');
     expect(source).not.toContain('preview-more');
   });
+  it('uses the outer FU background and full-row facet targets', async () => {
+    const native = await read('../src/styles/fumadocs.css');
+    expect(native).toMatch(/#nd-sidebar\s*\{[^}]*background-color: transparent/s);
+    const css = await read('../src/styles/catalog.css');
+    expect(css).toMatch(/\.filter-group:has\(> \.facet-heading\)\s*\{[^}]*padding-block: 0/s);
+    expect(css).toMatch(/\.facet-heading\s*\{[^}]*min-height: 64px/s);
+    const source = await read('../src/components/catalog-filters.tsx');
+    expect(source).not.toContain('category-disclosure-spacer');
+  });
+  it('separates results and facts scrolling when preview is open', async () => {
+    const css = await read('../src/styles/workspace.css');
+    expect(css).toContain(".catalog-workspace[data-preview='false'][data-expanded='false']");
+    expect(css).not.toContain(".catalog-workspace:is([data-bottom='false'], [data-preview='false'])");
+    expect(css).not.toContain('@container (max-width: 899px)');
+    expect(css).toContain('@media (max-width: 899px)');
+    expect(css).toMatch(/\.catalog-workspace\[data-preview='true'\] \.preview-panel-body\s*\{[^}]*overflow: hidden/s);
+    expect(css).toMatch(/\.catalog-workspace\[data-preview='true'\] \.asset-detail-copy\s*\{[^}]*overflow-y: auto/s);
+    const browser = await read('../src/components/catalog-browser.tsx');
+    expect(browser).toContain("scrollScope={selected ? 'panel' : 'page'}");
+  });
+
 });

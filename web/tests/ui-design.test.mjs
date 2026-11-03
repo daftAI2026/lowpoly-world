@@ -80,9 +80,9 @@ describe('UI design constraints', () => {
   it('separates visible outlines from pale input fills in both themes', async () => {
     const tokens = await readFile(`${stylesRoot}/tokens.css`, 'utf8');
     const adapter = await readFile(`${stylesRoot}/shadcn.css`, 'utf8');
-    expect(tokens).toContain('--lpw-line: var(--border)');
+    expect(tokens).toContain('--lpw-line: var(--muted-foreground)');
     expect(tokens).toContain('--lpw-control-line: var(--muted-foreground)');
-    expect(adapter).toContain('--color-border: var(--border)');
+    expect(adapter).toContain('--color-border: var(--lpw-line)');
     expect(adapter).toContain('--color-control-border: var(--lpw-control-line)');
     expect(adapter).toContain('--color-input: var(--input)');
     for (const name of ['input', 'native-select', 'textarea', 'toggle', 'button']) {

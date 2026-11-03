@@ -1,7 +1,7 @@
 /**
  * [INPUT]: 依赖用户主题 token 与 FU 官方 shadcn 适配层。
- * [OUTPUT]: 将工具类直连用户语义 token，不覆写 FU 或暗色主色。
- * [POS]: 唯一工具类映射；FU 复用官方颜色桥，控件描边取已有 muted-foreground。
+ * [OUTPUT]: 将工具类直连用户语义 token，描边直连已有 muted-foreground，不改原始色板。
+ * [POS]: 唯一工具类映射；FU 复用官方颜色桥，仅描边采用统一可见角色。
  * [PROTOCOL]: 变更时更新此头部，然后检查 CLAUDE.md
  */
 @theme inline {
@@ -21,7 +21,7 @@
   --color-accent-foreground: var(--accent-foreground);
   --color-destructive: var(--destructive);
   --color-destructive-foreground: var(--destructive-foreground);
-  --color-border: var(--border);
+  --color-border: var(--lpw-line);
   --color-control-border: var(--lpw-control-line);
   --color-input: var(--input);
   --color-ring: var(--ring);
@@ -61,4 +61,10 @@
   body {
     @apply bg-background text-foreground;
   }
+}
+
+/* ---- 用户确认的加深描边；原始 border 数值与主色不变 ---- */
+:root,
+.dark {
+  --color-fd-border: var(--lpw-line);
 }

@@ -151,11 +151,11 @@ describe('User theme contract', () => {
     const tokens = await read('../src/styles/tokens.css');
     const adapter = await read('../src/styles/shadcn.css');
     expect(tokens).not.toContain('color-mix(');
-    expect(tokens).toContain('--lpw-line: var(--border)');
+    expect(tokens).toContain('--lpw-line: var(--muted-foreground)');
     expect(tokens).toContain('--shadow-opacity: 0.16');
     expect(tokens).toContain('0px 2px 3px 0px hsl(0 0% 0% / 0.08)');
     expect(tokens.split('\n').filter((line) => line.includes('--shadow')).join('\n')).not.toMatch(/0\.18|0\.09|0\.45/);
-    expect(adapter).toContain('--color-border: var(--border)');
+    expect(adapter).toContain('--color-border: var(--lpw-line)');
     expect(adapter).not.toContain('--color-fd-primary:');
     expect(adapter).not.toContain('.dark [data-slot=');
   });

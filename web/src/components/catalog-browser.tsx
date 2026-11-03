@@ -1,7 +1,7 @@
 /**
  * [INPUT]: 依赖公开目录、URL 浏览状态与独立结果、预览、下载视图及输入方式。
  * [OUTPUT]: 导出只读工作区，全局动作投影到FU插槽，下载队列独立常驻。
- * [POS]: 首页交互组合边界；筛选交给原生侧栏；主区只保留结果与预览。
+ * [POS]: 首页交互组合边界；筛选交给原生侧栏；预览打开后，结果与事实各自滚动。
  * [PROTOCOL]: 变更时更新此头部，然后检查 CLAUDE.md
  */
 import { GalleryShell } from './gallery-shell';
@@ -274,7 +274,7 @@ export function CatalogBrowser({ catalog, locale }: { catalog: Catalog; locale: 
                   density={s.density}
                   browsingSearch={serializeWorkspace(s)}
                   find={find}
-                  scrollScope={selected && bottom ? 'panel' : 'page'}
+                  scrollScope={selected ? 'panel' : 'page'}
                 />
               </div>
             </ResizablePanel>

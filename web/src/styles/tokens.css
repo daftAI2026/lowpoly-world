@@ -105,7 +105,7 @@
   --lpw-raised: var(--card);
   --lpw-ink: var(--foreground);
   --lpw-muted: var(--muted-foreground);
-  --lpw-line: var(--border);
+  --lpw-line: var(--muted-foreground);
   --lpw-control-line: var(--muted-foreground);
   --lpw-accent: var(--primary);
   --lpw-accent-hover: var(--primary);

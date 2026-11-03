@@ -1,6 +1,6 @@
 /**
  * [INPUT]: 依赖 Fumadocs 官方 preset 与 Spacious 样式。
- * [OUTPUT]: 统一原生主面板 0.5px 边线，并停用布局过渡。
+ * [OUTPUT]: 侧栏透出原生外层背景；统一0.5px边线并停用布局过渡。
  * [POS]: 原生样式边界；布局、导航、字号与圆角仍归上游。
  * [PROTOCOL]: 变更时更新此头部，然后检查 CLAUDE.md
  */
@@ -11,4 +11,9 @@
 
 .ui #fd-spacious-layout {
   transition: none;
+}
+
+/* ---- 与官网一致：侧栏透出 Spacious 外层，不另铺一块底色 ---- */
+.ui #nd-sidebar {
+  background-color: transparent;
 }
