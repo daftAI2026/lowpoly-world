@@ -69,9 +69,10 @@ TanStack Start 客户端产物位于 `dist/client/`。构建需生成双语首�
 
 ## 当前范围
 
-本模块提供浏览器搜索、分类树和计数、格式/标签/三角面数/许可/来源/最长边筛选、排序与虚拟结果。
+本模块提供搜索、分类树和计数、格式/标签/三角面数/最长边筛选，以及虚拟结果。
+不显示固定许可、存储来源筛选或排序菜单；默认按编号排列，兼容旧 URL 排序参数。
 详情页使用单一 `<model-viewer>`，提供相机控件、复位、自动旋转和全屏。
-详情资源按需读取。缺失字段显示 `Not supplied`。输入源图必须有权利声明。
+详情资源按需读取。缺失字段显示 `Not supplied`。来源输入图须有权利声明；当前发布不包含第三方参考图。
 10 个帮助主题覆盖入门、下载、许可、格式、Blender、Three.js、schema、贡献、更新和 FAQ，并各有中英版本。
 两种语言各自编译正文、标题与搜索索引。语言切换保留页面与浏览条件。
 
@@ -81,18 +82,22 @@ TanStack Start 客户端产物位于 `dist/client/`。构建需生成双语首�
 关闭预览保留搜索和筛选；修改键、窄屏继续访问独立详情 URL。
 模型、文件与元数据由同一 AssetDetails 组合，不重复实现。
 URL 独立保存预览和下载选择，支持分享、刷新与历史恢复。
-批选明确作用于筛选结果。审阅选择后可移除、复制链接或导出清单。
-批量命令固定 Dataset commit；文件直接下载，不占用浏览器批量缓存。
-下载入口只记录已打开链接，不声称文件已保存。
+全选只作用于当前筛选结果，保留筛选外的已选项。审阅选择后可移除、清空或复制链接。
+支持将文件流式写入用户选择的文件夹；独立任务面板提供进度、取消和失败重试。
+目录选择不可用时，复制固定 Dataset commit 的下载命令，或打开文件直链。
+直链打开不代表已保存；目录任务只在文件写入完成后标记成功。
 
-`src/components/ui/` 保存 14 个官方 shadcn Base Nova 源码副本。
+桌面预览打开时，结果与元数据各自滚动，模型画布和下载底栏固定。
+关闭预览后恢复原生主面板滚动。侧栏沿用 Spacious 的透明背景与原生抽屉。
+
+`src/components/ui/` 保存官方 shadcn Base Nova 组件源码副本。
 同一类控件只用这一套。FU 保留布局与文档。展厅复用 shadcn Card 和搜索控件。
 `registry.sources.json` 记录官方 URL、原始摘要与外观适配。
 复用官方 Input、Checkbox、NativeSelect、Popover、Collapsible、ToggleGroup、
-Breadcrumb、Button、Textarea、Label、Badge 与 Resizable，不自写基础交互。
+Breadcrumb、Button、Textarea、Label、Badge、Dialog、Progress 与 Resizable，不自写基础交互。
 `react-resizable-panels@4.16.1` 由官方 Resizable 使用。
-用户黑白 OKLCH token 统一驱动 FU 与 shadcn。
-FU 使用官方 shadcn 适配，不覆盖布局，不引入 Radix。
+用户紫色 OKLCH 明暗 token 统一驱动 FU 与 shadcn，描边直连已有 muted-foreground。
+FU 使用官方 shadcn 适配，不重造布局，不引入 Radix。
 原生明暗切换跨页面保存。英文 Inter，中文思源 SC 子集。
 字体本地托管，系统字体最后回退；生成步骤见 assets/README.md。
 MIT 许可通过 HTML license 链接随产物托管。
@@ -112,14 +117,14 @@ MIT 许可通过 HTML license 链接随产物托管。
 导航、搜索、语言菜单和文档分页使用原生组件。HF 与 GitHub 共用右上角入口。
 官方 shadcn Card 承载资产图片；筛选、虚拟网格和 3D 查看器属于模板外的必要补充。
 
-## 验收与发布边界（2026-11-02）
+## 验收与发布边界
 
 展示与文档共用官网 Spacious 全屏壳，入口与内容独立。完整工作区包含 URL 状态、列表、密度、筛选、
 独立下载选择、三向停靠与应用内展开。网站不提供 AI 语义搜索或关节仿真。
 
 - 类型与 lint 检查、离线测试、静态构建和浏览器验收分别执行。
 - 静态 smoke 覆盖 24 路由、20 篇本地化文档和搜索。
-- 资产数量以公开目录为准；模型逐件批准，网站发布不新增模型批准。
+- 资产数量以公开目录为准；只有在所有者授权范围内、逐件通过发布检查的模型才发布。网站发布不授予模型发布资格。
 - HF 使用官方黄色 SVG，原生文档保持 Spacious 默认几何。
 - 虚拟结果读取实际滚动宿主，窄屏详情保留返回条件。
 

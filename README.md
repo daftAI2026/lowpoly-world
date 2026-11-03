@@ -6,13 +6,18 @@
 -->
 # Lowpoly World
 
-低多边形资产展示应用。导航、文档和卡片复用 Fumadocs，展厅控件复用官方 shadcn Base UI。两者共用主题，展示与文档采用独立布局。
+Browse low-poly 3D assets, preview GLB models, and download GLB or Blender files.
+
+低多边形资产展示应用。Fumadocs 提供原生全屏布局和文档，官方 shadcn Base UI 提供展厅控件与资产卡。模型库与使用文档分别进入，使用同一套主题。
 项目包含两个交付：HF Dataset 与 HF Static Space 应用。模型库、3D 查看与使用文档都在应用内。
 网站只读取公开 Dataset，不接触私人 Drive 或审核目录。
 
 [中文页面](https://daftai2026-gallery.static.hf.space/zh/index.html)
 [English](https://daftai2026-gallery.static.hf.space/en/index.html)
 [Hugging Face Space](https://huggingface.co/spaces/daftAI2026/gallery)
+[Dataset](https://huggingface.co/datasets/daftAI2026/3d-assets)
+[使用文档](https://daftai2026-gallery.static.hf.space/zh/docs/index.html)
+[Documentation](https://daftai2026-gallery.static.hf.space/en/docs/index.html)
 
 ## 本地开发
 
@@ -24,7 +29,11 @@ npm run dev
 
 构建、检查和部署边界见[网站说明](web/README.md)。网站提供中英双语资产浏览、模型详情，以及 10 个帮助主题的中英版本。
 
-网站已部署到免费 HF Static Space。首批 10 个逐件审核的真实模型已进入[公开 Dataset](https://huggingface.co/datasets/daftAI2026/3d-assets)。新增模型不需要重建网站。其余资产仍须逐件审核，不计入已发布数量。
+网站已部署到 HF Static Space。已发布模型数量以[公开 Dataset](https://huggingface.co/datasets/daftAI2026/3d-assets) 的当前目录为准，不按源文件数量或最大编号推算。
+
+模型库支持搜索、分类筛选、网格与列表、3D 预览和多选下载。下载前可审阅选择，保存到文件夹或复制固定版本命令。
+
+合格新增或修订模型由独立的 Colab 流水线发布，展厅自动读取新目录，无需重新部署网站。同一资产保留编号，修订版按源文件摘要分版。源码更新与模型发布彼此独立。
 
 ## 公开范围
 

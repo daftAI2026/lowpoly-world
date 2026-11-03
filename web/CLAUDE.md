@@ -10,7 +10,7 @@ source.config.ts: 声明 `.mdx` 集合；Shiki none 使代码继承页面颜色�
 components.json: 固定官方 shadcn Base Nova、Base UI 与导入别名。
 tsconfig.json: 配置严格 TypeScript 与 `@/` 源码别名。
 .gitignore: 排除构建产物、依赖目录、`.tanstack` 缓存和隔离 Playwright 会话。
-README.md: 说明 Vite+ 命令、数据边界和静态输出目标。
+README.md: 说明当前浏览与下载能力、Vite+命令和静态发布边界。
 DESIGN.md: 展示与文档分离，固定工作区交互、原生视觉和免费托管边界。
 src/: 双语路由、资产库、模型查看器、数据边界和分层样式。
 content/: Fumadocs 编译期文档源。
