@@ -15,11 +15,11 @@ category-taxonomy.test.mjs: 分类别名、历史物体覆盖与复合名词回�
 
 gallery-shell.test.mjs: 全屏原生壳、唯一模型搜索、无章节列和静态详情链接回归。
 
-catalog-header.test.mjs: 全局动作分层、全选混合态、间距与原生搜索回归。
+catalog-header.test.mjs: 单一三态选择组、无排序下拉、全局动作与原生搜索回归。
 
 preview-fit.test.mjs: 下方画布高度、紧凑工具栏与预览元数据事实列回归。
 
-theme-selection.test.mjs: 角落遮挡、复选对比、用户主题与本地字体红绿回归。
+theme-selection.test.mjs: 64项原色、直连别名、原始阴影与字体和复选状态回归。
 
 component-reuse.test.mjs: 官方组件来源、禁止重复基础控件与 FU 主题桥接回归。
 

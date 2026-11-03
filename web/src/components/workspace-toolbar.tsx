@@ -1,11 +1,10 @@
 /**
  * [INPUT]: 依赖 URL 状态、真实分类与官方 shadcn 表单、弹层和导航。
- * [OUTPUT]: 导出结果工具带；全选与视图成组，全局动作仅在窄屏回落。
+ * [OUTPUT]: 导出无排序下拉的结果工具带；单一三态框与选择审阅成组。
  * [POS]: 工作区工具栏；只发状态变更，不加载目录或模型。
  * [PROTOCOL]: 变更时更新此头部，然后检查 CLAUDE.md
  */
 import { Label } from '@/components/ui/label';
-import { NativeSelect, NativeSelectOption } from '@/components/ui/native-select';
 import { Button } from '@/components/ui/button';
 import { Fragment, type ReactNode } from 'react';
 import { Checkbox } from '@/components/ui/checkbox';
@@ -23,7 +22,7 @@ import { Grid2X2, List, Square } from 'lucide-react';
 import { useTranslation } from 'react-i18next';
 import type { WorkspaceState } from '@/lib/workspace-state';
 import { emptyFilters } from '@/lib/workspace-state';
-import { hasCatalogFilters, isCatalogSort, type CatalogFilters } from '@/lib/catalog-view';
+import { hasCatalogFilters, type CatalogFilters } from '@/lib/catalog-view';
 type Props = {
   state: WorkspaceState;
   update: (s: Partial<WorkspaceState>, replace?: boolean) => void;
@@ -110,20 +109,27 @@ export function WorkspaceToolbar({
           </p>
         </div>
         <div className="workspace-view-actions">
-          {downloadControls}
           {globalActions}
-          <Label
-            className="result-selection-toggle"
-            title={t('workspace.selectResults', { count: visible })}
+          <div
+            className="result-selection-group"
+            role="group"
+            aria-label={t('workspace.selection')}
           >
-            <Checkbox
-              checked={allResultsSelected}
-              indeterminate={!allResultsSelected && someResultsSelected}
-              disabled={!visible}
-              aria-label={t('workspace.selectResults', { count: visible })}
-              onCheckedChange={(checked) => (checked ? onSelectResults() : onDeselectResults())}
-            />
-          </Label>
+            <Label
+              className="result-selection-toggle"
+              title={t('workspace.selectResults', { count: visible })}
+            >
+              <Checkbox
+                checked={allResultsSelected}
+                indeterminate={!allResultsSelected && someResultsSelected}
+                disabled={!visible}
+                aria-label={t('workspace.selectResults', { count: visible })}
+                onCheckedChange={(checked) => (checked ? onSelectResults() : onDeselectResults())}
+              />
+              <span>{t('workspace.selectAll')}</span>
+            </Label>
+            {downloadControls}
+          </div>
           <div className="view-options">
             <ToggleGroup
               className="view-controls"
@@ -183,24 +189,6 @@ export function WorkspaceToolbar({
               ))}
             </ToggleGroup>
           </div>
-          <Label className="sort-control">
-            <span>{t('home.sortLabel')}</span>
-            <NativeSelect
-              value={s.sort}
-              onChange={(e) => {
-                if (isCatalogSort(e.currentTarget.value)) update({ sort: e.currentTarget.value });
-              }}
-            >
-              <NativeSelectOption value="id-asc">{t('home.sortId')}</NativeSelectOption>
-              <NativeSelectOption value="name-asc">{t('home.sortName')}</NativeSelectOption>
-              <NativeSelectOption value="triangles-asc">
-                {t('home.sortTriangles')}
-              </NativeSelectOption>
-              <NativeSelectOption value="triangles-desc">
-                {t('home.sortTrianglesDesc')}
-              </NativeSelectOption>
-            </NativeSelect>
-          </Label>
           {onReopen && (
             <Button type="button" variant="link" onClick={onReopen}>
               {t('workspace.reopenPreview')}

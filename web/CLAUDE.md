@@ -6,7 +6,7 @@
 package.json: 锁定前端依赖；用 npm overrides 对齐 Vite+ core 与 Vitest 版本。
 package-lock.json: 固定 npm 依赖解析结果，供离线可复现安装。
 vite.config.ts: 接入 Vite+、TanStack Start、Fumadocs 与静态路由；预渲染预览固定绑定 127.0.0.1。
-source.config.ts: 声明 Fumadocs `.mdx` 集合，沿用原生代码高亮。
+source.config.ts: 声明 `.mdx` 集合；Shiki none 使代码继承页面颜色。
 components.json: 固定官方 shadcn Base Nova、Base UI 与导入别名。
 tsconfig.json: 配置严格 TypeScript 与 `@/` 源码别名。
 .gitignore: 排除构建产物、依赖目录、`.tanstack` 缓存和隔离 Playwright 会话。

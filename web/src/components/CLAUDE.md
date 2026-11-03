@@ -8,9 +8,9 @@ catalog-search.tsx: 原生搜索插槽组合 shadcn 输入和移动弹层，共�
 
 gallery-shell.tsx: 官网 Spacious 全屏壳，原生 actions 插槽组合任务与偏好，导航仍用官方实现。
 
-workspace-toolbar.tsx: 结果工具带，全选与视图成组；全局动作只在窄屏回落。
+workspace-toolbar.tsx: 全选三态框与选择审阅成组；不显示额外排序入口。
 workspace-preferences.tsx: 全局偏好弹层，控制预览条件与筛选组可见性。
-download-selection.tsx: 选择审阅与下载确认，使用父级队列并通知全局任务入口。
+download-selection.tsx: 数量入口与下载确认；清空仅在审阅内，使用父级队列。
 download-dialog.tsx: 下载确认、目录能力与固定版本命令；不拥有任务生命周期。
 download-tasks.tsx: 独立订阅任务进度；取消与失败补传不引发资产库重绘。
 copy-button.tsx: 组合官方 Button 与真实 Clipboard 反馈，不重造按钮。

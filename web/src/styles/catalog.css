@@ -30,15 +30,6 @@
   padding-inline-start: 34px;
 }
 
-.sort-control {
-  display: flex;
-  align-items: center;
-  gap: 8px;
-  color: var(--lpw-muted);
-  font-size: 14px;
-  white-space: nowrap;
-}
-
 .catalog-result-count {
   margin: 0;
   color: var(--lpw-muted);

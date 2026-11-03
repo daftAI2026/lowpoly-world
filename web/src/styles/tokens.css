@@ -1,6 +1,6 @@
 /**
  * [INPUT]: 依赖用户确认的 OKLCH 主题与本地字体声明。
- * [OUTPUT]: 提供原始明暗色板、可见边线别名与字体配置。
+ * [OUTPUT]: 提供用户原始色板与阴影；业务别名直连已有 token。
  * [POS]: 全站主题唯一来源；FU 与 shadcn 直接读取本文件，不另造色板。
  * [PROTOCOL]: 变更时更新此头部，然后检查 CLAUDE.md
  */
@@ -45,19 +45,19 @@
   --font-mono: 'Geist Mono', 'LPW Han Sans SC', ui-monospace, monospace;
   --radius: 0.5rem;
   --shadow-x: 0px;
-  --shadow-y: 1px;
-  --shadow-blur: 2px;
+  --shadow-y: 2px;
+  --shadow-blur: 3px;
   --shadow-spread: 0px;
-  --shadow-opacity: 0.18;
+  --shadow-opacity: 0.16;
   --shadow-color: hsl(0 0% 0%);
-  --shadow-2xs: 0px 1px 2px 0px hsl(0 0% 0% / 0.09);
-  --shadow-xs: 0px 1px 2px 0px hsl(0 0% 0% / 0.09);
-  --shadow-sm: 0px 1px 2px 0px hsl(0 0% 0% / 0.18), 0px 1px 2px -1px hsl(0 0% 0% / 0.18);
-  --shadow: 0px 1px 2px 0px hsl(0 0% 0% / 0.18), 0px 1px 2px -1px hsl(0 0% 0% / 0.18);
-  --shadow-md: 0px 1px 2px 0px hsl(0 0% 0% / 0.18), 0px 2px 4px -1px hsl(0 0% 0% / 0.18);
-  --shadow-lg: 0px 1px 2px 0px hsl(0 0% 0% / 0.18), 0px 4px 6px -1px hsl(0 0% 0% / 0.18);
-  --shadow-xl: 0px 1px 2px 0px hsl(0 0% 0% / 0.18), 0px 8px 10px -1px hsl(0 0% 0% / 0.18);
-  --shadow-2xl: 0px 1px 2px 0px hsl(0 0% 0% / 0.45);
+  --shadow-2xs: 0px 2px 3px 0px hsl(0 0% 0% / 0.08);
+  --shadow-xs: 0px 2px 3px 0px hsl(0 0% 0% / 0.08);
+  --shadow-sm: 0px 2px 3px 0px hsl(0 0% 0% / 0.16), 0px 1px 2px -1px hsl(0 0% 0% / 0.16);
+  --shadow: 0px 2px 3px 0px hsl(0 0% 0% / 0.16), 0px 1px 2px -1px hsl(0 0% 0% / 0.16);
+  --shadow-md: 0px 2px 3px 0px hsl(0 0% 0% / 0.16), 0px 2px 4px -1px hsl(0 0% 0% / 0.16);
+  --shadow-lg: 0px 2px 3px 0px hsl(0 0% 0% / 0.16), 0px 4px 6px -1px hsl(0 0% 0% / 0.16);
+  --shadow-xl: 0px 2px 3px 0px hsl(0 0% 0% / 0.16), 0px 8px 10px -1px hsl(0 0% 0% / 0.16);
+  --shadow-2xl: 0px 2px 3px 0px hsl(0 0% 0% / 0.40);
   --tracking-normal: 0em;
   --spacing: 0.25rem;
 }
@@ -105,17 +105,15 @@
   --lpw-raised: var(--card);
   --lpw-ink: var(--foreground);
   --lpw-muted: var(--muted-foreground);
-  --lpw-line: color-mix(in oklch, var(--muted-foreground) 75%, var(--background));
+  --lpw-line: var(--border);
   --lpw-control-line: var(--muted-foreground);
-  --lpw-action-ink: var(--primary);
-  --lpw-action-fill: var(--primary);
   --lpw-accent: var(--primary);
   --lpw-accent-hover: var(--primary);
   --lpw-accent-soft: var(--accent);
   --lpw-focus: var(--ring);
   --lpw-danger: var(--destructive);
-  --lpw-danger-soft: color-mix(in oklch, var(--destructive) 8%, var(--background));
-  --lpw-danger-line: color-mix(in oklch, var(--destructive) 40%, var(--background));
+  --lpw-danger-soft: var(--secondary);
+  --lpw-danger-line: var(--destructive);
 }
 html {
   min-width: 320px;
@@ -124,10 +122,4 @@ html {
 body {
   font-family: var(--font-sans);
   font-synthesis: none;
-}
-
-/* ---- 暗色文字和实心按钮分角色校正对比，不改原始色板 ---- */
-.dark {
-  --lpw-action-ink: color-mix(in oklch, var(--primary) 75%, var(--foreground));
-  --lpw-action-fill: color-mix(in oklch, var(--primary) 88%, var(--background));
 }

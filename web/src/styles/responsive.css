@@ -17,10 +17,6 @@
     padding: 12px 0 16px;
   }
 
-  .sort-control {
-    min-width: 0;
-  }
-
   .catalog-workspace {
     grid-template-columns: minmax(0, 1fr);
     gap: 12px;
@@ -42,10 +38,6 @@
 }
 
 @container (max-width: 359px) {
-  .sort-control {
-    justify-content: space-between;
-  }
-
   .catalog-result-count {
     text-align: left;
   }

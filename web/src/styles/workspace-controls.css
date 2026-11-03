@@ -143,9 +143,24 @@
 }
 
 .result-selection-toggle {
-  display: grid;
-  place-items: center;
-  width: 40px;
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding-inline: 8px;
   min-height: 40px;
+  font-size: 14px;
   cursor: pointer;
+}
+
+/* ---- 一个选择组只含一个状态框；数量入口不冒充勾选 ---- */
+.result-selection-group {
+  display: inline-flex;
+  align-items: center;
+  flex-shrink: 0;
+  padding: 2px;
+  border: 0.5px solid var(--border);
+  border-radius: var(--radius-lg);
+}
+.result-selection-group .selection-controls [data-slot='button'] {
+  border-radius: var(--radius-md);
 }

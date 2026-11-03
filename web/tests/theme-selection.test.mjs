@@ -147,6 +147,18 @@ describe('User theme contract', () => {
     expect(app).toContain('fumadocs-ui/css/shadcn.css');
     expect(app).not.toContain('fumadocs-ui/css/neutral.css');
   });
+  it('uses direct role aliases and the latest shadow values, without custom color mixing', async () => {
+    const tokens = await read('../src/styles/tokens.css');
+    const adapter = await read('../src/styles/shadcn.css');
+    expect(tokens).not.toContain('color-mix(');
+    expect(tokens).toContain('--lpw-line: var(--border)');
+    expect(tokens).toContain('--shadow-opacity: 0.16');
+    expect(tokens).toContain('0px 2px 3px 0px hsl(0 0% 0% / 0.08)');
+    expect(tokens.split('\n').filter((line) => line.includes('--shadow')).join('\n')).not.toMatch(/0\.18|0\.09|0\.45/);
+    expect(adapter).toContain('--color-border: var(--border)');
+    expect(adapter).not.toContain('--color-fd-primary:');
+    expect(adapter).not.toContain('.dark [data-slot=');
+  });
   it('resolves the native Spacious System choice instead of creating an unthemed .system class', async () => {
     const root = await read('../src/routes/__root.tsx');
     expect(root).toContain("defaultTheme: 'light'");

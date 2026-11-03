@@ -1,12 +1,12 @@
 /**
  * [INPUT]: 依赖独立选择集、官方Popover与工作区注入的下载队列。
- * [OUTPUT]: 导出选择审阅与下载确认，开始后通知全局任务入口。
+ * [OUTPUT]: 导出无装饰勾的数量入口；清空仅在审阅内，确认后通知任务入口。
  * [POS]: 下载流程组合边界；选择、确认与执行分层，弹层不改变结果排版。
  * [PROTOCOL]: 变更时更新此头部，然后检查 CLAUDE.md
  */
 import { useRef, useState } from 'react';
 import { useTranslation } from 'react-i18next';
-import { CheckSquare, ChevronDown, Download, X } from 'lucide-react';
+import { ChevronDown, Download, X } from 'lucide-react';
 import { Button } from './ui/button';
 import { Popover, PopoverTrigger, PopoverContent } from './ui/popover';
 import { CopyButton } from './copy-button';
@@ -44,6 +44,14 @@ export function DownloadSelection({
     confirming.current = false;
     setRequest(null);
   };
+  const clearSelection = () => {
+    setReview(false);
+    onClear();
+  };
+  const removeAsset = (id: string) => {
+    if (assets.length === 1) setReview(false);
+    onRemove(id);
+  };
   const urls = assets
     .flatMap((asset) => [asset.glb_url, asset.blend_url])
     .filter(Boolean)
@@ -61,7 +69,6 @@ export function DownloadSelection({
             <PopoverTrigger
               render={<Button variant="secondary" aria-label={t('workspace.reviewSelection')} />}
             >
-              <CheckSquare aria-hidden="true" />
               {t('downloads.selected', { count: assets.length })}
               <ChevronDown aria-hidden="true" />
             </PopoverTrigger>
@@ -71,7 +78,7 @@ export function DownloadSelection({
               aria-label={t('workspace.reviewSelection')}
             >
               <header className="download-panel-header">
-                <Button variant="link" onClick={onClear}>
+                <Button variant="link" onClick={clearSelection}>
                   {t('workspace.clearSelection')}
                 </Button>
                 <Button
@@ -112,7 +119,7 @@ export function DownloadSelection({
                         variant="ghost"
                         size="icon"
                         aria-label={t('workspace.removeAsset', { id: asset.id })}
-                        onClick={() => onRemove(asset.id)}
+                        onClick={() => removeAsset(asset.id)}
                       >
                         <X aria-hidden="true" />
                       </Button>
@@ -129,14 +136,6 @@ export function DownloadSelection({
               </footer>
             </PopoverContent>
           </Popover>
-          <Button
-            variant="ghost"
-            size="icon"
-            aria-label={t('workspace.clearSelection')}
-            onClick={onClear}
-          >
-            <X aria-hidden="true" />
-          </Button>
         </div>
       )}
       <DownloadDialog

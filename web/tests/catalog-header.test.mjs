@@ -46,6 +46,21 @@ describe("Compact catalog header", () => {
     expect(markup).toContain('aria-checked="mixed"');
     expect(markup).toContain("lucide-minus");
   });
+  it("keeps a single real checkbox and a review-only count, without toolbar clear or sort", async () => {
+    const toolbar = await read("../src/components/workspace-toolbar.tsx");
+    const selection = await read("../src/components/download-selection.tsx");
+    expect(toolbar).toContain('className="result-selection-group"');
+    expect(toolbar.indexOf('className="result-selection-toggle"')).toBeLessThan(toolbar.indexOf('{downloadControls}'));
+    expect(toolbar).not.toContain('NativeSelect');
+    expect(toolbar).not.toContain('sort-control');
+    expect(selection).not.toContain('CheckSquare');
+    expect(selection).toMatch(/const clearSelection = \(\) => \{\s*setReview\(false\);\s*onClear\(\);/);
+    expect(selection.match(/onClick=\{clearSelection\}/g)).toHaveLength(1);
+    expect(selection).toMatch(/if \(assets.length === 1\) setReview\(false\);\s*onRemove\(id\)/);
+    expect(selection).toContain('onClick={() => removeAsset(asset.id)}');
+    expect(renderToolbar(null).match(/role="checkbox"/g)).toHaveLength(1);
+    expect(renderToolbar(null)).toContain('Select all');
+  });
   it("renders no default breadcrumb but retains the selected category hierarchy", () => {
     expect(renderToolbar(null)).not.toContain('data-slot="breadcrumb"');
     const filtered = renderToolbar("Props/Furniture");

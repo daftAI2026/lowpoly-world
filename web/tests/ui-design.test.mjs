@@ -80,9 +80,9 @@ describe('UI design constraints', () => {
   it('separates visible outlines from pale input fills in both themes', async () => {
     const tokens = await readFile(`${stylesRoot}/tokens.css`, 'utf8');
     const adapter = await readFile(`${stylesRoot}/shadcn.css`, 'utf8');
-    expect(tokens).toMatch(/--lpw-line:\s*color-mix\(\s*in oklch,\s*var\(--muted-foreground\) 75%,\s*var\(--background\)\s*\)/);
+    expect(tokens).toContain('--lpw-line: var(--border)');
     expect(tokens).toContain('--lpw-control-line: var(--muted-foreground)');
-    expect(adapter).toContain('--color-border: var(--lpw-line)');
+    expect(adapter).toContain('--color-border: var(--border)');
     expect(adapter).toContain('--color-control-border: var(--lpw-control-line)');
     expect(adapter).toContain('--color-input: var(--input)');
     for (const name of ['input', 'native-select', 'textarea', 'toggle', 'button']) {
@@ -136,9 +136,10 @@ describe('UI design constraints', () => {
     expect(withTags).toContain('low-poly');
   });
 
-  it('uses the official default code theme without a project palette', async () => {
+  it('uses the official uncolored code theme and inherits the page tokens', async () => {
     const sourceConfig = await readFile(sourceConfigPath, 'utf8');
-    expect(sourceConfig).toContain('defineConfig()');
+    expect(sourceConfig).toContain("themes: { light: 'none', dark: 'none' }");
+    expect(sourceConfig).toContain('icon: false');
     expect(sourceConfig).not.toContain('lowpolyCodeTheme');
     expect(sourceConfig).not.toMatch(/#[\da-f]{3,8}\b/i);
   });
