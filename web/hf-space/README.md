@@ -9,42 +9,30 @@ short_description: Browse and download low-poly 3D assets
 app_file: index.html
 ---
 <!--
-[INPUT]: 依赖本机或 CI 已验收的 dist/client 静态产物。
-[OUTPUT]: 提供双语功能、下载与版本说明、Dataset 互链及静态托管配置。
-[POS]: 复制到静态产物根目录；不请求计算硬件或构建额度。
+[INPUT]: 依赖展厅功能与 Dataset 的公开资产格式。
+[OUTPUT]: 提供双语项目介绍、浏览入口与许可。
+[POS]: Space 项目说明与静态托管配置。
 [PROTOCOL]: 变更时更新此头部，然后检查 CLAUDE.md
 -->
 
 # Lowpoly World
 
-Browse low-poly 3D models, inspect them interactively, and download GLB or Blender files.
-浏览低多边形模型，使用交互式 3D 查看器，下载 GLB 或 Blender 文件。
+Explore daftAI's open collection of low-poly 3D assets. Preview models in your browser and download GLB or editable Blender files.
+
+浏览 daftAI 开源的低多边形 3D 资产，在浏览器中预览模型，下载 GLB 或可编辑的 Blender 文件。
 
 [English gallery](https://daftai2026-gallery.static.hf.space/en/index.html) | [中文展厅](https://daftai2026-gallery.static.hf.space/zh/index.html)
 
-[Dataset and Data Studio](https://huggingface.co/datasets/daftAI2026/3d-assets) | [Documentation](https://daftai2026-gallery.static.hf.space/en/docs/index.html) | [使用文档](https://daftai2026-gallery.static.hf.space/zh/docs/index.html) | [GitHub](https://github.com/daftAI2026/lowpoly-world)
-
 ## Browse and download / 浏览与下载
 
-Search and filter the published catalog, switch between grid and list views, and preview GLB models. Review a multi-asset selection before saving files to a folder or copying revision-pinned download commands. If folder selection is unavailable in an embedded page, open the gallery directly or use the commands.
+Search models, browse categories, inspect geometry in 3D, and download assets individually or in batches.
 
-搜索和筛选已发布目录，切换网格或列表，预览 GLB 模型。多选后先审阅，再保存到文件夹或复制固定版本下载命令。嵌入页面无法选择文件夹时，直接打开展厅或使用命令。
+搜索模型、浏览分类、查看 3D 模型，支持单件和批量下载。
 
-The gallery and guides share the native Fumadocs shell, with separate pages. This Space hosts only the prebuilt application. Model files and the current published count come from the Dataset.
+[Dataset](https://huggingface.co/datasets/daftAI2026/3d-assets) | [Documentation](https://daftai2026-gallery.static.hf.space/en/docs/index.html) | [使用文档](https://daftai2026-gallery.static.hf.space/zh/docs/index.html) | [GitHub](https://github.com/daftAI2026/lowpoly-world)
 
-展厅与使用文档共用 Fumadocs 原生壳，页面各自独立。本 Space 只托管预构建应用，模型文件和当前发布数量以 Dataset 为准。
+## License / 许可
 
-## Updates / 增量更新
+3D assets: [CC BY 4.0](https://creativecommons.org/licenses/by/4.0/). Credit **daftAI / Lowpoly World** and indicate any changes. Website source: [MIT](https://github.com/daftAI2026/lowpoly-world/blob/main/LICENSE).
 
-New and revised models enter the Dataset after release checks. The gallery reads catalog updates without a website rebuild. Revisions keep the asset ID and use versioned file paths. Pin a Dataset commit when reproducible downloads are required.
-
-新增和修订模型通过发布检查后进入 Dataset，展厅读取更新目录，无需重建网站。修订版保留资产编号，使用版本化文件路径。需要可复现下载时，固定 Dataset commit。
-
-Website code: MIT. Individually reviewed project-owned models: CC BY 4.0, as recorded per asset. Third-party reference images are excluded.
-网站代码采用 MIT。逐件审核的自有模型采用 CC BY 4.0，以资产记录为准，不包含第三方参考图。
-
-## Build and hosting
-
-Build and verify locally or in GitHub Actions. Copy `dist/client/`, this README and the website LICENSE to the Space root. Do not upload private tools, credentials or Dataset assets.
-
-Do not add `app_build_command`: remote builds require account credits. This Space serves prebuilt HTML, JavaScript, CSS and search data without a server or remote build.
+3D 资产采用 [CC BY 4.0](https://creativecommons.org/licenses/by/4.0/)，署名 **daftAI / Lowpoly World**，修改后请注明。网站源码采用 [MIT](https://github.com/daftAI2026/lowpoly-world/blob/main/LICENSE)。

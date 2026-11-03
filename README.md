@@ -1,25 +1,26 @@
 <!--
 [INPUT]: 依赖 web/ 的网站源码、构建配置与公开使用说明。
-[OUTPUT]: 提供网站运行入口与代码、资产边界。
+[OUTPUT]: 提供项目介绍、展厅入口、开发步骤与许可。
 [POS]: 网站源码仓入口；不承载模型生产或内部工程知识。
 [PROTOCOL]: 变更时更新此头部，然后检查 CLAUDE.md
 -->
 # Lowpoly World
 
-Browse low-poly 3D assets, preview GLB models, and download GLB or Blender files.
+An open collection of low-poly 3D assets by daftAI, with GLB models and editable Blender files.
 
-低多边形资产展示应用。Fumadocs 提供原生全屏布局和文档，官方 shadcn Base UI 提供展厅控件与资产卡。模型库与使用文档分别进入，使用同一套主题。
-项目包含两个交付：HF Dataset 与 HF Static Space 应用。模型库、3D 查看与使用文档都在应用内。
-网站只读取公开 Dataset，不接触私人 Drive 或审核目录。
+daftAI 开源的低多边形 3D 资产库，提供 GLB 模型和可编辑的 Blender 源文件。
 
-[中文页面](https://daftai2026-gallery.static.hf.space/zh/index.html)
-[English](https://daftai2026-gallery.static.hf.space/en/index.html)
-[Hugging Face Space](https://huggingface.co/spaces/daftAI2026/gallery)
-[Dataset](https://huggingface.co/datasets/daftAI2026/3d-assets)
-[使用文档](https://daftai2026-gallery.static.hf.space/zh/docs/index.html)
-[Documentation](https://daftai2026-gallery.static.hf.space/en/docs/index.html)
+[中文展厅](https://daftai2026-gallery.static.hf.space/zh/index.html) | [English gallery](https://daftai2026-gallery.static.hf.space/en/index.html) | [Dataset](https://huggingface.co/datasets/daftAI2026/3d-assets) | [Hugging Face Space](https://huggingface.co/spaces/daftAI2026/gallery)
 
-## 本地开发
+## Browse and download / 浏览与下载
+
+Search by name or asset ID, browse categories, preview models in 3D, and download individual files or a selection of assets. The gallery and documentation are available in English and Simplified Chinese.
+
+按名称或编号搜索，按分类浏览，查看 3D 模型，下载单个文件或批量选择的资产。展厅和使用文档支持英文与简体中文。
+
+[Documentation](https://daftai2026-gallery.static.hf.space/en/docs/index.html) | [使用文档](https://daftai2026-gallery.static.hf.space/zh/docs/index.html)
+
+## Development / 本地开发
 
 ```bash
 cd web
@@ -27,21 +28,14 @@ npm ci
 npm run dev
 ```
 
-构建、检查和部署边界见[网站说明](web/README.md)。网站提供中英双语资产浏览、模型详情，以及 10 个帮助主题的中英版本。
+Built with React, TanStack Start, Fumadocs and shadcn/ui. See [web/README.md](web/README.md) for build and test commands.
 
-网站已部署到 HF Static Space。已发布模型数量以[公开 Dataset](https://huggingface.co/datasets/daftAI2026/3d-assets) 的当前目录为准，不按源文件数量或最大编号推算。
+使用 React、TanStack Start、Fumadocs 和 shadcn/ui 构建。构建和测试命令见[网站开发说明](web/README.md)。
 
-模型库支持搜索、分类筛选、网格与列表、3D 预览和多选下载。下载前可审阅选择，保存到文件夹或复制固定版本命令。
+## License / 许可
 
-合格新增或修订模型由独立的 Colab 流水线发布，展厅自动读取新目录，无需重新部署网站。同一资产保留编号，修订版按源文件摘要分版。源码更新与模型发布彼此独立。
+3D assets: [CC BY 4.0](https://creativecommons.org/licenses/by/4.0/). Credit **daftAI / Lowpoly World** and indicate any changes.
 
-## 公开范围
+Website source: [MIT](LICENSE).
 
-- 网站源码、依赖锁文件与构建配置。
-- 网站需要的测试、部署配置与公开说明。
-- 不包含 Colab、模型生产工具、私人审核记录或模型文件。
-
-模型与网站分离。只有经过质量和权利审核的资产才进入公开 Dataset。网站代码公开不代表资产获准再分发。
-
-网站源码采用 [MIT](LICENSE)。自有模型逐件审核后按 CC BY 4.0 发布，以资产记录为准。
-10,000 是规划目标，不是已发布数量。
+3D 资产采用 [CC BY 4.0](https://creativecommons.org/licenses/by/4.0/)，署名 **daftAI / Lowpoly World**，修改后请注明。网站源码采用 [MIT](LICENSE)。

@@ -7,9 +7,7 @@
 # Lowpoly World Web
 
 这是 Lowpoly World 的展示应用，部署到 HF Static Space。
-项目只有 Dataset 和展示应用两个交付，使用文档位于应用内。
-它只读 Hugging Face Dataset 的公开目录。
-它不保存模型、令牌或审核记录。
+提供中英双语模型浏览、3D 预览、下载和使用文档。
 
 ## 语言边界
 

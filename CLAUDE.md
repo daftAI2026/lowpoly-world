@@ -9,7 +9,7 @@ web/ - 中英网站、资产浏览器、模型查看器与静态部署配置
 </directory>
 
 <config>
-README.md - 网站运行入口与公开边界
+README.md - 项目介绍、展厅入口、开发步骤与许可
 LICENSE - 网站源码的 MIT 许可，不覆盖独立模型资产
 AGENTS.md - 指向本文件，统一 Agent 入口
 .gitignore - 排除私人代码区、模型、凭据与生成产物
