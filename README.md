@@ -10,7 +10,7 @@ An open collection of low-poly 3D assets by daftAI, with GLB models and editable
 
 daftAI 开源的低多边形 3D 资产库，提供 GLB 模型和可编辑的 Blender 源文件。
 
-[中文展厅](https://daftai2026-gallery.static.hf.space/zh/index.html) | [English gallery](https://daftai2026-gallery.static.hf.space/en/index.html) | [Dataset](https://huggingface.co/datasets/daftAI2026/3d-assets) | [Hugging Face Space](https://huggingface.co/spaces/daftAI2026/gallery)
+[中文展厅](https://daftai2026-lowpoly-world.static.hf.space/zh/index.html) | [English gallery](https://daftai2026-lowpoly-world.static.hf.space/en/index.html) | [Dataset](https://huggingface.co/datasets/daftAI2026/lowpoly-world-assets) | [Hugging Face Space](https://huggingface.co/spaces/daftAI2026/lowpoly-world)
 
 ## Browse and download / 浏览与下载
 
@@ -18,7 +18,7 @@ Search by name or asset ID, browse categories, preview models in 3D, and downloa
 
 按名称或编号搜索，按分类浏览，查看 3D 模型，下载单个文件或批量选择的资产。展厅和使用文档支持英文与简体中文。
 
-[Documentation](https://daftai2026-gallery.static.hf.space/en/docs/index.html) | [使用文档](https://daftai2026-gallery.static.hf.space/zh/docs/index.html)
+[Documentation](https://daftai2026-lowpoly-world.static.hf.space/en/docs/index.html) | [使用文档](https://daftai2026-lowpoly-world.static.hf.space/zh/docs/index.html)
 
 ## Development / 本地开发
 

@@ -25,7 +25,7 @@ component-reuse.test.mjs: 官方组件来源、禁止重复基础控件与 FU �
 
 workspace-state.test.mjs: 验证完整浏览 URL、适用筛选与固定版本下载协议。
 
-catalog.test.mjs: 验证指针、404 空态、摘要、schema、计数、ID、URL 和可选字段。
+catalog.test.mjs: 验证目录摘要、字段与 URL；固定项目仓库身份，兼容改名旧址并拒绝其他项目。
 catalog-view.test.mjs: 验证分类/facet 数量、筛选组合、排序、计数和虚拟行。
 asset-metadata.test.mjs: 验证可选资源、权利确认、错误隔离和 recipe JSON。
 i18n.test.mjs: 验证 locale、路径、正文语言、回退、双语键对齐和组件文案引用完整性。

@@ -12,7 +12,7 @@ import {
   parseReleaseMetadata,
 } from '../src/lib/asset-metadata.ts';
 
-const baseUrl = 'https://huggingface.co/datasets/daftAI2026/3d-assets/resolve/main/';
+const baseUrl = 'https://huggingface.co/datasets/daftAI2026/lowpoly-world-assets/resolve/main/';
 const sourceUrl = `${baseUrl}source-input/LPW-00001.png`;
 
 function catalogAsset(overrides = {}) {

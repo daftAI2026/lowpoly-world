@@ -1,5 +1,5 @@
 /**
- * [INPUT]: 依赖选定资产、真实Dataset提交、目录能力与官方Dialog控件。
+ * [INPUT]: 依赖目录仓库常量、选定资产、真实提交与官方 Dialog 控件。
  * [OUTPUT]: 导出独立下载确认弹窗，提供目录保存与固定版本命令。
  * [POS]: 下载动作确认边界；选定目录后把任务交给持久队列，不在弹窗中执行。
  * [PROTOCOL]: 变更时更新此头部，然后检查 CLAUDE.md
@@ -11,7 +11,7 @@ import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogClose } from '.
 import { Button } from './ui/button';
 import { Textarea } from './ui/textarea';
 import { CopyButton } from './copy-button';
-import type { CatalogAsset } from '@/lib/catalog';
+import { DATASET_REPO_ID, type CatalogAsset } from '@/lib/catalog';
 import { readDatasetRevision, downloadFiles, downloadCommands } from '@/lib/asset-downloads';
 import {
   pickDownloadDirectory,
@@ -189,7 +189,7 @@ function DownloadOptions({
                 nativeButton={false}
                 render={
                   <a
-                    href={`https://huggingface.co/datasets/daftAI2026/3d-assets/tree/${revision}/${files[0]?.path.split('/').slice(0, -1).join('/') ?? ''}`}
+                    href={`https://huggingface.co/datasets/${DATASET_REPO_ID}/tree/${revision}/${files[0]?.path.split('/').slice(0, -1).join('/') ?? ''}`}
                     target="_blank"
                     rel="noreferrer"
                   />

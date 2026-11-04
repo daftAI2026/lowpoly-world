@@ -11,8 +11,8 @@ const asset = (id) => ({
   id,
   name_en: id,
   name_zh: '',
-  glb_url: `https://huggingface.co/datasets/daftAI2026/3d-assets/resolve/main/assets/${id}/model.glb`,
-  blend_url: `https://huggingface.co/datasets/daftAI2026/3d-assets/resolve/main/assets/${id}/model.blend`,
+  glb_url: `https://huggingface.co/datasets/daftAI2026/lowpoly-world-assets/resolve/main/assets/${id}/model.glb`,
+  blend_url: `https://huggingface.co/datasets/daftAI2026/lowpoly-world-assets/resolve/main/assets/${id}/model.blend`,
 });
 describe('Persistent download task store', () => {
   it('keeps downloading after the review subscriber closes', async () => {

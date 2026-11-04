@@ -23,7 +23,7 @@ describe("Fumadocs application foundation", () => {
         icons.map((item) => item.label).toSorted((a, b) => a.localeCompare(b)),
       ).toEqual(["GitHub", "Hugging Face", docsLabel].sort());
       expect(icons.find((item) => item.label === "Hugging Face").url).toBe(
-        "https://huggingface.co/datasets/daftAI2026/3d-assets",
+        "https://huggingface.co/datasets/daftAI2026/lowpoly-world-assets",
       );
       const docsLink = icons.find((item) => item.label === docsLabel);
       expect(toStaticHref(docsLink.url, true)).toBe(

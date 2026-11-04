@@ -1,5 +1,5 @@
 # [INPUT]: 读取公开源码、锁文件、已验静态产物与可选专用 Space 写凭据。
-# [OUTPUT]: 验证网站；仅手动触发时同步 daftAI2026/gallery。
+# [OUTPUT]: 验证网站；仅手动触发时同步 daftAI2026/lowpoly-world。
 # [POS]: 网站 CI 与部署边界；不读取 Drive，不写 Dataset。
 # [PROTOCOL]: 变更时更新此头部，然后检查 CLAUDE.md
 name: Website
@@ -79,10 +79,10 @@ jobs:
           fi
           python3 - <<'PYCODE'
           from huggingface_hub import HfApi
-          info = HfApi().space_info('daftAI2026/gallery')
+          info = HfApi().space_info('daftAI2026/lowpoly-world')
           if info.sdk != 'static':
               raise SystemExit('目标不是既有 Static Space；拒绝同步。')
           PYCODE
-          hf upload daftAI2026/gallery "$RUNNER_TEMP/lowpoly-space" . \
+          hf upload daftAI2026/lowpoly-world "$RUNNER_TEMP/lowpoly-space" . \
             --repo-type space --revision main \
             --commit-message "Deploy website $GITHUB_SHA"

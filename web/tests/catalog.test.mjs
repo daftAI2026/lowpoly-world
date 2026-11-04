@@ -6,9 +6,9 @@
  */
 import { afterEach, describe, expect, it } from 'vite-plus/test';
 import { createHash } from 'node:crypto';
-import { loadPublicCatalog } from '../src/lib/catalog.ts';
+import { DATASET_REPO_ID, requireDatasetUrl, loadPublicCatalog } from '../src/lib/catalog.ts';
 
-const baseUrl = 'https://huggingface.co/datasets/daftAI2026/3d-assets/resolve/main/';
+const baseUrl = 'https://huggingface.co/datasets/daftAI2026/lowpoly-world-assets/resolve/main/';
 const pointerUrl = new URL('catalog/v1/latest.json', baseUrl).href;
 const originalFetch = globalThis.fetch;
 
@@ -87,6 +87,21 @@ afterEach(() => {
 });
 
 describe('public catalog contract', () => {
+  it('uses the project-qualified Dataset identity', () => {
+    expect(DATASET_REPO_ID).toBe('daftAI2026/lowpoly-world-assets');
+  });
+
+  it('canonicalizes only the renamed project alias in historic snapshots', () => {
+    const path = 'assets/LPW-00001/model.glb';
+    const current = `https://huggingface.co/datasets/daftAI2026/lowpoly-world-assets/resolve/main/${path}`;
+    expect(requireDatasetUrl(current, 'glb_url')).toBe(current);
+    expect(requireDatasetUrl(`https://huggingface.co/datasets/daftAI2026/3d-assets/resolve/main/${path}`, 'glb_url')).toBe(current);
+  });
+
+  it('does not inherit access to other projects in the organization', () => {
+    expect(() => requireDatasetUrl('https://huggingface.co/datasets/daftAI2026/other-project-assets/resolve/main/model.glb', 'glb_url')).toThrow(/public Dataset/);
+  });
+
   it('treats a missing public pointer as an empty catalog', async () => {
     const calls = [];
     globalThis.fetch = async (input) => {
@@ -163,10 +178,10 @@ describe('public catalog contract', () => {
 
   it('rejects asset URLs outside HTTPS and the configured Dataset', async () => {
     const invalidUrls = [
-      'http://huggingface.co/datasets/daftAI2026/3d-assets/resolve/main/model.glb',
-      'https://huggingface.co:8443/datasets/daftAI2026/3d-assets/resolve/main/model.glb',
-      'https://user:secret@huggingface.co/datasets/daftAI2026/3d-assets/resolve/main/model.glb',
-      'https://huggingface.co/datasets/daftAI2026/3d-assets/resolve/main/%2e%2e%2fother/model.glb',
+      'http://huggingface.co/datasets/daftAI2026/lowpoly-world-assets/resolve/main/model.glb',
+      'https://huggingface.co:8443/datasets/daftAI2026/lowpoly-world-assets/resolve/main/model.glb',
+      'https://user:secret@huggingface.co/datasets/daftAI2026/lowpoly-world-assets/resolve/main/model.glb',
+      'https://huggingface.co/datasets/daftAI2026/lowpoly-world-assets/resolve/main/%2e%2e%2fother/model.glb',
       'https://example.org/model.glb',
       'https://huggingface.co/datasets/other/assets/resolve/main/model.glb',
     ];

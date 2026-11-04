@@ -59,7 +59,7 @@ TanStack Start 客户端产物位于 `dist/client/`。构建需生成双语首�
 
 ## 数据边界
 
-- 唯一目录源：`daftAI2026/3d-assets`。
+- 唯一目录源：`daftAI2026/lowpoly-world-assets`。
 - 读取 `catalog/v1/latest.json`，再验证不可变快照的 SHA256。
 - 未发布指针显示空目录。网络、JSON、schema、计数或摘要错误显示失败状态。
 - 资产预览和文件链接只取自已验证的目录记录。

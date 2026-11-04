@@ -13,7 +13,7 @@ use-download-queue.ts: 唯一队列所有权与离页提醒；不以进度触发
 directory-download.ts: 独立安全窗口由用户选目录后固定版本流式保存；完成计数只取已关闭写入。
 asset-downloads.ts: 固定 Dataset commit 的文件 URL、命令和版本读取，不下载模型。
 
-catalog.ts: 读取 V2 指针与快照，校验 SHA256、字段和唯一 ID。
+catalog.ts: 只读项目前缀 Dataset，核验目录摘要；将同仓旧址规范化为当前地址，不接受其他项目。
 asset-metadata.ts: 校验详情可选 JSON、Prompt 与输入图权利字段；资源失败彼此隔离。
 catalog-selection.ts: 普通链接与筛选内前后项；无 DOM 或远端依赖。
 catalog-view.ts: 纯分类/facet、关键词、许可、来源、最长边、格式与面数筛选。

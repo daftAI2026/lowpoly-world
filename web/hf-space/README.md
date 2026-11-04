@@ -21,7 +21,7 @@ Explore daftAI's open collection of low-poly 3D assets. Preview models in your b
 
 浏览 daftAI 开源的低多边形 3D 资产，在浏览器中预览模型，下载 GLB 或可编辑的 Blender 文件。
 
-[English gallery](https://daftai2026-gallery.static.hf.space/en/index.html) | [中文展厅](https://daftai2026-gallery.static.hf.space/zh/index.html)
+[English gallery](https://daftai2026-lowpoly-world.static.hf.space/en/index.html) | [中文展厅](https://daftai2026-lowpoly-world.static.hf.space/zh/index.html)
 
 ## Browse and download / 浏览与下载
 
@@ -29,7 +29,7 @@ Search models, browse categories, inspect geometry in 3D, and download assets in
 
 搜索模型、浏览分类、查看 3D 模型，支持单件和批量下载。
 
-[Dataset](https://huggingface.co/datasets/daftAI2026/3d-assets) | [Documentation](https://daftai2026-gallery.static.hf.space/en/docs/index.html) | [使用文档](https://daftai2026-gallery.static.hf.space/zh/docs/index.html) | [GitHub](https://github.com/daftAI2026/lowpoly-world)
+[Dataset](https://huggingface.co/datasets/daftAI2026/lowpoly-world-assets) | [Documentation](https://daftai2026-lowpoly-world.static.hf.space/en/docs/index.html) | [使用文档](https://daftai2026-lowpoly-world.static.hf.space/zh/docs/index.html) | [GitHub](https://github.com/daftAI2026/lowpoly-world)
 
 ## License / 许可
 

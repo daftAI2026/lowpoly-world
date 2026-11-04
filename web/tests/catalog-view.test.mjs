@@ -15,7 +15,7 @@ import {
   triangleBandFor,
 } from '../src/lib/catalog-view.ts';
 
-const baseUrl = 'https://huggingface.co/datasets/daftAI2026/3d-assets/resolve/main/';
+const baseUrl = 'https://huggingface.co/datasets/daftAI2026/lowpoly-world-assets/resolve/main/';
 
 function asset(id, overrides = {}) {
   return {

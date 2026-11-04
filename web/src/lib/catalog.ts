@@ -1,14 +1,15 @@
 /**
- * [INPUT]: 读取公开 Dataset 的 V2 latest 指针与不可变目录快照。
- * [OUTPUT]: 导出资产元数据、Dataset URL 校验和带 SHA256 校验的目录读取函数。
+ * [INPUT]: 读取项目 Dataset 的 V2 指针与快照；仅兼容同仓改名前的已知旧地址。
+ * [OUTPUT]: 导出资产元数据、规范化的本项目 URL 和带 SHA256 校验的目录读取函数。
  * [POS]: web 的唯一资产数据边界；不加载模型文件，不访问 Space 写接口。
  * [PROTOCOL]: 变更时更新此头部，然后检查 CLAUDE.md
  */
-export const DATASET_REPO_ID = 'daftAI2026/3d-assets';
+export const DATASET_REPO_ID = 'daftAI2026/lowpoly-world-assets';
 
 const DATASET_BASE_URL =
   `https://huggingface.co/datasets/${DATASET_REPO_ID}/resolve/main/`;
 const DATASET_PATH_PREFIX = new URL(DATASET_BASE_URL).pathname;
+const LEGACY_DATASET_PATH_PREFIX = '/datasets/daftAI2026/3d-assets/resolve/main/';
 const POINTER_URL = new URL('catalog/v1/latest.json', DATASET_BASE_URL).href;
 const INDEX_PATH_PATTERN = /^catalog\/v1\/releases\/[a-f0-9]{20}\/catalog\.json$/;
 const SHA256_PATTERN = /^[a-f0-9]{64}$/;
@@ -84,9 +85,15 @@ export function requireDatasetUrl(value: unknown, field: string): string {
     parsed.hostname !== 'huggingface.co' ||
     Boolean(parsed.port) ||
     Boolean(parsed.username || parsed.password) ||
-    /%2f|%5c/i.test(parsed.pathname) ||
-    !parsed.pathname.startsWith(DATASET_PATH_PREFIX)
+    /%2f|%5c/i.test(parsed.pathname)
   ) {
+    throw new Error(`Catalog field "${field}" must point to the public Dataset.`);
+  }
+  // ---- 只规范化本项目改名旧址；不放宽到整个组织或任意仓库 ----
+  if (parsed.pathname.startsWith(LEGACY_DATASET_PATH_PREFIX)) {
+    parsed.pathname = DATASET_PATH_PREFIX + parsed.pathname.slice(LEGACY_DATASET_PATH_PREFIX.length);
+  }
+  if (!parsed.pathname.startsWith(DATASET_PATH_PREFIX)) {
     throw new Error(`Catalog field "${field}" must point to the public Dataset.`);
   }
   return parsed.href;

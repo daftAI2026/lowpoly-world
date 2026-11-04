@@ -44,7 +44,7 @@ export function mountDownloadFixture() {
   });
   window.fetch = async (input, init) => {
     const url = typeof input === 'string' ? input : input instanceof URL ? input.href : input.url;
-    if (url.includes('/api/datasets/daftAI2026/3d-assets/revision/main'))
+    if (url.includes('/api/datasets/daftAI2026/lowpoly-world-assets/revision/main'))
       return new Response(JSON.stringify({ sha: 'a'.repeat(40) }), {
         headers: { 'content-type': 'application/json' },
       });
@@ -71,8 +71,8 @@ export function mountDownloadFixture() {
     id: `LPW-9000${n}`,
     name_en: `Fixture ${n}`,
     name_zh: `合成测试 ${n}`,
-    glb_url: `https://huggingface.co/datasets/daftAI2026/3d-assets/resolve/main/assets/LPW-9000${n}/model.glb`,
-    blend_url: `https://huggingface.co/datasets/daftAI2026/3d-assets/resolve/main/assets/LPW-9000${n}/model.blend`,
+    glb_url: `https://huggingface.co/datasets/daftAI2026/lowpoly-world-assets/resolve/main/assets/LPW-9000${n}/model.glb`,
+    blend_url: `https://huggingface.co/datasets/daftAI2026/lowpoly-world-assets/resolve/main/assets/LPW-9000${n}/model.blend`,
     preview_url: null,
     preview_urls: [],
     category: null,

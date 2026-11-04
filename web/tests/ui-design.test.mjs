@@ -129,7 +129,7 @@ describe('UI design constraints', () => {
       category: 'Props',
       tags: ['low-poly'],
       triangles: 120,
-      glb_url: 'https://huggingface.co/datasets/daftAI2026/3d-assets/resolve/main/assets/LPW-TEST-001/model.glb',
+      glb_url: 'https://huggingface.co/datasets/daftAI2026/lowpoly-world-assets/resolve/main/assets/LPW-TEST-001/model.glb',
       blend_url: null,
     }]), { tags: ['low-poly'] });
     expect(withTags).toContain('tag-filter-heading');

@@ -81,7 +81,7 @@ describe('public documentation boundary', () => {
     const card = await readFile(new URL('../hf-space/README.md', import.meta.url), 'utf8');
     const workflow = await readFile(new URL('../../.github/workflows/website.yml', import.meta.url), 'utf8');
     expect(card).toMatch(/^license: mit$/m);
-    expect(card).toContain('https://huggingface.co/datasets/daftAI2026/3d-assets');
+    expect(card).toContain('https://huggingface.co/datasets/daftAI2026/lowpoly-world-assets');
     expect(workflow).toContain('cp ../LICENSE');
   });
 

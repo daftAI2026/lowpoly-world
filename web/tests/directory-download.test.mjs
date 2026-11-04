@@ -11,7 +11,7 @@ const file = (path) => ({
   id: 'LPW-00001',
   format: 'GLB',
   path,
-  url: `https://huggingface.co/datasets/daftAI2026/3d-assets/resolve/${revision}/${path}`,
+  url: `https://huggingface.co/datasets/daftAI2026/lowpoly-world-assets/resolve/${revision}/${path}`,
 });
 function memoryDirectory() {
   const written = [],

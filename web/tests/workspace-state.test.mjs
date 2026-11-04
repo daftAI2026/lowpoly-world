@@ -51,7 +51,7 @@ describe('Published files only', () => {
   const asset = {
     id: 'LPW-00799',
     glb_url:
-      'https://huggingface.co/datasets/daftAI2026/3d-assets/resolve/main/assets/LPW-00799/abc/model.glb',
+      'https://huggingface.co/datasets/daftAI2026/lowpoly-world-assets/resolve/main/assets/LPW-00799/abc/model.glb',
     blend_url: null,
   };
   const sha = 'b'.repeat(40);
