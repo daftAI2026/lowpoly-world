@@ -1,5 +1,5 @@
 # [INPUT]: 读取公开源码、锁文件、已验静态产物与可选专用 Space 写凭据。
-# [OUTPUT]: 验证网站；仅手动触发时同步 daftAI2026/lowpoly-world。
+# [OUTPUT]: 按路径验证网站并复用 npm 下载缓存；仅手动触发时同步 daftAI2026/lowpoly-world。
 # [POS]: 网站 CI 与部署边界；不读取 Drive，不写 Dataset。
 # [PROTOCOL]: 变更时更新此头部，然后检查 CLAUDE.md
 name: Website
@@ -20,8 +20,8 @@ permissions:
   contents: read
 
 concurrency:
-  group: website-${{ github.ref }}
-  cancel-in-progress: true
+  group: ${{ github.workflow }}-${{ github.event_name == 'pull_request' && github.event.pull_request.number || github.run_id }}
+  cancel-in-progress: ${{ github.event_name == 'pull_request' }}
 
 jobs:
   verify:
@@ -34,19 +34,46 @@ jobs:
       - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
         with:
           persist-credentials: false
-      - uses: actions/setup-node@949feb2413d6458794dcd2491c4babbbce0c15c1 # v7.1.0
+          fetch-depth: 0
+      - name: Classify changed paths
+        id: scope
+        env:
+          BASE_SHA: ${{ github.event.pull_request.base.sha || github.event.before }}
+          EVENT_NAME: ${{ github.event_name }}
+        working-directory: .
+        shell: bash
+        run: |
+          python3 - <<'PYCODE'
+          import os, subprocess
+          base = os.environ.get("BASE_SHA", "")
+          code = True
+          if os.environ["EVENT_NAME"] != "workflow_dispatch" and base and set(base) != {"0"}:
+              result = subprocess.run(["git", "diff", "--no-renames", "--name-only", "-z", base, "HEAD"], capture_output=True, check=True)
+              paths = [p for p in result.stdout.decode().split("\0") if p]
+              code = not paths or any(not p.endswith(".md") or (p.startswith("web/") and not p.endswith("/CLAUDE.md")) for p in paths)
+          with open(os.environ["GITHUB_OUTPUT"], "a") as output:
+              output.write(f"code={str(code).lower()}\n")
+          PYCODE
+      - if: steps.scope.outputs.code == 'true'
+        uses: actions/setup-node@949feb2413d6458794dcd2491c4babbbce0c15c1 # v7.1.0
         with:
           node-version: 24.22.1
-          package-manager-cache: false
+          cache: npm
+          cache-dependency-path: web/package-lock.json
       - name: 安装锁定依赖
-        run: npm ci
+        if: steps.scope.outputs.code == 'true'
+        run: npm ci --prefer-offline
       - name: 生成内容与路由契约
+        if: steps.scope.outputs.code == 'true'
         run: npm run content:generate && npm run routes:generate
       - name: 类型与 lint
+        if: steps.scope.outputs.code == 'true'
         run: npm exec -- vp check
       - name: 离线测试
+        if: steps.scope.outputs.code == 'true'
         run: npm test
       - name: 静态构建与产物检查
+        if: steps.scope.outputs.code == 'true'
         run: npm run build && npm run build:smoke
 
       - name: 仅导出已验证的静态产物
