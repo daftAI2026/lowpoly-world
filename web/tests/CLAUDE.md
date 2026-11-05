@@ -3,6 +3,8 @@
 
 ## 成员清单
 
+native-controls.test.mjs: 原生主题细边线、去重装饰 ring、实色浮层与全局描边隔离回归。
+
 download-ui.fixture.tsx: 真实组件的合成流浏览器装配，隔离文件权限、失败和重试。
 
 catalog-layout.test.mjs: 侧栏整行命中、固定画布、独立滚动与文件底栏回归。

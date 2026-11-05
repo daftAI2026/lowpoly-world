@@ -1,7 +1,7 @@
 /**
  * [INPUT]: 依赖 Fumadocs 官方 preset 与 Spacious 样式。
- * [OUTPUT]: 侧栏透出原生外层背景；统一0.5px边线并停用布局过渡。
- * [POS]: 原生样式边界；布局、导航、字号与圆角仍归上游。
+ * [OUTPUT]: 侧栏透底；原生浮层不透底，主题描边局部减轻为 0.5px。
+ * [POS]: 原生样式适配边界；保留上游布局、控件、圆角与键盘焦点。
  * [PROTOCOL]: 变更时更新此头部，然后检查 CLAUDE.md
  */
 
@@ -16,4 +16,27 @@
 /* ---- 与官网一致：侧栏透出 Spacious 外层，不另铺一块底色 ---- */
 .ui #nd-sidebar {
   background-color: transparent;
+}
+
+/* ---- 原生主题菜单和浮层：边线跟随站点尺寸，不改全局描边色 ---- */
+.ui [role='menu']:has([class~='bg-fd-secondary'] > [role='menuitemradio']),
+.ui [role='dialog'][class~='bg-fd-popover/60'] {
+  border-width: 0.5px;
+}
+
+/* ---- 填充型主题分段：轨道用原始边框色，圆片不叠加深色 ring ---- */
+.ui [role='group'][class~='bg-fd-secondary']:has(> [role='menuitemradio']) {
+  border-width: 0.5px;
+  border-color: var(--border);
+}
+
+.ui [role='group'][class~='bg-fd-secondary']:has(> [role='menuitemradio']) > span[aria-hidden='true'] {
+  box-shadow: none;
+}
+
+/* ---- FU 默认浮层自带透明度和毛玻璃；站点浮层统一为不透明表面 ---- */
+.ui [role='dialog'][class~='bg-fd-popover/60'] {
+  background-color: var(--popover);
+  -webkit-backdrop-filter: none;
+  backdrop-filter: none;
 }
