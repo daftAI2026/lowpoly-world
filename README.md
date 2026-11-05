@@ -39,3 +39,5 @@ Built with React, TanStack Start, Fumadocs and shadcn/ui. See [web/README.md](we
 Website source: [MIT](LICENSE).
 
 3D 资产采用 [CC BY 4.0](https://creativecommons.org/licenses/by/4.0/)，署名 **daftAI / Lowpoly World**，修改后请注明。网站源码采用 [MIT](LICENSE)。
+
+<!-- CI documentation fast-path verification; this probe is not merged. -->
